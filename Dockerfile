@@ -1,20 +1,17 @@
-# Use an official Python runtime as a parent image
-FROM node:8
+FROM node:8-slim
 
-# Set the working directory to /app
-WORKDIR /app
+USER node
 
-# Copy the current directory contents into the container at /app
-COPY /pdf2cash_front/package*.json /app/
+RUN mkdir -p /home/node/app/
 
-# Install any needed packages specified in requirements.txt
+WORKDIR /home/node/app
+
+COPY /pdf2cash_front/package*.json ./
+
 RUN npm install 
 
-COPY ./pdf2cash_front/ ./
+COPY /pdf2cash_front/ ./
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+EXPOSE 3000
 
 
-# Run app.py when the container launches
-CMD ["npm run", "dev"]

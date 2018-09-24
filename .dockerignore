@@ -1,2 +1,3 @@
-node_modules
-npm-debug.log
+.git
+pdf2cash_front/node_modules
+pdf2cash_front/npm-debug.log

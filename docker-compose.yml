@@ -2,5 +2,10 @@ version: '3'
 services:
   front:
     build: .
+    command: npm run dev
+    volumes:
+        - /pdf2cash_front:/home/node/app
+        - /home/node/app/node_modules
     ports:
-     - "80:3000"
+     - "3000:3000"
+    
