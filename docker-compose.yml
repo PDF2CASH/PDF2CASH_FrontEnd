@@ -4,8 +4,10 @@ services:
     build: .
     command: npm run dev
     volumes:
-        - /pdf2cash_front:/home/node/app
-        - /home/node/app/node_modules
+        - ./pdf2cash_front:/app
+        - /app/node_modules
     ports:
      - "3000:3000"
+    environment:
+    - NODE_ENV=development
     

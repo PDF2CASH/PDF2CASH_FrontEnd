@@ -1,17 +1,11 @@
-FROM node:8-slim
+FROM node:9.6-slim
 
-USER node
+WORKDIR /app
 
-RUN mkdir -p /home/node/app/
+ENV PATH /app/node_modules/.bin:$PATH
 
-WORKDIR /home/node/app
-
-COPY /pdf2cash_front/package*.json ./
+COPY pdf2cash_front/package.json /app/package.json
 
 RUN npm install 
-
-COPY /pdf2cash_front/ ./
-
-EXPOSE 3000
 
 
