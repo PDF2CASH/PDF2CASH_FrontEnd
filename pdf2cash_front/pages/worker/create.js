@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import { ValidatorComponent } from 'react-form-validator-core';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+
 
 const styles = theme => ({
     cell: {
@@ -27,10 +31,11 @@ class WorkerCreate extends Component {
     }
 
     async componentDidMount() {
-        const { classes } = this.props;
+      document.title = "Cadastrar funcionário";
     }
 
     handleChangeName(event) {
+
         this.setState({
             name: event.target.value,
         });
@@ -54,27 +59,59 @@ class WorkerCreate extends Component {
         });
     }
 
-    handleSubmit(event) {
-        const url_worker = 'http://localhost:8000/api/worker/worker/';
+    async handleSubmit(event) {
+      event.preventDefault();
 
     }
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>
-                    <h2>CADASTRAR FUNCIONÁRIO</h2>
-                    <div className="form_worker">
-                        Nome: <input type="text" value={this.state.name} onChange={this.handleChangeName} /><br />
-                        CPF: <input type="text" value={this.state.cpf} onChange={this.handleChangeCPF} /><br />
-                        E-mail: <input type="email" value={this.state.email} onChange={this.handleChangeEmail} /><br />
-                        Senha: <input type="password" value={this.state.password} onChange={this.handleChangePassword} /><br />
-                    </div>
-                </label>
-                <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                    CADASTRAR
-                </Button>
-            </form>
+          <ValidatorForm
+            ref="form"
+            onSubmit={this.handleSubmit}
+            onError={errors => console.log(errors)}
+          >
+              <h2>CADASTRAR FUNCIONÁRIO</h2>
+              <div className="form_worker">
+                  <TextValidator
+                      label="Nome"
+                      onChange={this.handleChangeName}
+                      name="name"
+                      value={this.state.name}
+                      validators={['required', 'minStringLength:2']}
+                      errorMessages={['Este campo é obrigatório', 'Digite um nome válido']}
+                  /><br/>
+                  <TextValidator
+                      label="CPF"
+                      onChange={this.handleChangeCPF}
+                      name="cpf"
+                      inputProps={{ maxLength: 11 }}
+                      value={this.state.cpf}
+                      validators={['required', 'matchRegexp:^([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})$']}
+                      errorMessages={['Este campo é obrigatório', 'Digite um CPF válido']}
+                  /><br/>
+                  <TextValidator
+                      label="E-mail"
+                      onChange={this.handleChangeEmail}
+                      name="email"
+                      value={this.state.email}
+                      validators={['required', 'isEmail']}
+                      errorMessages={['Este campo é obrigatório', 'Este e-mail não é válido']}
+                  /><br/>
+                  <TextValidator
+                      label="Senha"
+                      onChange={this.handleChangePassword}
+                      name="password"
+                      type='password'
+                      value={this.state.password}
+                      validators={['required','minStringLength:6', 'maxStringLength:30']}
+                      errorMessages={['Este campo é obrigatório', 'Digite uma senha maior que 6 dígitos', 'Digite uma senha menor que 30 dígitos']}
+                  /><br/>
+              </div>
+              <Button type="submit" variant="contained" color="primary" >
+                  CADASTRAR
+              </Button>
+          </ValidatorForm>
         );
     }
 }
