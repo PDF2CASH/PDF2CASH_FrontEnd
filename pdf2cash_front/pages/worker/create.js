@@ -61,7 +61,25 @@ class WorkerCreate extends Component {
 
     async handleSubmit(event) {
       event.preventDefault();
-
+      const url_worker = 'http://0.0.0.0:8000/api/worker/worker/';
+      fetch(url_worker, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: this.state.name,
+            cpf: this.state.cpf,
+            email: this.state.email,
+            password: this.state.password
+          })
+      })
+        .then((response) => {
+          if(response.status === 201){
+            window.location.href = "http://localhost:3000/worker/";
+          }
+        })
     }
 
     render() {
