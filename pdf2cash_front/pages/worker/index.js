@@ -21,6 +21,7 @@ class WorkerIndex extends Component{
       workers: []
     };
     this.delete = this.delete.bind(this);
+    this.getWorkers = this.getWorkers.bind(this);
   }
 
   async componentDidMount() {
@@ -40,8 +41,10 @@ class WorkerIndex extends Component{
   delete(id){
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
     const res = fetch(url, { method:'DELETE' });
-    // const data_workers =  res.json();
-    //this.getWorkers();
+    console.log(res)
+    console.log(res.data);
+    const data_workers =  res.json();
+    this.getWorkers();
   }
     render() {
       const { classes } = this.props;
