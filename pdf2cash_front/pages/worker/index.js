@@ -5,6 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Link from 'next/link'
 
 
 const styles = theme => ({
@@ -31,23 +32,22 @@ class WorkerIndex extends Component{
     this.setState({ workers: data_workers });
   }
 
-  getWorkers() {
+  async getWorkers() {
     const url = 'http://localhost:8000/api/worker/worker/';
-    const res = fetch(url);
-    const data_workers = res.json();
+    const res = await fetch(url);
+    const data_workers = await res.json();
     this.setState({ workers: data_workers });
   }
 
-  delete(id){
+  async delete(id){
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
-    const res = fetch(url, { method:'DELETE' });
-    console.log(res)
-    console.log(res.data);
-    const data_workers =  res.json();
+    const res = await fetch(url, { method:'DELETE' });
     this.getWorkers();
   }
     render() {
       const { classes } = this.props;
+      console.log(this.state.workers);
+
       return (
         <Grid>
           <Typography variant="display2">
@@ -68,9 +68,11 @@ class WorkerIndex extends Component{
                     </Typography>
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    <Button>
-                      <VisibilityIcon />
-                    </Button>
+                    <Link href={{ pathname: '/worker/show', query: { id: worker.id } }}>
+                      <Button>
+                        <VisibilityIcon />
+                      </Button>
+                    </Link>
                   </TableCell>
                   <TableCell className={classes.cell}>
                     <Button onClick={() => this.delete(worker.id)}>
