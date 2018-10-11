@@ -12,7 +12,9 @@
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-form-validator-core": "^0.5.0",
     "react-jss": "latest",
+    "react-material-ui-form-validator": "^2.0.2",
     "typeface-roboto": "0.0.54",
     "whatwg-fetch": "^3.0.0"
   },
