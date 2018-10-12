@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Grid, Button, Input, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -15,7 +16,7 @@ class InvoiceCreate extends Component {
     this.state = {
       file: null,
       open: false
-    };
+    }
     this.setFile = this.setFile.bind(this);
     this.sendForm = this.sendForm.bind(this);
   }
@@ -24,8 +25,17 @@ class InvoiceCreate extends Component {
     this.setState({ file: event.target.files[0] });
   }
 
+  sendForm() {
+    const { file } = this.state;
+    const url = 'http://localhost:8000/api/invoice/invoice/';
+    var data = new FormData();
+    data.append('file', file);
+    fetch(url, { method: 'POST', body: data });
+  }
+
   render() {
     const { classes } = this.props;
+    console.log(this.state.file);
 
     return (
       <Grid>
@@ -51,7 +61,7 @@ class InvoiceCreate extends Component {
           </Button>
         </form>
       </Grid>
-    );
+    )
   }
 }
 
