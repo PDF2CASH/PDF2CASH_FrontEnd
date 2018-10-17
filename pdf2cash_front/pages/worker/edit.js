@@ -69,7 +69,61 @@ class WorkerCreate extends Component {
         });
     }
 
+    snackbarShow() {
 
+
+    }
+
+    async handleSubmit(event) {
+        event.preventDefault();
+        const id = this.state.id;
+        const url_worker = 'http://0.0.0.0:8000/api/worker/worker/' + id + '/';
+        fetch(url_worker, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: this.state.name,
+                cpf: this.state.cpf,
+                email: this.state.email,
+                password: this.state.password
+            })
+        })
+            .then((response) => {
+                if (response.ok) {
+                    window.location.href = "http://localhost:3000/worker";
+                }
+                else
+                    return response.json()
+
+                        .then(json => {
+                            var errors = []
+                            if (json.name) {
+                                for (var i = 0; i < json.name.length; i++) {
+                                    errors.push(json.name[i])
+                                }
+                            }
+                            if (json.cpf) {
+                                for (var i = 0; i < json.cpf.length; i++) {
+                                    errors.push("Este CPF já está cadastrado no sistema.")
+                                }
+                            }
+                            if (json.email) {
+                                for (var i = 0; i < json.email.length; i++) {
+                                    errors.push("Este E-mail já está cadastrado no sistema.")
+                                }
+                            }
+                            if (json.password) {
+                                for (var i = 0; i < json.password.length; i++) {
+                                    errors.push(json.password[i])
+                                }
+                            }
+                            this.setState({ errors: errors, error_show: true });
+                        })
+            })
+    }
 
 }
 
