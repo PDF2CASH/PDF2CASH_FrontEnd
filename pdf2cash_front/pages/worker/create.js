@@ -80,7 +80,7 @@ class WorkerCreate extends Component {
         })
             .then((response) => {
                 if (response.ok) {
-                    window.location.href = "http://localhost:3000/worker/";
+                    window.location.href = "http://localhost:3000/worker";
                 }
                 else
                     return response.json()

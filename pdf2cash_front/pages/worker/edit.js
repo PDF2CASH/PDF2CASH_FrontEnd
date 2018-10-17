@@ -1,121 +1,76 @@
-import React from 'react';
-import { withRouter } from 'next/router';
-import {withStyles} from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import React, { Component } from 'react';
 import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { withRouter } from 'next/router';
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
-    cell: {
-        textAlign: 'center'
+    snackbar: {
+        margin: theme.spacing.unit,
     }
 });
 
-class WorkerShow extends React.Component {
-
+class WorkerCreate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            worker: null,
-            value: 0,
-            data_has_loaded: false,
-        }
+            name: "",
+            cpf: "",
+            email: "",
+            password: "",
+        };
+
+        this.handleChangeName = this.handleChangeName.bind(this);
+        this.handleChangeCPF = this.handleChangeCPF.bind(this);
+        this.handleChangeEmail = this.handleChangeEmail.bind(this);
+        this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     async componentDidMount() {
         const id = this.props.router.query.id;
         const url = 'http://localhost:8000/api/worker/worker/' + id + '/';
         const res = await fetch(url);
-        const worker = await res.json();
+        const data = await res.json();
         this.setState({
-            worker: worker,
-            data_has_loaded: true
+            id: data['id'],
+            cpf: data['cpf'],
+            name: data['name'],
+            email: data['email'],
+            password: data['password'],
+            data_has_loaded: true,
         });
     }
 
-    handleChange = (event, value) => {
-         this.setState({value});
-    };
-    
+    handleChangeName(event) {
 
-    render() {
-        const { classes } = this.props;
-        const { worker, data_has_loaded } = this.state;
-
-        let content;
-
-        if(!data_has_loaded) {
-            content = <CircularProgress className={classes.waiter} />
-        } else {
-            content =
-            <>
-            <Typography variant="display2">
-                    Editar Funcionario
-            </Typography>
-
-            <Grid
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
-            >
-
-                <TextField
-                     id="standard-read-only-input"
-                     label="Nome"
-                     defaultValue = {worker.name}
-                     className={classes.textField}
-                     margin="normal"
-                     InputProps={{
-                         readOnly: true,
-                     }}
-                />
-
-                <TextField
-                     id="standard-read-only-input"
-                     label="CPF"
-                     defaultValue = {worker.cpf}
-                     className={classes.textField}
-                     margin="normal"
-                     InputProps={{
-                         readOnly: true,
-                     }}
-                />
-
-                <TextField
-                     id="standard-read-only-input"
-                     label="Email"
-                     defaultValue = {worker.email}
-                     className={classes.textField}
-                     margin="normal"
-                     InputProps={{
-                         readOnly: true,
-                     }}
-                />
-
-                <Button
-                    type="back"
-                    variant="contained"
-                    color="primary"
-                    component = "a"
-                    href = "http://localhost:3000/worker"
-                >
-                     EDITAR
-                </Button>
-
-            </Grid>
-            </>
-        }
-
-        return (
-            <Grid container spacing={16} className={classes.root} >
-                {content}
-            </Grid>
-        );
+        this.setState({
+            name: event.target.value,
+        });
     }
+
+    handleChangeCPF(event) {
+        this.setState({
+            cpf: event.target.value,
+        });
+    }
+
+    handleChangeEmail(event) {
+        this.setState({
+            email: event.target.value,
+        });
+    }
+
+    handleChangePassword(event) {
+        this.setState({
+            password: event.target.value,
+        });
+    }
+
+
 
 }
 
-export default withRouter(withStyles(styles)(WorkerShow));
+export default withRouter(withStyles(styles)(WorkerCreate));
