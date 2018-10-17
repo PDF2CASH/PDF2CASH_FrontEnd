@@ -42,6 +42,7 @@ class WorkerCreate extends Component {
             password: data['password'],
             data_has_loaded: true,
         });
+
     }
 
     handleChangeName(event) {
@@ -125,6 +126,65 @@ class WorkerCreate extends Component {
             })
     }
 
+    render() {
+        const { classes } = this.props;
+
+        return (
+            <ValidatorForm
+                ref="form"
+                onSubmit={this.handleSubmit}
+                onError={errors => console.log(errors)}
+            >
+                <Typography variant="display2">
+                        Alterar Funcionario
+                </Typography>
+                {
+                    this.state.error_show && this.state.errors.map(error => {
+                        return < SnackbarContent key={error} className={classes.snackbar} message={error} />
+                    })
+                }
+                <div className="form_worker">
+                    <TextValidator
+                        label="Nome"
+                        onChange={this.handleChangeName}
+                        name="name"
+                        value={this.state.name}
+                        validators={['required', 'minStringLength:9']}
+                        errorMessages={['Este campo é obrigatório', 'Digite um nome válido']}
+                    /><br /><br />
+                    <TextValidator
+                        label="CPF"
+                        onChange={this.handleChangeCPF}
+                        name="cpf"
+                        inputProps={{ maxLength: 11 }}
+                        value={this.state.cpf}
+                        validators={['required', 'matchRegexp:^([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})$']}
+                        errorMessages={['Este campo é obrigatório', 'Digite um CPF válido']}
+                    /><br /><br />
+                    <TextValidator
+                        label="E-mail"
+                        onChange={this.handleChangeEmail}
+                        name="email"
+                        value={this.state.email}
+                        validators={['required', 'isEmail']}
+                        errorMessages={['Este campo é obrigatório', 'Este e-mail não é válido']}
+                    /><br /><br />
+                    <TextValidator
+                        label="Senha"
+                        onChange={this.handleChangePassword}
+                        name="password"
+                        type='password'
+                        value={this.state.password}
+                        validators={['required', 'minStringLength:6', 'maxStringLength:30']}
+                        errorMessages={['Este campo é obrigatório', 'Digite uma senha maior que 6 dígitos', 'Digite uma senha menor que 30 dígitos']}
+                    /><br /><br />
+                </div>
+                <Button type="submit" variant="contained" color="primary" >
+                    EDITAR
+                </Button>
+            </ValidatorForm>
+        );
+    }
 }
 
 export default withRouter(withStyles(styles)(WorkerCreate));
