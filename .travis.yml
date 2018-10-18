@@ -1,0 +1,21 @@
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - docker build -t pdf2front .
+
+script:
+  - docker run pdf2front npm run build
+ 
+deploy:
+  provider: script
+  script: bash scripts/deploy.sh
+  on:
+    branch: feature/homolog-front
+
+addons:
+  apt:
+    packages:
+      - docker-ce
