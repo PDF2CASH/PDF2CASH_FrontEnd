@@ -12,7 +12,7 @@ const styles = theme => ({
     }
 });
 
-class WorkerCreate extends Component {
+class WorkerEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -187,4 +187,4 @@ class WorkerCreate extends Component {
     }
 }
 
-export default withRouter(withStyles(styles)(WorkerCreate));
+export default withRouter(withStyles(styles)(WorkerEdit));
