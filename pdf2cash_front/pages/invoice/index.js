@@ -5,6 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Link from 'next/link'
 
 const styles = theme => ({
   cell: {
@@ -23,6 +24,9 @@ class InvoiceIndex extends Component {
     
     this.joinInvoiceSeller = this.joinInvoiceSeller.bind(this);
     this.dateFormatter = this.dateFormatter.bind(this);
+    this.delete = this.delete.bind(this);
+    this.getInvoices = this.getInvoices.bind(this);
+
   }
 
   async componentDidMount() {
@@ -37,6 +41,26 @@ class InvoiceIndex extends Component {
     this.setState({ sellers: data_seller });
 
     this.joinInvoiceSeller();
+  }
+
+  async getInvoices() {
+    const url_invoice = 'http://localhost:8000/api/invoice/invoice/';
+    const res_invoice = await fetch(url_invoice);
+    const data_invoice = await res_invoice.json();
+    this.setState({ invoices: data_invoice });
+  
+    const url_seller = 'http://localhost:8000/api/invoice/seller/';
+    const res_seller = await fetch(url_seller);
+    const data_seller = await res_seller.json();
+    this.setState({ sellers: data_seller });
+
+    this.joinInvoiceSeller();
+  }
+
+  async delete(id){
+    const url = 'http://localhost:8000/api/invoice/invoice/'+ id + '/';
+    const res = await fetch(url, { method:'DELETE' });
+    this.getInvoices();
   }
 
   dateFormatter(date) {
@@ -70,55 +94,57 @@ class InvoiceIndex extends Component {
     const { classes } = this.props;
     const { join } = this.state;
 
+    console.log(this.state.invoices);
+    
     return (
       <Grid>
         <Typography variant="display2">
-          Listar de Notas Fiscais
+          Listar Notas Fiscais
         </Typography>
-
-        <CustomatizedTable>
-          {
-            join.map(invoice => (
-              <TableRow key={invoice.id}>
-                <TableCell className={classes.cell}>
-                  <Typography>
-                    {invoice.emission_date}
-                  </Typography>
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  <Typography>
-                    {invoice.access_key}
-                  </Typography>
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  <Typography>
-                    {invoice.seller.name}
-                  </Typography>
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  <Typography>
-                    {invoice.seller.cnpj}
-                  </Typography>
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  <Typography>
-                    {invoice.total_invoice_value}
-                  </Typography>
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  <Button>
-                    <VisibilityIcon />
-                  </Button>
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  <Button>
-                    <DeleteIcon />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))
-          }
-        </CustomatizedTable>
+        
+            <CustomatizedTable>
+              {
+                join.map(invoice => (
+                  <TableRow key={invoice.id}>
+                    <TableCell className={classes.cell}>
+                      <Typography>
+                        {invoice.emission_date}
+                      </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                      <Typography>
+                        {invoice.access_key}
+                      </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                      <Typography>
+                        {invoice.seller.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                      <Typography>
+                        {invoice.seller.cnpj}
+                      </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                      <Typography>
+                        {invoice.total_invoice_value}
+                      </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                      <Button>
+                        <VisibilityIcon />
+                      </Button>
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                    <Button onClick={() => this.delete(invoice.id)}>
+                        <DeleteIcon />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              }
+            </CustomatizedTable>          
       </Grid>
     )
   }
