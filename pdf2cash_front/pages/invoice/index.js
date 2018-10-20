@@ -102,6 +102,8 @@ class InvoiceIndex extends Component {
           Listar Notas Fiscais
         </Typography>
         
+        { 
+          this.state.invoices.length ? (
             <CustomatizedTable>
               {
                 join.map(invoice => (
@@ -145,6 +147,13 @@ class InvoiceIndex extends Component {
                 ))
               }
             </CustomatizedTable>          
+          ) : (
+            <Typography variant="display1">
+              Não há notas fiscais registradas!
+            </Typography>
+          )
+        }
+
       </Grid>
     )
   }
