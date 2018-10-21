@@ -5,11 +5,14 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link'
 
 const styles = theme => ({
   cell: {
     textAlign: 'center' 
+  },
+  warning: {
+    textAlign: 'center',
+    marginTop: 100
   }
 });
   
@@ -93,7 +96,6 @@ class InvoiceIndex extends Component {
   render() {
     const { classes } = this.props;
     const { join } = this.state;
-
     console.log(this.state.invoices);
     
     return (
@@ -148,9 +150,11 @@ class InvoiceIndex extends Component {
               }
             </CustomatizedTable>          
           ) : (
+          <Grid className = {classes.warning}>  
             <Typography variant="display1">
               Não há notas fiscais registradas!
             </Typography>
+          </Grid>
           )
         }
 
