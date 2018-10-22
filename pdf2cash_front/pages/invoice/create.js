@@ -55,7 +55,7 @@ class InvoiceCreate extends Component {
           <Button
             type='submit'
             variant='contained'
-            color='primary'
+            color='secondary'
           >
             Criar
           </Button>
