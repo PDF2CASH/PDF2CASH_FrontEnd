@@ -3,7 +3,8 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-
+import { withRouter } from 'next/router';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     snackbar: {
@@ -11,7 +12,7 @@ const styles = theme => ({
     }
 });
 
-class WorkerCreate extends Component {
+class WorkerEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -29,7 +30,19 @@ class WorkerCreate extends Component {
     }
 
     async componentDidMount() {
-        document.title = "Cadastrar funcionário";
+        const id = this.props.router.query.id;
+        const url = 'http://localhost:8000/api/worker/worker/' + id + '/';
+        const res = await fetch(url);
+        const data = await res.json();
+        this.setState({
+            id: data['id'],
+            cpf: data['cpf'],
+            name: data['name'],
+            email: data['email'],
+            password: data['password'],
+            data_has_loaded: true,
+        });
+
     }
 
     handleChangeName(event) {
@@ -64,9 +77,10 @@ class WorkerCreate extends Component {
 
     async handleSubmit(event) {
         event.preventDefault();
-        const url_worker = 'http://0.0.0.0:8000/api/worker/worker/';
+        const id = this.state.id;
+        const url_worker = 'http://0.0.0.0:8000/api/worker/worker/' + id + '/';
         fetch(url_worker, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
@@ -121,7 +135,9 @@ class WorkerCreate extends Component {
                 onSubmit={this.handleSubmit}
                 onError={errors => console.log(errors)}
             >
-                <h2>CADASTRAR FUNCIONÁRIO</h2>
+                <Typography variant="display2">
+                        Alterar Funcionario
+                </Typography>
                 {
                     this.state.error_show && this.state.errors.map(error => {
                         return < SnackbarContent key={error} className={classes.snackbar} message={error} />
@@ -135,7 +151,7 @@ class WorkerCreate extends Component {
                         value={this.state.name}
                         validators={['required', 'minStringLength:9']}
                         errorMessages={['Este campo é obrigatório', 'Digite um nome válido']}
-                    /><br />
+                    /><br /><br />
                     <TextValidator
                         label="CPF"
                         onChange={this.handleChangeCPF}
@@ -144,7 +160,7 @@ class WorkerCreate extends Component {
                         value={this.state.cpf}
                         validators={['required', 'matchRegexp:^([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})$']}
                         errorMessages={['Este campo é obrigatório', 'Digite um CPF válido']}
-                    /><br />
+                    /><br /><br />
                     <TextValidator
                         label="E-mail"
                         onChange={this.handleChangeEmail}
@@ -152,7 +168,7 @@ class WorkerCreate extends Component {
                         value={this.state.email}
                         validators={['required', 'isEmail']}
                         errorMessages={['Este campo é obrigatório', 'Este e-mail não é válido']}
-                    /><br />
+                    /><br /><br />
                     <TextValidator
                         label="Senha"
                         onChange={this.handleChangePassword}
@@ -161,14 +177,14 @@ class WorkerCreate extends Component {
                         value={this.state.password}
                         validators={['required', 'minStringLength:6', 'maxStringLength:30']}
                         errorMessages={['Este campo é obrigatório', 'Digite uma senha maior que 6 dígitos', 'Digite uma senha menor que 30 dígitos']}
-                    /><br />
+                    /><br /><br />
                 </div>
                 <Button type="submit" variant="contained" color="primary" >
-                    CADASTRAR
+                    EDITAR
                 </Button>
             </ValidatorForm>
         );
     }
 }
 
-export default withStyles(styles)(WorkerCreate);
+export default withRouter(withStyles(styles)(WorkerEdit));

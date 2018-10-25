@@ -3,6 +3,7 @@ import CustomatizedTable from '../../comps/tableWorker';
 import { TableRow, TableCell, Button, Grid } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import CreateIcon from '@material-ui/icons/Create'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
@@ -71,6 +72,13 @@ class WorkerIndex extends Component{
                     <Link href={{ pathname: '/worker/show', query: { id: worker.id } }}>
                       <Button>
                         <VisibilityIcon />
+                      </Button>
+                    </Link>
+                  </TableCell>
+                  <TableCell className={classes.cell}>
+                    <Link href={{ pathname: '/worker/edit', query: { id: worker.id } }}>
+                      <Button>
+                        <CreateIcon />
                       </Button>
                     </Link>
                   </TableCell>
