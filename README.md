@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/PDF2CASH/PDF2CASH_FrontEnd.svg?branch=development)](https://travis-ci.org/PDF2CASH/PDF2CASH_FrontEnd)
 # PDF2CASHFrontEnd
 
 Repositório responsável por armazenar o código fonte do microserviço FrontEnd do projeto _PDF2CASH_.

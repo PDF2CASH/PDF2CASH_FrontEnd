@@ -33,6 +33,7 @@ function SimpleTable(props) {
             <TableCell className={classes.cell}>Nome</TableCell>
             <TableCell className={classes.cell}>CPF</TableCell>
             <TableCell className={classes.cell}>Vizualizar</TableCell>
+            <TableCell className={classes.cell}>Editar</TableCell>
             <TableCell className={classes.cell}>Excluir</TableCell>
           </TableRow>
         </TableHead>
