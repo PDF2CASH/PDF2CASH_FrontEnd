@@ -8,4 +8,6 @@ COPY pdf2cash_front/package.json /app/package.json
 
 RUN npm install 
 
+ADD pdf2cash_front/ /app/
 
+CMD npm run dev
