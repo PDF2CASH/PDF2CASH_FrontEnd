@@ -92,16 +92,6 @@ async handleCloseModal(){
           <Typography variant="display2">
             Listar Funcionarios
           </Typography>
-          <Modal
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-            open={this.state.open}
-            onClose={this.handleCloseModal}
-          >
-            <div style={getModalStyle()} className={classes.paper}>
-              <h1>VRAU</h1>
-            </div>
-          </Modal>
           <CustomatizedTable>
             {
               this.state.workers.map(worker => (
@@ -133,6 +123,21 @@ async handleCloseModal(){
                   <TableCell className={classes.cell}>
                     <Button onClick={this.handleOpenModal}>
                       <DeleteIcon />
+                      <Modal
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                        open={this.state.open}
+                        onClick={this.handleCloseModal}
+                      >
+                        <div style={getModalStyle()} className={classes.paper}>
+                          <Typography className={classes.cell} >
+                            Deseja Realmente DELETAR Esse Funcionário ?
+                          <Button onClick={() => this.delete(worker.id)}>
+                            DELETAR
+                          </Button>
+                          </Typography>
+                        </div>
+                      </Modal>
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -140,6 +145,7 @@ async handleCloseModal(){
             }
           </CustomatizedTable>
         </Grid>
+
       );
     }
 }
