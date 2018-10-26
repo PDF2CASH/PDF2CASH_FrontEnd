@@ -45,7 +45,7 @@ class WorkerIndex extends Component{
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   async componentDidMount() {
@@ -68,6 +68,7 @@ class WorkerIndex extends Component{
   async delete(id){
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
+    this.closeModal();
     this.getWorkers();
   }
 
@@ -77,7 +78,7 @@ class WorkerIndex extends Component{
    });
  }
 
-async handleCloseModal(){
+async closeModal(){
    this.setState({
      open: false
    });
@@ -85,8 +86,6 @@ async handleCloseModal(){
 
     render() {
       const { classes } = this.props;
-      console.log(this.state.workers);
-
       return (
         <Grid>
           <Typography variant="display2">
@@ -123,23 +122,32 @@ async handleCloseModal(){
                   <TableCell className={classes.cell}>
                     <Button onClick={this.handleOpenModal}>
                       <DeleteIcon />
-                      <Modal
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                        open={this.state.open}
-                        onClick={this.handleCloseModal}
-                      >
-                        <div style={getModalStyle()} className={classes.paper}>
-                          <Typography className={classes.cell} >
-                            Deseja Realmente DELETAR Esse Funcionário ?
-                          <Button onClick={() => this.delete(worker.id)}>
-                            DELETAR
-                          </Button>
-                          </Typography>
-                        </div>
-                      </Modal>
                     </Button>
                   </TableCell>
+                  <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.open}
+                    onClose={this.closeModal}
+                  >
+                    <div style={getModalStyle()} className={classes.paper}>
+                      <Typography className={classes.cell} >
+                      <h3>
+                        DESEJA REALMENTE DELETAR ESSE FUNCIONÁRIO ?
+                      </h3>
+                        <Button color='primary' onClick={() => this.delete(worker.id)}>
+                          <h3>
+                          SIM
+                          </h3>
+                        </Button>
+                        <Button color='secondary' onClick={this.closeModal}>
+                        <h3>
+                          NÃO
+                        </h3>
+                        </Button>
+                      </Typography>
+                    </div>
+                  </Modal>
                 </TableRow>
               ))
             }
