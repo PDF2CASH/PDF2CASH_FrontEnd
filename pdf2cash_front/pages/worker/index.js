@@ -13,8 +13,26 @@ import Modal from '@material-ui/core/Modal';
 const styles = theme => ({
   cell: {
     textAlign: 'center'
-  }
+  },
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+  },
 });
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 class WorkerIndex extends Component{
 
@@ -78,8 +96,12 @@ async handleCloseModal(){
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
             open={this.state.open}
-            onClose={this.handleClose}
+            onClose={this.handleCloseModal}
           >
+            <div style={getModalStyle()} className={classes.paper}>
+              <h1>VRAU</h1>
+            </div>
+          </Modal>
           <CustomatizedTable>
             {
               this.state.workers.map(worker => (
