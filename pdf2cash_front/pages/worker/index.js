@@ -7,6 +7,7 @@ import CreateIcon from '@material-ui/icons/Create'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
+import Modal from '@material-ui/core/Modal';
 
 
 const styles = theme => ({
@@ -20,17 +21,23 @@ class WorkerIndex extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      workers: []
+      workers: [],
+      open: false,
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
   async componentDidMount() {
     const url = 'http://localhost:8000/api/worker/worker/';
     const res = await fetch(url);
     const data_workers = await res.json();
-    this.setState({ workers: data_workers });
+    this.setState({
+      workers: data_workers,
+      open: false,
+    });
   }
 
   async getWorkers() {
@@ -45,6 +52,19 @@ class WorkerIndex extends Component{
     const res = await fetch(url, { method:'DELETE' });
     this.getWorkers();
   }
+
+  async handleOpenModal(){
+   this.setState ({
+     open: true
+   });
+ }
+
+async handleCloseModal(){
+   this.setState({
+     open: false
+   });
+ }
+
     render() {
       const { classes } = this.props;
       console.log(this.state.workers);
@@ -54,6 +74,12 @@ class WorkerIndex extends Component{
           <Typography variant="display2">
             Listar Funcionarios
           </Typography>
+          <Modal
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+            open={this.state.open}
+            onClose={this.handleClose}
+          >
           <CustomatizedTable>
             {
               this.state.workers.map(worker => (
@@ -83,7 +109,7 @@ class WorkerIndex extends Component{
                     </Link>
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    <Button onClick={() => this.delete(worker.id)}>
+                    <Button onClick={this.handleOpenModal}>
                       <DeleteIcon />
                     </Button>
                   </TableCell>
@@ -97,3 +123,5 @@ class WorkerIndex extends Component{
 }
 
 export default withStyles(styles)(WorkerIndex);
+
+//onClick={() => this.delete(worker.id)}
