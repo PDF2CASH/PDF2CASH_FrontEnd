@@ -44,10 +44,12 @@ class WorkerIndex extends Component{
     super(props);
     this.state = {
       workers: [],
+      open: false,
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
-
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+  
   }
 
   async componentDidMount() {
@@ -56,6 +58,7 @@ class WorkerIndex extends Component{
     const data_workers = await res.json();
     this.setState({
       workers: data_workers,
+      open: false,
     });
   }
 
@@ -69,8 +72,15 @@ class WorkerIndex extends Component{
   async delete(id){
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
+    this.closeModal();
     this.getWorkers();
   }
+
+  async handleOpenModal(){
+   this.setState ({
+     open: true
+   });
+ }
 
 
     render() {
@@ -119,14 +129,14 @@ class WorkerIndex extends Component{
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     open={this.state.open}
-                    onClose={this.closeModal}
+
                   >
                     <div style={getModalStyle()} className={classes.paper}>
                       <Typography className={classes.cell} >
                       <h3>
                         DESEJA REALMENTE DELETAR ESSE FUNCIONÁRIO ?
                       </h3>
-                        <Button color='primary'>
+                        <Button color='primary' onClick={() => this.delete(worker.id)}>
                           <h3>
                           SIM
                           </h3>
