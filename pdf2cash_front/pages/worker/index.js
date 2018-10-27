@@ -14,14 +14,29 @@ const styles = theme => ({
   cell: {
     textAlign: 'center'
   },
-
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+  },
   warning: {
     textAlign: 'center',
     marginTop: 100
   },
 });
 
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
 
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 class WorkerIndex extends Component{
 
@@ -29,7 +44,6 @@ class WorkerIndex extends Component{
     super(props);
     this.state = {
       workers: [],
-
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
@@ -42,7 +56,6 @@ class WorkerIndex extends Component{
     const data_workers = await res.json();
     this.setState({
       workers: data_workers,
-
     });
   }
 
@@ -56,10 +69,8 @@ class WorkerIndex extends Component{
   async delete(id){
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
-
     this.getWorkers();
   }
-
 
 
     render() {
