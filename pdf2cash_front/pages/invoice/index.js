@@ -181,7 +181,30 @@ class InvoiceIndex extends Component {
                         <DeleteIcon />
                       </Button>
                     </TableCell>
-                    
+                    <Modal
+                      aria-labelledby="simple-modal-title"
+                      aria-describedby="simple-modal-description"
+                      open={this.state.open}
+                      onClose={this.closeModal}
+                    >
+                      <div style={getModalStyle()} className={classes.paper}>
+                        <Typography className={classes.cell} >
+                        <h3>
+                          DESEJA REALMENTE DELETAR ESSA NOTA FISCAL ?
+                        </h3>
+                          <Button color='primary' onClick={() => this.delete(invoice.id)}>
+                            <h3>
+                            SIM
+                            </h3>
+                          </Button>
+                          <Button color='secondary' onClick={this.closeModal}>
+                          <h3>
+                            NÃO
+                          </h3>
+                          </Button>
+                        </Typography>
+                      </div>
+                    </Modal>
                   </TableRow>
                 ))
               }
