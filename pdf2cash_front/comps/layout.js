@@ -39,6 +39,11 @@ import MenuList from '@material-ui/core/MenuList';
 
 const drawerWidth = 280;
 
+
+const style = {
+  color:'white',
+}
+
 const styles = theme => ({
   root: {
     fontFamily: 'Roboto',
@@ -49,16 +54,6 @@ const styles = theme => ({
     position: 'relative',
     display: 'flex',
   },
-  menuItem: {
-      '&:focus': {
-        backgroundColor: theme.palette.primary.main,
-        '& $primary, & $icon': {
-          color: theme.palette.common.white,
-        },
-      },
-    },
-    primary: {},
-    icon: {},
   appBar: {
     backgroundColor: '#3f51b5',
     fontFamily: 'Roboto',
@@ -84,11 +79,14 @@ const styles = theme => ({
     marginLeft: 12,
     marginRight: 36,
   },
+  grow: {
+    flexGrow: 1,
+  },
   hide: {
     display: 'none',
   },
   drawerPaper: {
-    backgroundColor: '#ffff',
+    backgroundColor: '#3D3D3D',
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
@@ -124,9 +122,10 @@ const styles = theme => ({
 
 class MiniDrawer extends React.Component {
   state = {
-    open: true,
+    open: false,
     auth: true,
    anchorEl: null,
+   selectedIndex: 0,
   };
 
   handleDrawerOpen = () => {
@@ -147,6 +146,9 @@ class MiniDrawer extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+  handleListItemClick = (event, index) => {
+    this.setState({ selectedIndex: index });
+  };
 
   render() {
     const { classes, theme } = this.props;
@@ -160,45 +162,41 @@ class MiniDrawer extends React.Component {
           className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
         >
           <Toolbar disableGutters={!this.state.open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, this.state.open && classes.hide)}
-            >
+            <IconButton className={classes.menuButton} onClick={this.handleDrawerOpen} color="inherit" aria-label="Menu">
               <MenuIcon />
             </IconButton>
-            <Typography variant="h4" color="inherit" noWrap>
+            <Typography variant="h4" color="inherit" className={classes.grow}>
                 PDF2CA$H
             </Typography>
             {auth && (
-           <div>
-               <IconButton
-                 aria-owns={open ? 'menu-appbar' : null}
-                 aria-haspopup="true"
-                 onClick={this.handleMenu}
-                 color="inherit"
-               >
-                 <AccountCircle />
-               </IconButton>
-               <Menu
-                 id="menu-appbar"
-                 anchorEl={anchorEl}
-                 anchorOrigin={{
-                   vertical: 'top',
-                   horizontal: 'right',
-                 }}
-                 transformOrigin={{
-                   vertical: 'top',
-                   horizontal: 'right',
-                 }}
-                 open={open}
-                 onClose={this.handleClose}
-               >
-                 <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                 <MenuItem onClick={this.handleClose}>My account</MenuItem>
-               </Menu>
-             </div>
+              <div>
+                   <IconButton
+                     aria-owns={open ? 'menu-appbar' : null}
+                     position="absolute"
+                     aria-haspopup="true"
+                     onClick={this.handleMenu}
+                     color="inherit"
+                   >
+                     <AccountCircle />
+                   </IconButton>
+                   <Menu
+                     id="menu-appbar"
+                     anchorEl={anchorEl}
+                     anchorOrigin={{
+                       vertical: 'top',
+                       horizontal: 'right',
+                     }}
+                     transformOrigin={{
+                       vertical: 'top',
+                       horizontal: 'right',
+                     }}
+                     open={open}
+                     onClose={this.handleClose}
+                   >
+                     <MenuItem onClick={this.handleClose}>Minha conta</MenuItem>
+                     <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                   </Menu>
+                 </div>
            )}
           </Toolbar>
         </AppBar>
@@ -210,58 +208,80 @@ class MiniDrawer extends React.Component {
           open={this.state.open}
         >
           <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
+            <IconButton style={style} onClick={this.handleDrawerClose}>
               {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
             </IconButton>
           </div>
           <List><div>
           <MenuList>
-            <MenuItem button component="a" href="/worker" className={classes.menuItem}>
+            <MenuItem button component="a"
+            href="/worker"
+            className={classes.menuItem}
+            selected={this.state.selectedIndex === 1}
+            onClick={event => this.handleListItemClick(event, 1)}
+            >
               <ListItemIcon className={classes.icon}>
-                <GroupIcon />
+                <GroupIcon style={style}/>
               </ListItemIcon>
-              <ListItemText classes={{ primary: classes.primary }} inset primary="Listar Funcionarios" />
+              <ListItemText style={style} disableTypography inset primary="Listar Funcionarios" />
             </MenuItem>
-            <MenuItem button component="a" href="/invoice" className={classes.menuItem}>
+            <MenuItem button component="a"
+            href="/invoice"
+            className={classes.menuItem}
+            selected={this.state.selectedIndex === 2}
+            onClick={event => this.handleListItemClick(event, 2)}
+            >
               <ListItemIcon className={classes.icon}>
-                <DescriptionIcon />
+                <DescriptionIcon style={style}/>
               </ListItemIcon>
-              <ListItemText classes={{ primary: classes.primary }} inset primary="Listar Notas Fiscais" />
+              <ListItemText style={style} disableTypography inset primary="Listar Notas Fiscais" />
             </MenuItem>
-            <MenuItem button component="a" href="/invoice/create" className={classes.menuItem}>
+            <MenuItem button component="a"
+            href="/invoice/create"
+             className={classes.menuItem}
+             selected={this.state.selectedIndex === 3}
+             onClick={event => this.handleListItemClick(event, 3)}
+             >
               <ListItemIcon className={classes.icon}>
-                <SendIcon />
+                <SendIcon style={style}/>
               </ListItemIcon>
-              <ListItemText classes={{ primary: classes.primary }} inset primary="Criar Nota Fiscal" />
+              <ListItemText style={style} disableTypography inset primary="Criar Nota Fiscal" />
             </MenuItem>
-            <MenuItem button component="a" href="/" className={classes.menuItem}>
+            <MenuItem button component="a"
+            href="/"
+            className={classes.menuItem}
+            selected={this.state.selectedIndex === 4}
+            onClick={event => this.handleListItemClick(event, 4)}
+            >
               <ListItemIcon className={classes.icon}>
-                <CreateIcon />
+                <CreateIcon style={style}/>
               </ListItemIcon>
-              <ListItemText classes={{ primary: classes.primary }} inset primary="Criar Funcionarios" />
+              <ListItemText style={style} disableTypography inset primary="Criar Funcionarios" />
             </MenuItem>
           </MenuList>
           </div></List>
-          <Divider />
+          <Divider/>
           <List><div>
     <MenuList>
       <MenuItem button component="a" href="/" className={classes.menuItem}>
         <ListItemIcon className={classes.icon}>
-          <TimelineIcon />
+          <TimelineIcon style={style}/>
         </ListItemIcon>
-        <ListItemText classes={{ primary: classes.primary }} inset primary="Visualizar Analises" />
+        <ListItemText style={style} disableTypography inset primary="Visualizar Analise" />
       </MenuItem>
       <MenuItem className={classes.menuItem}>
         <ListItemIcon className={classes.icon}>
-          <DeleteIcon />
+          <DeleteIcon style={style} />
         </ListItemIcon>
-        <ListItemText classes={{ primary: classes.primary }} inset primary="Lixo" />
+        <ListItemText style={style} disableTypography inset primary="Lixo" />
       </MenuItem>
-      <MenuItem className={classes.menuItem}>
+      <MenuItem className={classes.menuItem}
+      selected={this.state.selectedIndex === 5}
+      onClick={event => this.handleListItemClick(event, 5)}>
         <ListItemIcon className={classes.icon}>
-          <ReportIcon />
+          <ReportIcon style={style}/>
         </ListItemIcon>
-        <ListItemText classes={{ primary: classes.primary }} inset primary="Spam" />
+        <ListItemText style={style} disableTypography inset primary="Spam" />
       </MenuItem>
     </MenuList>
           </div></List>
