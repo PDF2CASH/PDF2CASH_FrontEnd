@@ -5,39 +5,76 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Modal from '@material-ui/core/Modal';
 
 const styles = theme => ({
   cell: {
-    textAlign: 'center' 
+    textAlign: 'center'
   },
   warning: {
     textAlign: 'center',
     marginTop: 100
-  }
+  },
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+  },
 });
-  
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
 class InvoiceIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
       invoices: [],
       sellers: [],
-      join: []
+      join: [],
+      open: false,
     };
-    
+
     this.joinInvoiceSeller = this.joinInvoiceSeller.bind(this);
     this.dateFormatter = this.dateFormatter.bind(this);
     this.delete = this.delete.bind(this);
     this.getInvoices = this.getInvoices.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
 
+  }
+
+  async handleOpenModal(){
+    this.setState ({
+      open: true
+    });
+  }
+
+  async closeModal(){
+    this.setState({
+     open: false
+    });
   }
 
   async componentDidMount() {
     const url_invoice = 'http://localhost:8000/api/invoice/invoice/';
     const res_invoice = await fetch(url_invoice);
     const data_invoice = await res_invoice.json();
-    this.setState({ invoices: data_invoice });
-  
+    this.setState({
+      invoices: data_invoice,
+      open: false,
+    });
+
     const url_seller = 'http://localhost:8000/api/invoice/seller/';
     const res_seller = await fetch(url_seller);
     const data_seller = await res_seller.json();
@@ -51,7 +88,7 @@ class InvoiceIndex extends Component {
     const res_invoice = await fetch(url_invoice);
     const data_invoice = await res_invoice.json();
     this.setState({ invoices: data_invoice });
-  
+
     const url_seller = 'http://localhost:8000/api/invoice/seller/';
     const res_seller = await fetch(url_seller);
     const data_seller = await res_seller.json();
@@ -90,21 +127,20 @@ class InvoiceIndex extends Component {
       }
     }
 
-    this.setState({ join: join }); 
+    this.setState({ join: join });
   }
 
   render() {
     const { classes } = this.props;
     const { join } = this.state;
-    console.log(this.state.invoices);
-    
+
     return (
       <Grid>
         <Typography variant="display2">
           Listar Notas Fiscais
         </Typography>
-        
-        { 
+
+        {
           this.state.invoices.length ? (
             <CustomatizedTable>
               {
@@ -141,16 +177,17 @@ class InvoiceIndex extends Component {
                       </Button>
                     </TableCell>
                     <TableCell className={classes.cell}>
-                    <Button onClick={() => this.delete(invoice.id)}>
+                    <Button onClick={this.handleOpenModal}>
                         <DeleteIcon />
                       </Button>
                     </TableCell>
+                    
                   </TableRow>
                 ))
               }
-            </CustomatizedTable>          
+            </CustomatizedTable>
           ) : (
-          <Grid className = {classes.warning}>  
+          <Grid className = {classes.warning}>
             <Typography variant="display1">
               Não há notas fiscais registradas!
             </Typography>
