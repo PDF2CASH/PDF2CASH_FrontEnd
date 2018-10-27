@@ -7,30 +7,43 @@ import CreateIcon from '@material-ui/icons/Create'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
+import Modal from '@material-ui/core/Modal';
 
 
 const styles = theme => ({
   cell: {
     textAlign: 'center'
-  }
+  },
+
+  warning: {
+    textAlign: 'center',
+    marginTop: 100
+  },
 });
+
+
 
 class WorkerIndex extends Component{
 
   constructor(props) {
     super(props);
     this.state = {
-      workers: []
+      workers: [],
+
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
+
   }
 
   async componentDidMount() {
     const url = 'http://localhost:8000/api/worker/worker/';
     const res = await fetch(url);
     const data_workers = await res.json();
-    this.setState({ workers: data_workers });
+    this.setState({
+      workers: data_workers,
+
+    });
   }
 
   async getWorkers() {
@@ -43,17 +56,21 @@ class WorkerIndex extends Component{
   async delete(id){
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
+
     this.getWorkers();
   }
+
+
+
     render() {
       const { classes } = this.props;
-      console.log(this.state.workers);
-
       return (
         <Grid>
           <Typography variant="display2">
             Listar Funcionarios
           </Typography>
+          {
+            this.state.workers.length ? (
           <CustomatizedTable>
             {
               this.state.workers.map(worker => (
@@ -83,16 +100,49 @@ class WorkerIndex extends Component{
                     </Link>
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    <Button onClick={() => this.delete(worker.id)}>
+                    <Button onClick={this.handleOpenModal}>
                       <DeleteIcon />
                     </Button>
                   </TableCell>
+                  <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.open}
+                    onClose={this.closeModal}
+                  >
+                    <div style={getModalStyle()} className={classes.paper}>
+                      <Typography className={classes.cell} >
+                      <h3>
+                        DESEJA REALMENTE DELETAR ESSE FUNCIONÁRIO ?
+                      </h3>
+                        <Button color='primary'>
+                          <h3>
+                          SIM
+                          </h3>
+                        </Button>
+                        <Button color='secondary'>
+                        <h3>
+                          NÃO
+                        </h3>
+                        </Button>
+                      </Typography>
+                    </div>
+                  </Modal>
                 </TableRow>
               ))
             }
           </CustomatizedTable>
+        ) : (
+        <Grid className = {classes.warning}>
+          <Typography variant="display1">
+            Não há funcionários cadastrados!
+          </Typography>
         </Grid>
-      );
+        )
+      }
+        </Grid>
+
+      )
     }
 }
 
