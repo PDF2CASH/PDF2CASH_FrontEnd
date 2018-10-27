@@ -49,7 +49,7 @@ class WorkerIndex extends Component{
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
-  
+    this.closeModal = this.closeModal.bind(this);
   }
 
   async componentDidMount() {
@@ -82,6 +82,11 @@ class WorkerIndex extends Component{
    });
  }
 
+async closeModal(){
+   this.setState({
+     open: false
+   });
+ }
 
     render() {
       const { classes } = this.props;
@@ -129,7 +134,7 @@ class WorkerIndex extends Component{
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     open={this.state.open}
-
+                    onClose={this.closeModal}
                   >
                     <div style={getModalStyle()} className={classes.paper}>
                       <Typography className={classes.cell} >
@@ -141,7 +146,7 @@ class WorkerIndex extends Component{
                           SIM
                           </h3>
                         </Button>
-                        <Button color='secondary'>
+                        <Button color='secondary' onClick={this.closeModal}>
                         <h3>
                           NÃO
                         </h3>
