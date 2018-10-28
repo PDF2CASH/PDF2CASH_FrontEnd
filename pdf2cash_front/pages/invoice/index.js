@@ -21,6 +21,10 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
+    textAlign: 'center'
+  },
+  buttom: {
+    marginTop: 30,
   },
 });
 
@@ -43,20 +47,22 @@ class InvoiceIndex extends Component {
       sellers: [],
       join: [],
       open: false,
+      id: 0,
     };
 
     this.joinInvoiceSeller = this.joinInvoiceSeller.bind(this);
     this.dateFormatter = this.dateFormatter.bind(this);
     this.delete = this.delete.bind(this);
     this.getInvoices = this.getInvoices.bind(this);
-    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
 
   }
 
-  async handleOpenModal(){
+  openModal(id){
     this.setState ({
-      open: true
+      open: true,
+      id: id,
     });
   }
 
@@ -97,9 +103,11 @@ class InvoiceIndex extends Component {
     this.joinInvoiceSeller();
   }
 
-  async delete(id){
+  async delete(){
+    const id = await this.state.id;
     const url = 'http://localhost:8000/api/invoice/invoice/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
+    this.closeModal();
     this.getInvoices();
   }
 
@@ -139,7 +147,32 @@ class InvoiceIndex extends Component {
         <Typography variant="display2">
           Listar Notas Fiscais
         </Typography>
-
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={this.state.open}
+        onClose={this.closeModal}
+      >
+        <Grid style={getModalStyle()} className={classes.paper}>
+          <Typography variant='h6' className={classes.cell} >
+            Deseja realmete deletar essa nota fiscal ?
+          </Typography>
+          <Button
+            className={classes.buttom}
+            color='primary'
+            onClick={() => this.delete(this.state.id)}
+          >
+            SIM
+          </Button>
+          <Button
+            className={classes.buttom}
+            color='secondary'
+            onClick={this.closeModal}
+          >
+            NÃO
+          </Button>
+        </Grid>
+      </Modal>
         {
           this.state.invoices.length ? (
             <CustomatizedTable>
@@ -177,34 +210,10 @@ class InvoiceIndex extends Component {
                       </Button>
                     </TableCell>
                     <TableCell className={classes.cell}>
-                    <Button onClick={this.handleOpenModal}>
+                    <Button onClick={() => this.openModal(invoice.id)}>
                         <DeleteIcon />
                       </Button>
                     </TableCell>
-                    <Modal
-                      aria-labelledby="simple-modal-title"
-                      aria-describedby="simple-modal-description"
-                      open={this.state.open}
-                      onClose={this.closeModal}
-                    >
-                      <div style={getModalStyle()} className={classes.paper}>
-                        <Typography className={classes.cell} >
-                        <h3>
-                          DESEJA REALMENTE DELETAR ESSA NOTA FISCAL ?
-                        </h3>
-                          <Button color='primary' onClick={() => this.delete(invoice.id)}>
-                            <h3>
-                            SIM
-                            </h3>
-                          </Button>
-                          <Button color='secondary' onClick={this.closeModal}>
-                          <h3>
-                            NÃO
-                          </h3>
-                          </Button>
-                        </Typography>
-                      </div>
-                    </Modal>
                   </TableRow>
                 ))
               }

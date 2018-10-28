@@ -97,13 +97,11 @@ class WorkerIndex extends Component{
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.id);
     return (
       <Grid>
         <Typography variant="display2">
           Listar Funcionarios
         </Typography>
-
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
@@ -130,7 +128,6 @@ class WorkerIndex extends Component{
             </Button>
           </Grid>
         </Modal>
-
         {
           this.state.workers.length ? (
         <CustomatizedTable>
@@ -140,8 +137,6 @@ class WorkerIndex extends Component{
                 <TableCell className={classes.cell}>
                   <Typography>
                     {worker.name}
-                    <br />
-                    {worker.id}
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.cell}>
@@ -172,7 +167,6 @@ class WorkerIndex extends Component{
             ))
           }
         </CustomatizedTable>
-
       ) : (
       <Grid className = {classes.warning}>
         <Typography variant="display1">
@@ -182,7 +176,6 @@ class WorkerIndex extends Component{
       )
     }
       </Grid>
-
     )
   }
 }
