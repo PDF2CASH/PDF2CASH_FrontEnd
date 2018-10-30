@@ -8,6 +8,7 @@
     "express": "^4.16.3",
     "isomorphic-unfetch": "^3.0.0",
     "jss": "latest",
+    "materialui-pagination": "0.0.6",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",

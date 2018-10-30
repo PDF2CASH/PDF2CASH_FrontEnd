@@ -7,30 +7,55 @@ import CreateIcon from '@material-ui/icons/Create'
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
+import Modal from '@material-ui/core/Modal';
 
 
 const styles = theme => ({
   cell: {
     textAlign: 'center'
-  }
+  },
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+  },
 });
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 class WorkerIndex extends Component{
 
   constructor(props) {
     super(props);
     this.state = {
-      workers: []
+      workers: [],
+      open: false,
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   async componentDidMount() {
     const url = 'http://localhost:8000/api/worker/worker/';
     const res = await fetch(url);
     const data_workers = await res.json();
-    this.setState({ workers: data_workers });
+    this.setState({
+      workers: data_workers,
+      open: false,
+    });
   }
 
   async getWorkers() {
@@ -43,12 +68,24 @@ class WorkerIndex extends Component{
   async delete(id){
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
+    this.closeModal();
     this.getWorkers();
   }
+
+  async handleOpenModal(){
+   this.setState ({
+     open: true
+   });
+ }
+
+async closeModal(){
+   this.setState({
+     open: false
+   });
+ }
+
     render() {
       const { classes } = this.props;
-      console.log(this.state.workers);
-
       return (
         <Grid>
           <Typography variant="display2">
@@ -83,17 +120,44 @@ class WorkerIndex extends Component{
                     </Link>
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    <Button onClick={() => this.delete(worker.id)}>
+                    <Button onClick={this.handleOpenModal}>
                       <DeleteIcon />
                     </Button>
                   </TableCell>
+                  <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.state.open}
+                    onClose={this.closeModal}
+                  >
+                    <div style={getModalStyle()} className={classes.paper}>
+                      <Typography className={classes.cell} >
+                      <h3>
+                        DESEJA REALMENTE DELETAR ESSE FUNCIONÁRIO ?
+                      </h3>
+                        <Button color='primary' onClick={() => this.delete(worker.id)}>
+                          <h3>
+                          SIM
+                          </h3>
+                        </Button>
+                        <Button color='secondary' onClick={this.closeModal}>
+                        <h3>
+                          NÃO
+                        </h3>
+                        </Button>
+                      </Typography>
+                    </div>
+                  </Modal>
                 </TableRow>
               ))
             }
           </CustomatizedTable>
         </Grid>
+
       );
     }
 }
 
 export default withStyles(styles)(WorkerIndex);
+
+//onClick={() => this.delete(worker.id)}
