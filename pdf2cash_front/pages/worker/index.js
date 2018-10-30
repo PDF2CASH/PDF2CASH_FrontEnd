@@ -20,6 +20,14 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
+    textAlign: 'center',
+  },
+  warning: {
+    textAlign: 'center',
+    marginTop: 100,
+  },
+  buttom: {
+    marginTop: 30,
   },
 });
 
@@ -41,10 +49,11 @@ class WorkerIndex extends Component{
     this.state = {
       workers: [],
       open: false,
+      id: 0,
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
-    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -65,99 +74,110 @@ class WorkerIndex extends Component{
     this.setState({ workers: data_workers });
   }
 
-  async delete(id){
+  async delete(){
+    const id = await this.state.id;
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
     this.closeModal();
     this.getWorkers();
   }
 
-  async handleOpenModal(){
-   this.setState ({
-     open: true
-   });
- }
+  openModal(id){
+    this.setState ({
+      open: true,
+      id: id,
+    });
+  }
 
-async closeModal(){
-   this.setState({
-     open: false
-   });
- }
+  closeModal(){
+    this.setState({
+      open: false
+    });
+  }
 
-    render() {
-      const { classes } = this.props;
-      return (
-        <Grid>
-          <Typography variant="display2">
-            Listar Funcionarios
-          </Typography>
-          <CustomatizedTable>
-            {
-              this.state.workers.map(worker => (
-                <TableRow key={worker.id}>
-                  <TableCell className={classes.cell}>
-                    <Typography>
-                      {worker.name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell className={classes.cell}>
-                    <Typography>
-                      {worker.cpf}
-                    </Typography>
-                  </TableCell>
-                  <TableCell className={classes.cell}>
-                    <Link href={{ pathname: '/worker/show', query: { id: worker.id } }}>
-                      <Button>
-                        <VisibilityIcon />
-                      </Button>
-                    </Link>
-                  </TableCell>
-                  <TableCell className={classes.cell}>
-                    <Link href={{ pathname: '/worker/edit', query: { id: worker.id } }}>
-                      <Button>
-                        <CreateIcon />
-                      </Button>
-                    </Link>
-                  </TableCell>
-                  <TableCell className={classes.cell}>
-                    <Button onClick={this.handleOpenModal}>
-                      <DeleteIcon />
+  render() {
+    const { classes } = this.props;
+    return (
+      <Grid>
+        <Typography variant="display2">
+          Listar Funcionarios
+        </Typography>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.closeModal}
+        >
+          <Grid style={getModalStyle()} className={classes.paper}>
+            <Typography variant='h6' className={classes.cell} >
+              Deseja realmete deletar esse funcionário ?
+            </Typography>
+            <Button
+              className={classes.buttom}
+              color='primary'
+              onClick={() => this.delete(this.state.id)}
+            >
+              SIM
+            </Button>
+            <Button
+              className={classes.buttom}
+              color='secondary'
+              onClick={this.closeModal}
+            >
+              NÃO
+            </Button>
+          </Grid>
+        </Modal>
+        {
+          this.state.workers.length ? (
+        <CustomatizedTable>
+          {
+            this.state.workers.map(worker => (
+              <TableRow key={worker.id}>
+                <TableCell className={classes.cell}>
+                  <Typography>
+                    {worker.name}
+                  </Typography>
+                </TableCell>
+                <TableCell className={classes.cell}>
+                  <Typography>
+                    {worker.cpf}
+                  </Typography>
+                </TableCell>
+                <TableCell className={classes.cell}>
+                  <Link href={{ pathname: '/worker/show', query: { id: worker.id } }}>
+                    <Button>
+                      <VisibilityIcon />
                     </Button>
-                  </TableCell>
-                  <Modal
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    open={this.state.open}
-                    onClose={this.closeModal}
-                  >
-                    <div style={getModalStyle()} className={classes.paper}>
-                      <Typography className={classes.cell} >
-                      <h3>
-                        DESEJA REALMENTE DELETAR ESSE FUNCIONÁRIO ?
-                      </h3>
-                        <Button color='primary' onClick={() => this.delete(worker.id)}>
-                          <h3>
-                          SIM
-                          </h3>
-                        </Button>
-                        <Button color='secondary' onClick={this.closeModal}>
-                        <h3>
-                          NÃO
-                        </h3>
-                        </Button>
-                      </Typography>
-                    </div>
-                  </Modal>
-                </TableRow>
-              ))
-            }
-          </CustomatizedTable>
-        </Grid>
-
-      );
+                  </Link>
+                </TableCell>
+                <TableCell className={classes.cell}>
+                  <Link href={{ pathname: '/worker/edit', query: { id: worker.id } }}>
+                    <Button>
+                      <CreateIcon />
+                    </Button>
+                  </Link>
+                </TableCell>
+                <TableCell className={classes.cell}>
+                  <Button onClick={() => this.openModal(worker.id)}>
+                    <DeleteIcon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          }
+        </CustomatizedTable>
+      ) : (
+      <Grid className = {classes.warning}>
+        <Typography variant="display1">
+          Não há funcionários cadastrados!
+        </Typography>
+      </Grid>
+      )
     }
+      </Grid>
+    )
+  }
 }
 
 export default withStyles(styles)(WorkerIndex);
-
-//onClick={() => this.delete(worker.id)}
