@@ -58,7 +58,7 @@ class WorkerIndex extends Component{
   }
 
   async componentDidMount() {
-    const url = 'http://localhost:8000/api/worker/worker/';
+    const url = 'http://localhost:8008/api/worker/worker/';
     const res = await fetch(url);
     const data_workers = await res.json();
     this.setState({
@@ -68,7 +68,7 @@ class WorkerIndex extends Component{
   }
 
   async getWorkers() {
-    const url = 'http://localhost:8000/api/worker/worker/';
+    const url = 'http://localhost:8008/api/worker/worker/';
     const res = await fetch(url);
     const data_workers = await res.json();
     this.setState({ workers: data_workers });
@@ -76,7 +76,7 @@ class WorkerIndex extends Component{
 
   async delete(){
     const id = await this.state.id;
-    const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
+    const url = 'http://localhost:8008/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
     this.closeModal();
     this.getWorkers();
