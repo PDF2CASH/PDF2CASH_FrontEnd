@@ -75,7 +75,8 @@ class WorkerCreate extends Component {
                 name: this.state.name,
                 cpf: this.state.cpf,
                 email: this.state.email,
-                password: this.state.password
+                password: this.state.password,
+                permission: '2',
             })
         })
             .then((response) => {
