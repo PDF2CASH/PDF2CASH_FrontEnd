@@ -248,7 +248,7 @@ class MiniDrawer extends React.Component {
               <ListItemText style={style} disableTypography inset primary="Criar Nota Fiscal" />
             </MenuItem>
             <MenuItem button component="a"
-            href="/"
+            href="/worker/create"
             className={classes.menuItem}
             selected={this.state.selectedIndex === 4}
             onClick={event => this.handleListItemClick(event, 4)}
