@@ -14,8 +14,8 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
     textAlign: 'center',
-    maxWidth: '30%',
-    maxWeight: '100%',
+    'max-width': '30%',
+    'max-weight': '100%',
     marginLeft: '32%',
     marginTop: '10%',
   },
@@ -110,6 +110,13 @@ class AdminCreate extends Component {
               password: this.state.password,
               permission:  '2',
           })
+      })
+      .then((response) => {
+          if (response.ok) {
+              window.location.href = "http://localhost:3000/worker";
+          }
+          else
+              return response.json()
       })
     }
 
