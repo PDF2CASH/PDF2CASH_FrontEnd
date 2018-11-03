@@ -14,7 +14,7 @@ const styles = theme => ({
 });
 
 class WorkerShow extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -29,7 +29,7 @@ class WorkerShow extends React.Component {
         const url = 'http://localhost:8008/api/worker/worker/' + id + '/';
         const res = await fetch(url);
         const worker = await res.json();
-        this.setState({ 
+        this.setState({
             worker: worker,
             data_has_loaded: true
         });
@@ -46,15 +46,15 @@ class WorkerShow extends React.Component {
         let content;
 
         if(!data_has_loaded) {
-            content = <CircularProgress className={classes.waiter} /> 
+            content = <CircularProgress className={classes.waiter} />
         } else {
-            content = 
+            content =
             <>
             <Typography variant="display2">
                     Visualizar Funcionario
             </Typography>
 
-            <Grid 
+            <Grid
                 container
                 direction="column"
                 justify="center"
@@ -81,7 +81,7 @@ class WorkerShow extends React.Component {
                      InputProps={{
                          readOnly: true,
                      }}
-                />     
+                />
 
                 <TextField
                      id="standard-read-only-input"
@@ -94,23 +94,23 @@ class WorkerShow extends React.Component {
                      }}
                 />
 
-                <Button 
-                    type="back" 
-                    variant="contained" 
-                    color="primary"  
+                <Button
+                    type="back"
+                    variant="contained"
+                    color="primary"
                     component = "a"
                     href = "http://localhost:3000/worker"
                 >
                      VOLTAR
                 </Button>
-              
+
             </Grid>
             </>
         }
 
         return (
             <Grid container spacing={16} className={classes.root} >
-                {content} 
+                {content}
             </Grid>
         );
     }
