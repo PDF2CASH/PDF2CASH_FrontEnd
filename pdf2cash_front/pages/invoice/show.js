@@ -16,6 +16,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = (theme) => ({
 
@@ -34,6 +36,12 @@ const styles = (theme) => ({
         width: '50px',
         margin: 'auto',
         top: '200px',
+    },
+    button: {
+    margin: theme.spacing.unit,
+    },
+  extendedIcon: {
+    marginRight: theme.spacing.unit,
     }
 });
 
@@ -251,6 +259,7 @@ class Show extends React.Component {
         const seller = this.state.seller;
 
         return (
+          <div>
             <Table>
                 <TableBody>
                     <TableRow>
@@ -285,6 +294,7 @@ class Show extends React.Component {
                     </TableRow>
                 </TableBody>
             </Table>
+          </div>
         );
     }
 
@@ -292,7 +302,7 @@ class Show extends React.Component {
     async componentDidMount() {
 
         const invoice_id = this.props.router.query.id;
-        const invoice_url = 'http://localhost:8000/api/invoice/invoice/'+invoice_id; 
+        const invoice_url = 'http://localhost:8000/api/invoice/invoice/'+invoice_id;
         const invoice_res = await fetch(invoice_url);
         const invoice = await invoice_res.json();
 
@@ -307,7 +317,7 @@ class Show extends React.Component {
         const seller = await seller_res.json();
 
 
-        this.setState({ 
+        this.setState({
             invoice: invoice,
             receiver: receiver,
             seller: seller,
@@ -323,16 +333,16 @@ class Show extends React.Component {
 
 
     render() {
-        const { classes } = this.props; 
+        const { classes } = this.props;
         const { value } = this.state;
         const { data_has_loaded } = this.state;
 
         let content;
 
         if(!data_has_loaded) {
-            content = <CircularProgress className={classes.waiter} /> 
-        } else 
-            content = 
+            content = <CircularProgress className={classes.waiter} />
+        } else
+            content =
                 <>
                 <Grid item xs={12}>
                     <AppBar position="static">
@@ -346,8 +356,8 @@ class Show extends React.Component {
                 </Grid>
                 <Grid item xs={12} className={classes.show} >
                     { value == 0 && this.renderNFData() }
-                    { value == 1 && this.renderTaxData() } 
-                    { value == 2 && this.renderSellerData() } 
+                    { value == 1 && this.renderTaxData() }
+                    { value == 2 && this.renderSellerData() }
                     { value == 3 && this.renderReceiverData() }
                 </Grid>
                 <Grid item xs={12}>
@@ -361,10 +371,14 @@ class Show extends React.Component {
                 </Grid>
                 </>
         return (
-            
+
             <Grid container spacing={16} className={classes.root} >
-                {content} 
+                {content}
             </Grid>
+            <br /><br />
+            <Button variant="fab" color="primary" aria-label="Add" className={classes.button}>
+              <AddIcon />
+            </Button>
         );
     }
 }
