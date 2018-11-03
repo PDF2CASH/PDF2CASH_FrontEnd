@@ -1,13 +1,40 @@
 import React, { Component } from 'react';
 import { Grid, Button, Input, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
   input: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: 400,
-  }
+    display: 'none',
+  },
+  root: {
+  ...theme.mixins.gutters(),
+  paddingTop: theme.spacing.unit * 2,
+  paddingBottom: theme.spacing.unit * 2,
+  textAlign: 'center',
+  'max-width': '30%',
+  'max-weight': '100%',
+  marginLeft: '32%',
+  marginTop: '10%',
+},
+ grid: {
+   margin: '5%',
+ },
+ button: {
+   marginTop: '10%'
+ },
+ buttonSend: {
+   marginLeft: '85%',
+   marginTop: '10%',
+ },
+ extendedIcon: {
+    marginRight: theme.spacing.unit,
+  },
 });
 
 class InvoiceCreate extends Component {
@@ -38,29 +65,33 @@ class InvoiceCreate extends Component {
     console.log(this.state.file);
 
     return (
-      <Grid>
-        <Typography variant='h2'>
+      <div>
+        <Paper className={classes.root} elevation={5}>
+        <Typography variant="h4" color="inherit" className={classes.grow}>
           Criar Nota Fiscal
         </Typography>
         <br /><br />
         <form onSubmit={this.sendForm}>
-          <Input
-            accept='image/*'
-            id='raised-button-file'
-            className={classes.input}
-            onChange={this.setFile}
-            type='file'
-          />
+        <input
+        accept=".pdf"
+        className={classes.input}
+        id="contained-button-file"
+        onChange={this.setFile}
+        multiple
+        type="file"
+      />
+      <label htmlFor="contained-button-file">
+        <Button variant="contained" component="span" color='primary' className={classes.button}>
+          Upload
+        </Button>
+      </label>
           <br /><br />
-          <Button
-            type='submit'
-            variant='contained'
-            color='secondary'
-          >
-            Criar
+          <Button variant="fab" color="secondary" aria-label="Add" className={classes.buttonSend}>
+            <AddIcon />
           </Button>
         </form>
-      </Grid>
+        </Paper>
+      </div>
     )
   }
 }
