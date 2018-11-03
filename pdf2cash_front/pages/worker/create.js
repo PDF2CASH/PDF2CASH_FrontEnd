@@ -3,12 +3,29 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+
 
 
 const styles = theme => ({
-    snackbar: {
-        margin: theme.spacing.unit,
-    }
+    root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    textAlign: 'center',
+    'max-width': '30%',
+    'max-weight': '100%',
+    marginLeft: '32%',
+    marginTop: '10%',
+  },
+   grid: {
+     margin: '5%',
+   },
+   button: {
+     marginTop: '10%'
+   }
 });
 
 class WorkerCreate extends Component {
@@ -117,12 +134,17 @@ class WorkerCreate extends Component {
         const { classes } = this.props;
 
         return (
+      <div>
+        <Paper className={classes.root} elevation={5}>
+          <Grid className={classes.grid}>
             <ValidatorForm
                 ref="form"
                 onSubmit={this.handleSubmit}
                 onError={errors => console.log(errors)}
             >
-                <h2>CADASTRAR FUNCIONÁRIO</h2>
+            <Typography variant="h4" color="inherit" className={classes.grow}>
+                Cadastrar Funcionario
+            </Typography>
                 {
                     this.state.error_show && this.state.errors.map(error => {
                         return < SnackbarContent key={error} className={classes.snackbar} message={error} />
@@ -161,13 +183,16 @@ class WorkerCreate extends Component {
                         type='password'
                         value={this.state.password}
                         validators={['required', 'minStringLength:6', 'maxStringLength:30']}
-                        errorMessages={['Este campo é obrigatório', 'Digite uma senha maior que 6 dígitos', 'Digite uma senha menor que 30 dígitos']}
+                        errorMessages={['Este campo é obrigatório', 'Minimo de 6 dígitos', 'Digite uma senha menor que 30 dígitos']}
                     /><br />
                 </div>
-                <Button type="submit" variant="contained" color="primary" >
+                <Button className={classes.button} type="submit" variant="contained" color="primary" >
                     CADASTRAR
                 </Button>
             </ValidatorForm>
+          </Grid>
+        </Paper>
+      </div>
         );
     }
 }
