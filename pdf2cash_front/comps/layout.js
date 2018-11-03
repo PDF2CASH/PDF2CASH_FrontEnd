@@ -226,6 +226,22 @@ class MiniDrawer extends React.Component {
               <ListItemText style={style} disableTypography inset primary="Listar Funcionarios" />
             </MenuItem>
             <MenuItem button component="a"
+            href="/worker/create"
+            className={classes.menuItem}
+            selected={this.state.selectedIndex === 4}
+            onClick={event => this.handleListItemClick(event, 4)}
+            >
+              <ListItemIcon className={classes.icon}>
+                <CreateIcon style={style}/>
+              </ListItemIcon>
+              <ListItemText style={style} disableTypography inset primary="Criar Funcionarios" />
+            </MenuItem>
+            </MenuList>
+            </div></List>
+            <Divider/>
+            <List><div>
+            <MenuList>
+            <MenuItem button component="a"
             href="/invoice"
             className={classes.menuItem}
             selected={this.state.selectedIndex === 2}
@@ -247,17 +263,6 @@ class MiniDrawer extends React.Component {
               </ListItemIcon>
               <ListItemText style={style} disableTypography inset primary="Criar Nota Fiscal" />
             </MenuItem>
-            <MenuItem button component="a"
-            href="/worker/create"
-            className={classes.menuItem}
-            selected={this.state.selectedIndex === 4}
-            onClick={event => this.handleListItemClick(event, 4)}
-            >
-              <ListItemIcon className={classes.icon}>
-                <CreateIcon style={style}/>
-              </ListItemIcon>
-              <ListItemText style={style} disableTypography inset primary="Criar Funcionarios" />
-            </MenuItem>
           </MenuList>
           </div></List>
           <Divider/>
@@ -268,20 +273,6 @@ class MiniDrawer extends React.Component {
           <TimelineIcon style={style}/>
         </ListItemIcon>
         <ListItemText style={style} disableTypography inset primary="Visualizar Analise" />
-      </MenuItem>
-      <MenuItem className={classes.menuItem}>
-        <ListItemIcon className={classes.icon}>
-          <DeleteIcon style={style} />
-        </ListItemIcon>
-        <ListItemText style={style} disableTypography inset primary="Lixo" />
-      </MenuItem>
-      <MenuItem className={classes.menuItem}
-      selected={this.state.selectedIndex === 5}
-      onClick={event => this.handleListItemClick(event, 5)}>
-        <ListItemIcon className={classes.icon}>
-          <ReportIcon style={style}/>
-        </ListItemIcon>
-        <ListItemText style={style} disableTypography inset primary="Spam" />
       </MenuItem>
     </MenuList>
           </div></List>
