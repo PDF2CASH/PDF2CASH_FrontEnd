@@ -5,4 +5,11 @@ export default class Authenticate {
         localStorage.setItem('token', token);
     }
 
+    static getToken(){
+        if(localStorage.getItem('token') !== null){
+          return localStorage.getItem('token');
+        }else{
+          return '';
+        }
+    }
 }
