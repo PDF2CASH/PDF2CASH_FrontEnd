@@ -21,4 +21,8 @@ export default class Authenticate {
           return true;
         }
     }
+
+    static logout(){
+        localStorage.removeItem('token');
+    }
 }
