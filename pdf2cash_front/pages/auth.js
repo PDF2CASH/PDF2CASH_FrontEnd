@@ -12,4 +12,13 @@ export default class Authenticate {
           return '';
         }
     }
+
+    static checkLogin(){
+        if (localStorage.getItem('token') === null) {
+          return false;
+        }
+        else{
+          return true;
+        }
+    }
 }
