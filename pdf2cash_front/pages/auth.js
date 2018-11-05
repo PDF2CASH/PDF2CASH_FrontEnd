@@ -25,4 +25,19 @@ export default class Authenticate {
     static logout(){
         localStorage.removeItem('token');
     }
+
+    static login_validation(){
+        if(Authenticate.checkLogin() === true){
+            var time = Date.now() - localStorage.getItem('token_initial_time');
+            if(time >= 86400000){
+                Authenticate.logout();
+            }else{
+                Authenticate.refresh();
+            }
+            return Authenticate.checkLogin();
+        }else{
+            return false;
+        }
+    }
+    
 }
