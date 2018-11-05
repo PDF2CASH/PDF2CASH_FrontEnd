@@ -155,7 +155,7 @@ class InvoiceIndex extends Component {
       >
         <Grid style={getModalStyle()} className={classes.paper}>
           <Typography variant='h6' className={classes.cell} >
-            Deseja realmete deletar essa nota fiscal ?
+            Deseja realmente deletar essa nota fiscal ?
           </Typography>
           <Button
             className={classes.buttom}
