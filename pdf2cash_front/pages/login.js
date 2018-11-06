@@ -22,6 +22,10 @@ const styles = theme => ({
         align: 'center',
         marginTop: '10%'
     },
+    margin: {
+        padding: theme.spacing.unit / 2,
+        backgroundColor: theme.palette.error.dark,
+    }
 });
 
 class Login extends Component { 
@@ -47,6 +51,10 @@ class Login extends Component {
     }
 
     validateLogin(event){
+        console.log(JSON.stringify({
+            username:this.state.username,
+            password:this.state.password
+        }))
         event.preventDefault();
         const url_worker = 'http://localhost:8000/api/authenticate/';
         fetch(url_worker, {
@@ -60,22 +68,22 @@ class Login extends Component {
             },
             credentials: 'omit'
         })
-        .then(function(response){
-            if(response.ok){
-                return response.json()
-            }else{
-                throw new Error('Não foi possivel fazer o login!')
-            }
-        })
+            .then(function(response){
+                if(response.ok){
+                    return response.json()
+                }else{
+                    throw new Error('Não foi possivel fazer o login!')
+                }
+            })
 
-        .then(function(data){
-            Authenticate.makeLogin(data.token);
-            window.location.href = "http://localhost:3000/index";
-        }.bind(this))
+            .then(function(data){
+                Authenticate.makeLogin(data.token);
+                window.location.href = "http://localhost:3000/index";
+            }.bind(this))
 
-        .catch(error =>{
-            this.setState({msg:error.message})
-        });
+            .catch(error =>{
+                this.setState({msg:error.message})
+            });
     }
 
     handleChangeUsername(event) {
@@ -103,6 +111,18 @@ class Login extends Component {
                     <Typography variant='h5' component='h3'>
                         Login
                     </Typography>
+
+            {
+                this.state.msg ? (
+                    <Snackbar 
+                        variant='error' 
+                        message={this.state.msg}
+                        className={classes.margin}
+                    />
+                ) : (
+                    <div/>
+                )
+            }
 
                     <form onSubmit={this.validateLogin} method='post'>
                         <TextField
