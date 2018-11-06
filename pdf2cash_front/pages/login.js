@@ -54,6 +54,22 @@ class Login extends Component {
             },
             credentials: 'omit'
         })
+        .then(function(response){
+            if(response.ok){
+                return response.json()
+            }else{
+                throw new Error('Não foi possivel fazer o login!')
+            }
+        })
+
+        .then(function(data){
+            Authenticate.makeLogin(data.token);
+            window.location.href = "http://localhost:3000/index";
+        }.bind(this))
+
+        .catch(error =>{
+            this.setState({msg:error.message})
+        });
     }
 
     handleChangeUsername(event) {
