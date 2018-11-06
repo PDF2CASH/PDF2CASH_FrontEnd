@@ -7,18 +7,18 @@ export default class Authenticate {
 
     static getToken(){
         if(localStorage.getItem('token') !== null){
-          return localStorage.getItem('token');
+            return localStorage.getItem('token');
         }else{
-          return '';
+            return '';
         }
     }
 
     static checkLogin(){
         if (localStorage.getItem('token') === null) {
-          return false;
+            return false;
         }
         else{
-          return true;
+            return true;
         }
     }
 
@@ -29,15 +29,34 @@ export default class Authenticate {
     static login_validation(){
         if(Authenticate.checkLogin() === true){
             var time = Date.now() - localStorage.getItem('token_initial_time');
-            if(time >= 86400000){
-                Authenticate.logout();
-            }else{
-                Authenticate.refresh();
-            }
-            return Authenticate.checkLogin();
+        if(time >= 86400000){
+            Authenticate.logout();
+        }else{
+            Authenticate.refresh();
+        }
+        return Authenticate.checkLogin();
         }else{
             return false;
         }
     }
-    
+
+    static authValidation(){
+        const urlVerify = 'http://localhost:8000/api/worker/api-token-verify/';
+        fetch(urlVerify,{
+            method: 'POST',
+            body: JSON.stringify({token:Authenticate.getToken()}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: 'omit'
+        })
+
+        .then(function(response){
+            if(!response.ok){
+                this.props.history.push("/");
+            }
+        }.bind(this))
+    }
+
 }
+
