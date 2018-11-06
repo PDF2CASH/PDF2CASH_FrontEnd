@@ -58,5 +58,26 @@ export default class Authenticate {
         }.bind(this))
     }
 
+    static refresh(){
+        const urlRefresh = 'http://localhost:8000/api/worker/refresh/';
+        fetch(urlRefresh,{
+            method: 'POST',
+            body: JSON.stringify({token:Authenticate.getToken()}),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: 'omit'
+        })
+        
+        .then(function(response){
+            if(response.ok){
+                return response.json();
+            }
+        })
+            
+        .then(function(token){
+            this.makeLogin(token.token);
+        }.bind(this));
+    }
 }
 
