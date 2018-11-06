@@ -40,6 +40,12 @@ class Login extends Component {
         this.handleClose = this.handleClose.bind(this);
     } 
 
+    componentDidMount(){
+        if(Authenticate.checkLogin()){
+            window.location.href = "http://localhost:3000/index";
+        }
+    }
+
     validateLogin(event){
         event.preventDefault();
         const url_worker = 'http://localhost:8000/api/authenticate/';
