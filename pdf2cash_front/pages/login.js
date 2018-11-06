@@ -41,7 +41,19 @@ class Login extends Component {
     } 
 
     validateLogin(event){
-        
+        event.preventDefault();
+        const url_worker = 'http://localhost:8000/api/authenticate/';
+        fetch(url_worker, {
+            method: 'POST',
+            body: JSON.stringify({
+                username:this.state.username,
+                password:this.state.password
+            }),
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+            credentials: 'omit'
+        })
     }
 
     handleChangeUsername(event) {
