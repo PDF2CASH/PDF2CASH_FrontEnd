@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const styles = theme => ({
+const styles = ({
   cell: {
     textAlign: 'center',
   },
@@ -18,100 +18,96 @@ class WorkerShow extends React.Component {
     super(props);
     this.state = {
       worker: null,
-      value: 0,
-      data_has_loaded: false,
+      dataHasLoaded: false,
     }
   }
 
   async componentDidMount() {
-    const id = this.props.router.query.id;
+    const { router } = this.props;
+    const { id } = router.query;
     const url = `http://localhost:8008/api/worker/worker/${ id }/`;
     const res = await fetch(url);
     const worker = await res.json();
     this.setState({
       worker,
-      data_has_loaded: true,
+      dataHasLoaded: true,
     });
   }
 
-    handleChange = (event, value) => {
-      this.setState({ value });
-    };
+  render() {
+    const { classes } = this.props;
+    const { worker, dataHasLoaded } = this.state;
 
-    render() {
-      const { classes } = this.props;
-      const { worker, data_has_loaded } = this.state;
+    let content;
 
-      let content;
+    if (!dataHasLoaded) {
+      content = <CircularProgress className={ classes.waiter } />
+    } else {
+      content = <>
+          <Typography variant="display2">
+                  Visualizar Funcionario
+          </Typography>
 
-      if (!data_has_loaded) {
-        content = <CircularProgress className={ classes.waiter } />
-      } else {
-        content = <>
-            <Typography variant="display2">
-                    Visualizar Funcionario
-            </Typography>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+          >
 
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-            >
+              <TextField
+                id="standard-read-only-input"
+                label="Nome"
+                defaultValue={ worker.name }
+                className={ classes.textField }
+                margin="normal"
+                InputProps={ {
+                  readOnly: true,
+                } }
+              />
 
-                <TextField
-                  id="standard-read-only-input"
-                  label="Nome"
-                  defaultValue={ worker.name }
-                  className={ classes.textField }
-                  margin="normal"
-                  InputProps={ {
-                    readOnly: true,
-                  } }
-                />
+              <TextField
+                id="standard-read-only-input"
+                label="CPF"
+                defaultValue={ worker.cpf }
+                className={ classes.textField }
+                margin="normal"
+                InputProps={ {
+                  readOnly: true,
+                } }
+              />
 
-                <TextField
-                  id="standard-read-only-input"
-                  label="CPF"
-                  defaultValue={ worker.cpf }
-                  className={ classes.textField }
-                  margin="normal"
-                  InputProps={ {
-                    readOnly: true,
-                  } }
-                />
+              <TextField
+                id="standard-read-only-input"
+                label="Email"
+                defaultValue={ worker.email }
+                className={ classes.textField }
+                margin="normal"
+                InputProps={ {
+                  readOnly: true,
+                } }
+              />
 
-                <TextField
-                  id="standard-read-only-input"
-                  label="Email"
-                  defaultValue={ worker.email }
-                  className={ classes.textField }
-                  margin="normal"
-                  InputProps={ {
-                    readOnly: true,
-                  } }
-                />
+              <Button
+                type="back"
+                variant="contained"
+                color="primary"
+                component="a"
+                href="http://localhost:3000/worker"
+              >
+                    VOLTAR
+              </Button>
 
-                <Button
-                  type="back"
-                  variant="contained"
-                  color="primary"
-                  component="a"
-                  href="http://localhost:3000/worker"
-                >
-                     VOLTAR
-                </Button>
-
-            </Grid>
-            </>
-      }
-
-      return (
-          <Grid container spacing={ 16 } className={ classes.root }>
-              {content}
           </Grid>
-      );
+          </>
     }
+
+    return (
+        <Grid container spacing={ 16 } className={ classes.root }>
+            {content}
+        </Grid>
+    );
+  }
 }
 
 export default withRouter(withStyles(styles)(WorkerShow));

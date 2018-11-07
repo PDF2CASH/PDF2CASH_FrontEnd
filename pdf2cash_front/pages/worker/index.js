@@ -60,9 +60,9 @@ class WorkerIndex extends Component {
   async componentDidMount() {
     const url = 'http://localhost:8008/api/worker/worker/';
     const res = await fetch(url);
-    const data_workers = await res.json();
+    const dataWorkers = await res.json();
     this.setState({
-      workers: data_workers,
+      workers: dataWorkers,
       open: false,
     });
   }
@@ -70,14 +70,14 @@ class WorkerIndex extends Component {
   async getWorkers() {
     const url = 'http://localhost:8008/api/worker/worker/';
     const res = await fetch(url);
-    const data_workers = await res.json();
-    this.setState({ workers: data_workers });
+    const dataWorkers = await res.json();
+    this.setState({ workers: dataWorkers });
   }
 
   async delete() {
-    const id = await this.state.id;
+    const { id } = await this.state;
     const url = `http://localhost:8008/api/worker/worker/${ id }/`;
-    const res = await fetch(url, { method: 'DELETE' });
+    await fetch(url, { method: 'DELETE' });
     this.closeModal();
     this.getWorkers();
   }
@@ -97,6 +97,7 @@ class WorkerIndex extends Component {
 
   render() {
     const { classes } = this.props;
+    const { open, id, workers } = this.state;
     return (
         <Grid>
             <Typography variant="display2">
@@ -105,7 +106,7 @@ class WorkerIndex extends Component {
             <Modal
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description"
-              open={ this.state.open }
+              open={ open }
               onClose={ this.closeModal }
             >
                 <Grid style={ getModalStyle() } className={ classes.paper }>
@@ -115,7 +116,7 @@ class WorkerIndex extends Component {
                     <Button
                       className={ classes.buttom }
                       color="primary"
-                      onClick={ () => this.delete(this.state.id) }
+                      onClick={ () => this.delete({ id }) }
                     >
               SIM
                     </Button>
@@ -129,10 +130,10 @@ class WorkerIndex extends Component {
                 </Grid>
             </Modal>
             {
-          this.state.workers.length ? (
+          workers.length ? (
               <CustomatizedTable>
                   {
-            this.state.workers.map(worker => (
+            workers.map(worker => (
                 <TableRow key={ worker.id }>
                     <TableCell className={ classes.cell }>
                         <Typography>
