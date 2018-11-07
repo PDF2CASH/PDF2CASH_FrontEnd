@@ -40,6 +40,7 @@ module.exports = {
         "react/prop-types": [1],
         "react/no-array-index-key": [1],
         "class-methods-use-this": [1],
+        "no-duplicate-imports": [1],
         "no-undef": [1],
         "no-case-declarations": [1],
         "no-return-assign": [1],

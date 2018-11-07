@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import {
-  TableRow, TableCell, Button, Grid,
+  TableRow,
+  TableCell,
+  Button,
+  Grid,
+  Modal,
+  Typography,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import CreateIcon from '@material-ui/icons/Create'
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
-import Modal from '@material-ui/core/Modal';
 import CustomatizedTable from '../../comps/tableWorker';
 
 const styles = theme => ({

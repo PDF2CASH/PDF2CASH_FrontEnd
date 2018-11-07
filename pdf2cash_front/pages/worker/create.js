@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Button } from '@material-ui/core';
+import {
+  Button,
+  SnackbarContent,
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 const styles = theme => ({
   snackbar: {

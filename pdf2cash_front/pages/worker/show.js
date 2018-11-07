@@ -1,11 +1,13 @@
 import React from 'react';
 import { withRouter } from 'next/router';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import { Button } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {
+  Button,
+  Typography,
+  Grid,
+  TextField,
+  CircularProgress,
+} from '@material-ui/core';
 
 const styles = ({
   cell: {

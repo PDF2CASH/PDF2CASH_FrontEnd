@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Button } from '@material-ui/core';
+import {
+  Button,
+  Typography,
+  SnackbarContent,
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { withRouter } from 'next/router';
-import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   snackbar: {
