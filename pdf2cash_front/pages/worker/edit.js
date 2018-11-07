@@ -30,7 +30,8 @@ class WorkerEdit extends Component {
   }
 
   async componentDidMount() {
-    const id = this.props.router.query.id;
+    const { router } = this.props;
+    const { id } = router.query;
     const url = `http://localhost:8008/api/worker/worker/${ id }/`;
     const res = await fetch(url);
     const data = await res.json();
@@ -40,7 +41,6 @@ class WorkerEdit extends Component {
       name: data.name,
       email: data.email,
       password: data.password,
-      data_has_loaded: true,
     });
   }
 
@@ -68,25 +68,23 @@ class WorkerEdit extends Component {
     });
   }
 
-  snackbarShow() {
-
-  }
-
   async handleSubmit(event) {
     event.preventDefault();
-    const id = this.state.id;
-    const url_worker = `http://0.0.0.0:8008/api/worker/worker/${ id }/`;
-    fetch(url_worker, {
+    const {
+      id, name, email, cpf, password,
+    } = this.state;
+    const urlWorker = `http://0.0.0.0:8008/api/worker/worker/${ id }/`;
+    fetch(urlWorker, {
       method: 'PATCH',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: this.state.name,
-        cpf: this.state.cpf,
-        email: this.state.email,
-        password: this.state.password,
+        name,
+        cpf,
+        email,
+        password,
       }),
     })
       .then((response) => {
@@ -98,52 +96,62 @@ class WorkerEdit extends Component {
             .then((json) => {
               const errors = []
               if (json.name) {
-                for (var i = 0; i < json.name.length; i++) {
+                for (let i = 0; i < json.name.length; i += 1) {
                   errors.push(json.name[ i ])
                 }
               }
               if (json.cpf) {
-                for (var i = 0; i < json.cpf.length; i++) {
+                for (let i = 0; i < json.cpf.length; i += 1) {
                   errors.push('Este CPF já está cadastrado no sistema.')
                 }
               }
               if (json.email) {
-                for (var i = 0; i < json.email.length; i++) {
+                for (let i = 0; i < json.email.length; i += 1) {
                   errors.push('Este E-mail já está cadastrado no sistema.')
                 }
               }
               if (json.password) {
-                for (var i = 0; i < json.password.length; i++) {
+                for (let i = 0; i < json.password.length; i += 1) {
                   errors.push(json.password[ i ])
                 }
               }
-              this.setState({ errors, error_show: true });
+              this.setState({ errors, errorShow: true });
             })
         }
+        return false;
       })
   }
 
   render() {
     const { classes } = this.props;
-
+    const {
+      name, email, cpf, password, errorShow, errors,
+    } = this.state;
     return (
         <ValidatorForm
-          ref="form"
           onSubmit={ this.handleSubmit }
-          onError={ errors => console.log(errors) }
+          onError={ error => console.log(error) }
         >
             <Typography variant="display2">
                         Alterar Funcionario
             </Typography>
             {
-                    this.state.error_show && this.state.errors.map(error => <SnackbarContent key={ error } className={ classes.snackbar } message={ error } />)
+                    errorShow && errors.map(
+                      error => (
+                          <SnackbarContent
+                            key={ error }
+                            className={ classes.snackbar }
+                            message={ error }
+                          />
+                      ),
+                    )
                 }
             <div className="form_worker">
                 <TextValidator
                   label="Nome"
                   onChange={ this.handleChangeName }
                   name="name"
-                  value={ this.state.name }
+                  value={ name }
                   validators={ [ 'required', 'minStringLength:9' ] }
                   errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
                 />
@@ -154,7 +162,7 @@ class WorkerEdit extends Component {
                   onChange={ this.handleChangeCPF }
                   name="cpf"
                   inputProps={ { maxLength: 11 } }
-                  value={ this.state.cpf }
+                  value={ cpf }
                   validators={ [ 'required', 'matchRegexp:^([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})$' ] }
                   errorMessages={ [ 'Este campo é obrigatório', 'Digite um CPF válido' ] }
                 />
@@ -164,7 +172,7 @@ class WorkerEdit extends Component {
                   label="E-mail"
                   onChange={ this.handleChangeEmail }
                   name="email"
-                  value={ this.state.email }
+                  value={ email }
                   validators={ [ 'required', 'isEmail' ] }
                   errorMessages={ [ 'Este campo é obrigatório', 'Este e-mail não é válido' ] }
                 />
@@ -175,7 +183,7 @@ class WorkerEdit extends Component {
                   onChange={ this.handleChangePassword }
                   name="password"
                   type="password"
-                  value={ this.state.password }
+                  value={ password }
                   validators={ [ 'required', 'minStringLength:6', 'maxStringLength:30' ] }
                   errorMessages={ [ 'Este campo é obrigatório', 'Digite uma senha maior que 6 dígitos', 'Digite uma senha menor que 30 dígitos' ] }
                 />
