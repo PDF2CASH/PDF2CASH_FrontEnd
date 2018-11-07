@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import {
-  TableRow, TableCell, Button, Grid,
+  TableRow,
+  TableCell,
+  Button,
+  Grid,
+  Modal,
+  Typography,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Modal from '@material-ui/core/Modal';
 import CustomatizedTable from '../../comps/table';
 
 const styles = theme => ({
@@ -60,6 +63,72 @@ class InvoiceIndex extends Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
+  async componentDidMount() {
+    const urlInvoice = 'http://localhost:8000/api/invoice/invoice/';
+    const resInvoice = await fetch(urlInvoice);
+    const dataInvoice = await resInvoice.json();
+    this.setState({
+      invoices: dataInvoice,
+      open: false,
+    });
+
+    const urlSeller = 'http://localhost:8000/api/invoice/seller/';
+    const resSeller = await fetch(urlSeller);
+    const dataSeller = await resSeller.json();
+    this.setState({ sellers: dataSeller });
+
+    this.joinInvoiceSeller();
+  }
+
+  async getInvoices() {
+    const urlInvoice = 'http://localhost:8000/api/invoice/invoice/';
+    const resInvoice = await fetch(urlInvoice);
+    const dataInvoice = await resInvoice.json();
+    this.setState({ invoices: dataInvoice });
+
+    const urlSeller = 'http://localhost:8000/api/invoice/seller/';
+    const resSeller = await fetch(urlSeller);
+    const dataSeller = await resSeller.json();
+    this.setState({ sellers: dataSeller });
+
+    this.joinInvoiceSeller();
+  }
+
+  async delete() {
+    const { id } = await this.state;
+    const url = `http://localhost:8000/api/invoice/invoice/${ id }/`;
+    await fetch(url, { method: 'DELETE' });
+    this.closeModal();
+    this.getInvoices();
+  }
+
+  dateFormatter(date) {
+    this.oldDate = new Date(date);
+    const day = this.oldDate.getDate();
+    const month = this.oldDate.getMonth();
+    const year = this.oldDate.getFullYear();
+
+    const newDate = `${ day }/${ month }/${ year }`
+
+    return newDate;
+  }
+
+  joinInvoiceSeller() {
+    const { invoices, sellers } = this.state;
+    const join = invoices;
+
+    for (let i = 0; i < invoices.length; i += 1) {
+      for (let i2 = 0; i2 < sellers.length; i2 += 1) {
+        if (invoices[ i ].seller === sellers[ i2 ].id) {
+          join[ i ].seller = sellers[ i2 ];
+          join[ i ].emission_date = this.dateFormatter(join[ i ].emission_date);
+        }
+      }
+    }
+
+    this.setState({ join });
+  }
+
   openModal(id) {
     this.setState({
       open: true,
@@ -73,109 +142,48 @@ class InvoiceIndex extends Component {
     });
   }
 
-  async componentDidMount() {
-    const url_invoice = 'http://localhost:8000/api/invoice/invoice/';
-    const res_invoice = await fetch(url_invoice);
-    const data_invoice = await res_invoice.json();
-    this.setState({
-      invoices: data_invoice,
-      open: false,
-    });
-
-    const url_seller = 'http://localhost:8000/api/invoice/seller/';
-    const res_seller = await fetch(url_seller);
-    const data_seller = await res_seller.json();
-    this.setState({ sellers: data_seller });
-
-    this.joinInvoiceSeller();
-  }
-
-  async getInvoices() {
-    const url_invoice = 'http://localhost:8000/api/invoice/invoice/';
-    const res_invoice = await fetch(url_invoice);
-    const data_invoice = await res_invoice.json();
-    this.setState({ invoices: data_invoice });
-
-    const url_seller = 'http://localhost:8000/api/invoice/seller/';
-    const res_seller = await fetch(url_seller);
-    const data_seller = await res_seller.json();
-    this.setState({ sellers: data_seller });
-
-    this.joinInvoiceSeller();
-  }
-
-  async delete() {
-    const id = await this.state.id;
-    const url = `http://localhost:8000/api/invoice/invoice/${ id }/`;
-    const res = await fetch(url, { method: 'DELETE' });
-    this.closeModal();
-    this.getInvoices();
-  }
-
-  dateFormatter(date) {
-    const old_date = new Date(date);
-    const day = old_date.getDate();
-    const month = old_date.getMonth();
-    const year = old_date.getFullYear();
-
-    const new_date = `${ day }/${ month }/${ year }`
-
-    return new_date;
-  }
-
-  joinInvoiceSeller() {
-    const { invoices, sellers } = this.state;
-    const join = invoices;
-
-    for (let i = 0; i < invoices.length; i++) {
-      for (let i2 = 0; i2 < sellers.length; i2++) {
-        if (invoices[ i ].seller === sellers[ i2 ].id) {
-          join[ i ].seller = sellers[ i2 ];
-          join[ i ].emission_date = this.dateFormatter(join[ i ].emission_date);
-        }
-      }
-    }
-
-    this.setState({ join });
-  }
-
   render() {
     const { classes } = this.props;
-    const { join } = this.state;
+    const {
+      join,
+      open,
+      id,
+      invoices,
+    } = this.state;
 
     return (
         <Grid>
             <Typography variant="display2">
-          Listar Notas Fiscais
+              Listar Notas Fiscais
             </Typography>
             <Modal
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description"
-              open={ this.state.open }
+              open={ open }
               onClose={ this.closeModal }
             >
                 <Grid style={ getModalStyle() } className={ classes.paper }>
                     <Typography variant="h6" className={ classes.cell }>
-            Deseja realmete deletar essa nota fiscal ?
+                      Deseja realmete deletar essa nota fiscal ?
                     </Typography>
                     <Button
                       className={ classes.buttom }
                       color="primary"
-                      onClick={ () => this.delete(this.state.id) }
+                      onClick={ () => this.delete(id) }
                     >
-            SIM
+                      SIM
                     </Button>
                     <Button
                       className={ classes.buttom }
                       color="secondary"
                       onClick={ this.closeModal }
                     >
-            NÃO
+                      NÃO
                     </Button>
                 </Grid>
             </Modal>
             {
-          this.state.invoices.length ? (
+          invoices.length ? (
               <CustomatizedTable>
                   {
                 join.map(invoice => (
@@ -222,7 +230,7 @@ class InvoiceIndex extends Component {
           ) : (
               <Grid className={ classes.warning }>
                   <Typography variant="display1">
-              Não há notas fiscais registradas!
+                    Não há notas fiscais registradas!
                   </Typography>
               </Grid>
           )

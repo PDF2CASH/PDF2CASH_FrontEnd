@@ -1,23 +1,22 @@
 import React from 'react';
 import { withRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import {
+  Grid,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Tabs,
+  Tab,
+  AppBar,
+  Button,
+  CircularProgress,
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-const styles = theme => ({
+const styles = ({
 
   paper: {
     textAlign: 'center',
@@ -45,12 +44,41 @@ class Show extends React.Component {
       seller: null,
       receiver: null,
       value: 0,
-      data_has_loaded: false,
+      dataHasLoaded: false,
     }
   }
 
+  async componentDidMount() {
+    const { router } = this.props;
+    const invoiceId = router.query.id;
+    const invoiceUrl = `http://localhost:8000/api/invoice/invoice/${ invoiceId }`;
+    const invoiceRes = await fetch(invoiceUrl);
+    const invoice = await invoiceRes.json();
+
+    const receiverId = await invoice.receiver;
+    const receiverUrl = `http://localhost:8000/api/invoice/receiver/${ receiverId }`;
+    const receiverRes = await fetch(receiverUrl);
+    const receiver = await receiverRes.json();
+
+    const sellerId = await invoice.seller;
+    const sellerUrl = `http://localhost:8000/api/invoice/seller/${ sellerId }`;
+    const sellerRes = await fetch(sellerUrl);
+    const seller = await sellerRes.json();
+
+    this.setState({
+      invoice,
+      receiver,
+      seller,
+      dataHasLoaded: true,
+    });
+  }
+
+    handleChange = (event, value) => {
+      this.setState({ value });
+    };
+
     renderNFData = () => {
-      const nf = this.state.invoice;
+      const { invoice } = this.state;
 
       return (
           <Table>
@@ -63,7 +91,7 @@ class Show extends React.Component {
                       </TableCell>
                       <TableCell>
                           <Typography>
-                              {nf.operation_nature}
+                              {invoice.operationNature}
                           </Typography>
                       </TableCell>
                   </TableRow>
@@ -76,7 +104,7 @@ class Show extends React.Component {
                       </TableCell>
                       <TableCell>
                           <Typography>
-                              {nf.acess_key}
+                              {invoice.acessKey}
                           </Typography>
                       </TableCell>
                   </TableRow>
@@ -89,7 +117,7 @@ class Show extends React.Component {
                       </TableCell>
                       <TableCell>
                           <Typography>
-                              {nf.authorization_protocol}
+                              {invoice.authorizationProtocol}
                           </Typography>
                       </TableCell>
                   </TableRow>
@@ -102,7 +130,7 @@ class Show extends React.Component {
                       </TableCell>
                       <TableCell>
                           <Typography>
-                              {nf.emission_date}
+                              {invoice.emissionDate}
                           </Typography>
                       </TableCell>
                   </TableRow>
@@ -113,7 +141,7 @@ class Show extends React.Component {
     }
 
     renderReceiverData = () => {
-      const receiver = this.state.receiver;
+      const { receiver } = this.state;
 
       return (
           <Table>
@@ -208,7 +236,7 @@ class Show extends React.Component {
     }
 
     renderTaxData = () => {
-      const invoice = this.state.invoice;
+      const { invoice } = this.state;
 
       return (
           <Table>
@@ -245,7 +273,7 @@ class Show extends React.Component {
     }
 
     renderSellerData = () => {
-      const seller = this.state.seller;
+      const { seller } = this.state;
 
       return (
           <Table>
@@ -285,42 +313,14 @@ class Show extends React.Component {
       );
     }
 
-    async componentDidMount() {
-      const invoice_id = this.props.router.query.id;
-      const invoice_url = `http://localhost:8000/api/invoice/invoice/${ invoice_id }`;
-      const invoice_res = await fetch(invoice_url);
-      const invoice = await invoice_res.json();
-
-      const receiver_id = await invoice.receiver;
-      const receiver_url = `http://localhost:8000/api/invoice/receiver/${ receiver_id }`;
-      const receiver_res = await fetch(receiver_url);
-      const receiver = await receiver_res.json();
-
-      const seller_id = await invoice.seller;
-      const seller_url = `http://localhost:8000/api/invoice/seller/${ seller_id }`;
-      const seller_res = await fetch(seller_url);
-      const seller = await seller_res.json();
-
-      this.setState({
-        invoice,
-        receiver,
-        seller,
-        data_has_loaded: true,
-      });
-    }
-
-    handleChange = (event, value) => {
-      this.setState({ value });
-    };
-
     render() {
       const { classes } = this.props;
       const { value } = this.state;
-      const { data_has_loaded } = this.state;
+      const { dataHasLoaded } = this.state;
 
       let content;
 
-      if (!data_has_loaded) {
+      if (!dataHasLoaded) {
         content = <CircularProgress className={ classes.waiter } />
       } else {
         content = <>
@@ -335,10 +335,10 @@ class Show extends React.Component {
                 </AppBar>
             </Grid>
             <Grid item xs={ 12 } className={ classes.show }>
-                { value == 0 && this.renderNFData() }
-                { value == 1 && this.renderTaxData() }
-                { value == 2 && this.renderSellerData() }
-                { value == 3 && this.renderReceiverData() }
+                { value === 0 && this.renderNFData() }
+                { value === 1 && this.renderTaxData() }
+                { value === 2 && this.renderSellerData() }
+                { value === 3 && this.renderReceiverData() }
             </Grid>
             <Grid item xs={ 12 }>
                 <Grid container direction="column" justify="flex-end" alignItems="flex-end" alignContent="flex-end">

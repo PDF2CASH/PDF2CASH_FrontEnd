@@ -17,7 +17,6 @@ class InvoiceCreate extends Component {
     super(props);
     this.state = {
       file: null,
-      open: false,
     }
     this.setFile = this.setFile.bind(this);
     this.sendForm = this.sendForm.bind(this);
@@ -37,7 +36,8 @@ class InvoiceCreate extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.file);
+    const { file } = this.state;
+    console.log({ file });
 
     return (
         <Grid>
