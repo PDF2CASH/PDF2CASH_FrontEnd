@@ -15,7 +15,6 @@ import IconButton from '@material-ui/core/IconButton';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 
-
 const styles = theme => ({
   root: {
     width: '100%',
@@ -25,35 +24,35 @@ const styles = theme => ({
   table: {
     maxWidth: '90%',
     maxWeight: '90%',
-    overflowX: 'auto'
+    overflowX: 'auto',
   },
   cell: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 function SimpleTable(props) {
   const { classes } = props;
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.cell}>Data</TableCell>
-            <TableCell className={classes.cell}>Chave de acesso</TableCell>
-            <TableCell className={classes.cell}>Empresa</TableCell>
-            <TableCell className={classes.cell}>CNPJ</TableCell>
-            <TableCell className={classes.cell}>Valor</TableCell>
-            <TableCell className={classes.cell}>Vizualizar</TableCell>
-            <TableCell className={classes.cell}>Excluir</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.children}
-        </TableBody>
-      </Table>
-    </Paper>
+      <Paper className={ classes.root }>
+          <Table className={ classes.table }>
+              <TableHead>
+                  <TableRow>
+                      <TableCell className={ classes.cell }>Data</TableCell>
+                      <TableCell className={ classes.cell }>Chave de acesso</TableCell>
+                      <TableCell className={ classes.cell }>Empresa</TableCell>
+                      <TableCell className={ classes.cell }>CNPJ</TableCell>
+                      <TableCell className={ classes.cell }>Valor</TableCell>
+                      <TableCell className={ classes.cell }>Vizualizar</TableCell>
+                      <TableCell className={ classes.cell }>Excluir</TableCell>
+                  </TableRow>
+              </TableHead>
+              <TableBody>
+                  {props.children}
+              </TableBody>
+          </Table>
+      </Paper>
   );
 }
 

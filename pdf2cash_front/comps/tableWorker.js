@@ -18,30 +18,30 @@ const styles = theme => ({
     minWidth: 700,
   },
   cell: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 function SimpleTable(props) {
   const { classes } = props;
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.cell}>Nome</TableCell>
-            <TableCell className={classes.cell}>CPF</TableCell>
-            <TableCell className={classes.cell}>Vizualizar</TableCell>
-            <TableCell className={classes.cell}>Editar</TableCell>
-            <TableCell className={classes.cell}>Excluir</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.children}
-        </TableBody>
-      </Table>
-    </Paper>
+      <Paper className={ classes.root }>
+          <Table className={ classes.table }>
+              <TableHead>
+                  <TableRow>
+                      <TableCell className={ classes.cell }>Nome</TableCell>
+                      <TableCell className={ classes.cell }>CPF</TableCell>
+                      <TableCell className={ classes.cell }>Vizualizar</TableCell>
+                      <TableCell className={ classes.cell }>Editar</TableCell>
+                      <TableCell className={ classes.cell }>Excluir</TableCell>
+                  </TableRow>
+              </TableHead>
+              <TableBody>
+                  {props.children}
+              </TableBody>
+          </Table>
+      </Paper>
   );
 }
 

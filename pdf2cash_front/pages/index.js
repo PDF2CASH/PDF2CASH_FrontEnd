@@ -5,18 +5,14 @@ const styles = theme => ({
 });
 
 class Index extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = [];
+  }
 
-    constructor(props) {
-        super(props);
-        this.state= [];
-    }
-
-    render() {
-
-        return (<hello/>);
-    }
-
+  render() {
+    return (<hello />);
+  }
 }
-
 
 export default withStyles(styles)(Index);

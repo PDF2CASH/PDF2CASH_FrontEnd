@@ -30,53 +30,53 @@ const styles = theme => ({
 });
 
 export const mailFolderListItems = (
-  <div>
-  <ListItem button component="a" href="/worker">
-      <ListItemIcon>
-        <GroupIcon />
-      </ListItemIcon>
-      <ListItemText primary="Listar Funcionarios" />
-    </ListItem>
-    <ListItem button component="a" href="/invoice">
-      <ListItemIcon>
-        <DescriptionIcon />
-      </ListItemIcon>
-      <ListItemText primary="Listar Nota Fiscais" />
-    </ListItem>
-    <ListItem button component="a" href="/invoice/create">
-      <ListItemIcon>
-        <SendIcon />
-      </ListItemIcon>
-      <ListItemText primary="Criar Nota Fiscal" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <CreateIcon />
-      </ListItemIcon>
-      <ListItemText primary="Criar Funcionarios" />
-    </ListItem>
-  </div>
+    <div>
+        <ListItem button component="a" href="/worker">
+            <ListItemIcon>
+                <GroupIcon />
+            </ListItemIcon>
+            <ListItemText primary="Listar Funcionarios" />
+        </ListItem>
+        <ListItem button component="a" href="/invoice">
+            <ListItemIcon>
+                <DescriptionIcon />
+            </ListItemIcon>
+            <ListItemText primary="Listar Nota Fiscais" />
+        </ListItem>
+        <ListItem button component="a" href="/invoice/create">
+            <ListItemIcon>
+                <SendIcon />
+            </ListItemIcon>
+            <ListItemText primary="Criar Nota Fiscal" />
+        </ListItem>
+        <ListItem button>
+            <ListItemIcon>
+                <CreateIcon />
+            </ListItemIcon>
+            <ListItemText primary="Criar Funcionarios" />
+        </ListItem>
+    </div>
 );
 
 export const otherMailFolderListItems = (
-  <div>
-    <ListItem button component="a" href="/">
-      <ListItemIcon>
-        <TimelineIcon />
-      </ListItemIcon>
-      <ListItemText primary="Ver analises" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <DeleteIcon />
-      </ListItemIcon>
-      <ListItemText primary="Trash" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <ReportIcon />
-      </ListItemIcon>
-      <ListItemText primary="Spam" />
-    </ListItem>
-  </div>
+    <div>
+        <ListItem button component="a" href="/">
+            <ListItemIcon>
+                <TimelineIcon />
+            </ListItemIcon>
+            <ListItemText primary="Ver analises" />
+        </ListItem>
+        <ListItem button>
+            <ListItemIcon>
+                <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText primary="Trash" />
+        </ListItem>
+        <ListItem button>
+            <ListItemIcon>
+                <ReportIcon />
+            </ListItemIcon>
+            <ListItemText primary="Spam" />
+        </ListItem>
+    </div>
 );

@@ -35,13 +35,10 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import Paper from '@material-ui/core/Paper';
 import MenuList from '@material-ui/core/MenuList';
 
-
-
 const drawerWidth = 280;
 
-
 const style = {
-  color:'white',
+  color: 'white',
 }
 
 const styles = theme => ({
@@ -58,15 +55,15 @@ const styles = theme => ({
     backgroundColor: '#3f51b5',
     fontFamily: 'Roboto',
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create([ 'width', 'margin' ], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
   appBarShift: {
     marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    width: `calc(100% - ${ drawerWidth }px)`,
+    transition: theme.transitions.create([ 'width', 'margin' ], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -102,7 +99,7 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing.unit * 7,
-    [theme.breakpoints.up('sm')]: {
+    [ theme.breakpoints.up('sm') ]: {
       width: theme.spacing.unit * 9,
     },
   },
@@ -124,8 +121,8 @@ class MiniDrawer extends React.Component {
   state = {
     open: false,
     auth: true,
-   anchorEl: null,
-   selectedIndex: 0,
+    anchorEl: null,
+    selectedIndex: 0,
   };
 
   handleDrawerOpen = () => {
@@ -135,17 +132,19 @@ class MiniDrawer extends React.Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
-  handleChange = event => {
+
+  handleChange = (event) => {
     this.setState({ auth: event.target.checked });
   };
 
-  handleMenu = event => {
+  handleMenu = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
   handleListItemClick = (event, index) => {
     this.setState({ selectedIndex: index });
   };
@@ -156,141 +155,155 @@ class MiniDrawer extends React.Component {
     const open = Boolean(anchorEl);
 
     return (
-      <div className={classes.root}>
-        <AppBar
-          position="absolute"
-          className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-        >
-          <Toolbar disableGutters={!this.state.open}>
-            <IconButton className={classes.menuButton} onClick={this.handleDrawerOpen} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h4" color="inherit" className={classes.grow}>
+        <div className={ classes.root }>
+            <AppBar
+              position="absolute"
+              className={ classNames(classes.appBar, this.state.open && classes.appBarShift) }
+            >
+                <Toolbar disableGutters={ !this.state.open }>
+                    <IconButton className={ classes.menuButton } onClick={ this.handleDrawerOpen } color="inherit" aria-label="Menu">
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h4" color="inherit" className={ classes.grow }>
                 PDF2CA$H
-            </Typography>
-            {auth && (
-              <div>
-                   <IconButton
-                     aria-owns={open ? 'menu-appbar' : null}
-                     position="absolute"
-                     aria-haspopup="true"
-                     onClick={this.handleMenu}
-                     color="inherit"
-                   >
-                     <AccountCircle />
-                   </IconButton>
-                   <Menu
-                     id="menu-appbar"
-                     anchorEl={anchorEl}
-                     anchorOrigin={{
-                       vertical: 'top',
-                       horizontal: 'right',
-                     }}
-                     transformOrigin={{
-                       vertical: 'top',
-                       horizontal: 'right',
-                     }}
-                     open={open}
-                     onClose={this.handleClose}
-                   >
-                     <MenuItem onClick={this.handleClose}>Minha conta</MenuItem>
-                     <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                   </Menu>
-                 </div>
-           )}
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-          }}
-          open={this.state.open}
-        >
-          <div className={classes.toolbar}>
-            <IconButton style={style} onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <List><div>
-          <MenuList>
-            <MenuItem button component="a"
-            href="/worker"
-            className={classes.menuItem}
-            selected={this.state.selectedIndex === 1}
-            onClick={event => this.handleListItemClick(event, 1)}
+                    </Typography>
+                    {auth && (
+                    <div>
+                        <IconButton
+                          aria-owns={ open ? 'menu-appbar' : null }
+                          position="absolute"
+                          aria-haspopup="true"
+                          onClick={ this.handleMenu }
+                          color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
+                        <Menu
+                          id="menu-appbar"
+                          anchorEl={ anchorEl }
+                          anchorOrigin={ {
+                            vertical: 'top',
+                            horizontal: 'right',
+                          } }
+                          transformOrigin={ {
+                            vertical: 'top',
+                            horizontal: 'right',
+                          } }
+                          open={ open }
+                          onClose={ this.handleClose }
+                        >
+                            <MenuItem onClick={ this.handleClose }>Minha conta</MenuItem>
+                            <MenuItem onClick={ this.handleClose }>Logout</MenuItem>
+                        </Menu>
+                    </div>
+                    )}
+                </Toolbar>
+            </AppBar>
+            <Drawer
+              variant="permanent"
+              classes={ {
+                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+              } }
+              open={ this.state.open }
             >
-              <ListItemIcon className={classes.icon}>
-                <GroupIcon style={style}/>
-              </ListItemIcon>
-              <ListItemText style={style} disableTypography inset primary="Listar Funcionarios" />
-            </MenuItem>
-            <MenuItem button component="a"
-            href="/invoice"
-            className={classes.menuItem}
-            selected={this.state.selectedIndex === 2}
-            onClick={event => this.handleListItemClick(event, 2)}
-            >
-              <ListItemIcon className={classes.icon}>
-                <DescriptionIcon style={style}/>
-              </ListItemIcon>
-              <ListItemText style={style} disableTypography inset primary="Listar Notas Fiscais" />
-            </MenuItem>
-            <MenuItem button component="a"
-            href="/invoice/create"
-             className={classes.menuItem}
-             selected={this.state.selectedIndex === 3}
-             onClick={event => this.handleListItemClick(event, 3)}
-             >
-              <ListItemIcon className={classes.icon}>
-                <SendIcon style={style}/>
-              </ListItemIcon>
-              <ListItemText style={style} disableTypography inset primary="Criar Nota Fiscal" />
-            </MenuItem>
-            <MenuItem button component="a"
-            href="/"
-            className={classes.menuItem}
-            selected={this.state.selectedIndex === 4}
-            onClick={event => this.handleListItemClick(event, 4)}
-            >
-              <ListItemIcon className={classes.icon}>
-                <CreateIcon style={style}/>
-              </ListItemIcon>
-              <ListItemText style={style} disableTypography inset primary="Criar Funcionarios" />
-            </MenuItem>
-          </MenuList>
-          </div></List>
-          <Divider/>
-          <List><div>
-    <MenuList>
-      <MenuItem button component="a" href="/" className={classes.menuItem}>
-        <ListItemIcon className={classes.icon}>
-          <TimelineIcon style={style}/>
-        </ListItemIcon>
-        <ListItemText style={style} disableTypography inset primary="Visualizar Analise" />
-      </MenuItem>
-      <MenuItem className={classes.menuItem}>
-        <ListItemIcon className={classes.icon}>
-          <DeleteIcon style={style} />
-        </ListItemIcon>
-        <ListItemText style={style} disableTypography inset primary="Lixo" />
-      </MenuItem>
-      <MenuItem className={classes.menuItem}
-      selected={this.state.selectedIndex === 5}
-      onClick={event => this.handleListItemClick(event, 5)}>
-        <ListItemIcon className={classes.icon}>
-          <ReportIcon style={style}/>
-        </ListItemIcon>
-        <ListItemText style={style} disableTypography inset primary="Spam" />
-      </MenuItem>
-    </MenuList>
-          </div></List>
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-           {this.props.children}
-        </main>
-      </div>
+                <div className={ classes.toolbar }>
+                    <IconButton style={ style } onClick={ this.handleDrawerClose }>
+                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                    </IconButton>
+                </div>
+                <List>
+                    <div>
+                        <MenuList>
+                            <MenuItem
+                              button
+                              component="a"
+                              href="/worker"
+                              className={ classes.menuItem }
+                              selected={ this.state.selectedIndex === 1 }
+                              onClick={ event => this.handleListItemClick(event, 1) }
+                            >
+                                <ListItemIcon className={ classes.icon }>
+                                    <GroupIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Listar Funcionarios" />
+                            </MenuItem>
+                            <MenuItem
+                              button
+                              component="a"
+                              href="/invoice"
+                              className={ classes.menuItem }
+                              selected={ this.state.selectedIndex === 2 }
+                              onClick={ event => this.handleListItemClick(event, 2) }
+                            >
+                                <ListItemIcon className={ classes.icon }>
+                                    <DescriptionIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Listar Notas Fiscais" />
+                            </MenuItem>
+                            <MenuItem
+                              button
+                              component="a"
+                              href="/invoice/create"
+                              className={ classes.menuItem }
+                              selected={ this.state.selectedIndex === 3 }
+                              onClick={ event => this.handleListItemClick(event, 3) }
+                            >
+                                <ListItemIcon className={ classes.icon }>
+                                    <SendIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Criar Nota Fiscal" />
+                            </MenuItem>
+                            <MenuItem
+                              button
+                              component="a"
+                              href="/"
+                              className={ classes.menuItem }
+                              selected={ this.state.selectedIndex === 4 }
+                              onClick={ event => this.handleListItemClick(event, 4) }
+                            >
+                                <ListItemIcon className={ classes.icon }>
+                                    <CreateIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Criar Funcionarios" />
+                            </MenuItem>
+                        </MenuList>
+                    </div>
+                </List>
+                <Divider />
+                <List>
+                    <div>
+                        <MenuList>
+                            <MenuItem button component="a" href="/" className={ classes.menuItem }>
+                                <ListItemIcon className={ classes.icon }>
+                                    <TimelineIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Visualizar Analise" />
+                            </MenuItem>
+                            <MenuItem className={ classes.menuItem }>
+                                <ListItemIcon className={ classes.icon }>
+                                    <DeleteIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Lixo" />
+                            </MenuItem>
+                            <MenuItem
+                              className={ classes.menuItem }
+                              selected={ this.state.selectedIndex === 5 }
+                              onClick={ event => this.handleListItemClick(event, 5) }
+                            >
+                                <ListItemIcon className={ classes.icon }>
+                                    <ReportIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Spam" />
+                            </MenuItem>
+                        </MenuList>
+                    </div>
+                </List>
+            </Drawer>
+            <main className={ classes.content }>
+                <div className={ classes.toolbar } />
+                {this.props.children}
+            </main>
+        </div>
     );
   }
 }
