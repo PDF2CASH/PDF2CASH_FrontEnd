@@ -117,6 +117,7 @@ class WorkerIndex extends Component {
               Deseja realmete deletar esse funcionário ?
                     </Typography>
                     <Button
+                      variant="contained"
                       className={ classes.buttom }
                       color="primary"
                       onClick={ () => this.delete({ id }) }
@@ -124,6 +125,7 @@ class WorkerIndex extends Component {
               SIM
                     </Button>
                     <Button
+                      variant="contained"
                       className={ classes.buttom }
                       color="secondary"
                       onClick={ this.closeModal }
