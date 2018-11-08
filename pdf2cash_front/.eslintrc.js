@@ -14,7 +14,9 @@ module.exports = {
     "parser": "babel-eslint",
     "extends": "airbnb",
     "plugins": [
-        "react"
+        "react",
+        "jsx-a11y",
+        "import"
     ],
     "rules": {
         "space-in-parens": [0, "always"],
@@ -37,7 +39,10 @@ module.exports = {
         "react/jsx-filename-extension": 0,
         "react/jsx-curly-spacing": [2, "always"],
         "react/jsx-indent": [2, 4],
-        "react/prop-types": [1],
+        // "react/prop-types": [1],
+        "react/prop-types": [1, 
+            { "ignore": ["classes"] }
+        ],
         "react/no-array-index-key": [1],
         "class-methods-use-this": [1],
         "no-duplicate-imports": [1],
