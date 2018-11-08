@@ -36,8 +36,6 @@ class InvoiceCreate extends Component {
 
   render() {
     const { classes } = this.props;
-    const { file } = this.state;
-    console.log({ file });
 
     return (
         <Grid>

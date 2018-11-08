@@ -119,7 +119,6 @@ class WorkerCreate extends Component {
     return (
         <ValidatorForm
           onSubmit={ this.handleSubmit }
-          onError={ error => console.log(error) }
         >
             <h2>CADASTRAR FUNCIONÁRIO</h2>
             {

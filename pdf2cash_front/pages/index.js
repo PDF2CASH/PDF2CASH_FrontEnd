@@ -11,7 +11,11 @@ class Index extends React.Component {
   }
 
   render() {
-    return (<hello />);
+    return (
+        <head>
+            <title>PDF2CASH</title>
+        </head>
+    );
   }
 }
 

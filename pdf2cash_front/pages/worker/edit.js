@@ -132,7 +132,6 @@ class WorkerEdit extends Component {
     return (
         <ValidatorForm
           onSubmit={ this.handleSubmit }
-          onError={ error => console.log(error) }
         >
             <Typography variant="display2">
                         Alterar Funcionario
