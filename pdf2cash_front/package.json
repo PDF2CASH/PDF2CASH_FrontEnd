@@ -25,13 +25,14 @@
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "faker": "^4.1.0",
-    "puppeteer": "^1.4.0"
+    "puppeteer": "^1.10.0"
   },
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start",
     "test": "react-scripts test --env=jsdom",
+    "test:integration": "jest -c integration/jest.config.js",
     "debug": "NODE_ENV=debug npm test",
     "eject": "react-scripts eject"
   }

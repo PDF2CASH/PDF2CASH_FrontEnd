@@ -1,19 +1,25 @@
-const puppeteer = require('puppeteer')
+import puppeteer from "puppeteer";
+import faker from "faker";
 
-export const isDebugging = () => {
-  let debugging_mode = {
-    puppeteer: {
-      headless: false,
-      slowMo: 80,
-      args: [`--window-size=1920,1080`]
-    },
-    jasmine: 16000
-  };
-  return process.env.NODE_ENV === "debug" ? debugging_mode : false;
+
+const APP = "http://localhost:3000/admin";
+
+const lead = {
+  name: faker.name.findName(),
+  email: faker.internet.email(),
+  cpf: "06973325513",
+  password: faker.internet.password()
 };
 
-describe('on home page', () => {
-  test('title loads correctly', async() => {
+const lead_fail = {
+  name: "A",
+  email: "B",
+  cpf: "069733",
+  password: "123"
+};
+
+describe('on register admin page', () => {
+  test('with admin valid', async() => {
     let browser = await puppeteer.launch({args: ['--no-sandbox']});
     let page = await browser.newPage();
 
@@ -25,9 +31,24 @@ describe('on home page', () => {
       userAgent: ''
     });
 
-    await page.goto('http://localhost:3000/worker/create');
+    await page.goto(APP);
     let html = await page.evaluate(() => document.body.innerHTML);
-    expect(html).toMatch('CADASTRAR FUNCIONÁRIO');
+    expect(html).toMatch('Cadastrar');
+    await page.goto(APP);
+    await page.click("input[name=name]");
+    await page.type("input[name=name]", lead.name);
+    await page.click("input[name=email]");
+    await page.type("input[name=email]", lead.email);
+    await page.click("input[name=cpf]");
+    await page.type("input[name=cpf]", lead.cpf);
+    await page.click("input[name=password]");
+    await page.type("input[name=password]", lead.password);
+    await page.click("button[type=submit]");
+    html = await page.evaluate(() => document.body.innerHTML);
+    await expect(html).toMatch('Listar Funcionarios');
     browser.close();
-  }, 16000);
+  }, 160000);
+
+  
+
 });
