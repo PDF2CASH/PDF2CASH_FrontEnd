@@ -2,38 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  Typography,
+  Divider,
+  MenuItem,
+  Menu,
+  ListItemIcon,
+  ListItemText,
+  MenuList,
+  IconButton,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import StarIcon from '@material-ui/icons/Star';
 import SendIcon from '@material-ui/icons/Send';
-import MailIcon from '@material-ui/icons/Mail';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ReportIcon from '@material-ui/icons/Report';
 import DescriptionIcon from '@material-ui/icons/Description';
 import GroupIcon from '@material-ui/icons/Group';
 import CreateIcon from '@material-ui/icons/Create';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import Paper from '@material-ui/core/Paper';
-import MenuList from '@material-ui/core/MenuList';
 
 const drawerWidth = 280;
 
@@ -150,17 +143,26 @@ class MiniDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
-    const { auth, anchorEl } = this.state;
-    const open = Boolean(anchorEl);
+    const {
+      classes,
+      theme,
+      children,
+    } = this.props;
+    const {
+      auth,
+      anchorEl,
+      open,
+      selectedIndex,
+    } = this.state;
+    const openAnchorEl = Boolean(anchorEl);
 
     return (
         <div className={ classes.root }>
             <AppBar
               position="absolute"
-              className={ classNames(classes.appBar, this.state.open && classes.appBarShift) }
+              className={ classNames(classes.appBar, open && classes.appBarShift) }
             >
-                <Toolbar disableGutters={ !this.state.open }>
+                <Toolbar disableGutters={ !open }>
                     <IconButton className={ classes.menuButton } onClick={ this.handleDrawerOpen } color="inherit" aria-label="Menu">
                         <MenuIcon />
                     </IconButton>
@@ -170,7 +172,7 @@ class MiniDrawer extends React.Component {
                     {auth && (
                     <div>
                         <IconButton
-                          aria-owns={ open ? 'menu-appbar' : null }
+                          aria-owns={ openAnchorEl ? 'menu-appbar' : null }
                           position="absolute"
                           aria-haspopup="true"
                           onClick={ this.handleMenu }
@@ -189,7 +191,7 @@ class MiniDrawer extends React.Component {
                             vertical: 'top',
                             horizontal: 'right',
                           } }
-                          open={ open }
+                          open={ openAnchorEl }
                           onClose={ this.handleClose }
                         >
                             <MenuItem onClick={ this.handleClose }>Minha conta</MenuItem>
@@ -202,9 +204,9 @@ class MiniDrawer extends React.Component {
             <Drawer
               variant="permanent"
               classes={ {
-                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+                paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
               } }
-              open={ this.state.open }
+              open={ open }
             >
                 <div className={ classes.toolbar }>
                     <IconButton style={ style } onClick={ this.handleDrawerClose }>
@@ -219,7 +221,7 @@ class MiniDrawer extends React.Component {
                               component="a"
                               href="/worker"
                               className={ classes.menuItem }
-                              selected={ this.state.selectedIndex === 1 }
+                              selected={ selectedIndex === 1 }
                               onClick={ event => this.handleListItemClick(event, 1) }
                             >
                                 <ListItemIcon className={ classes.icon }>
@@ -232,7 +234,7 @@ class MiniDrawer extends React.Component {
                               component="a"
                               href="/invoice"
                               className={ classes.menuItem }
-                              selected={ this.state.selectedIndex === 2 }
+                              selected={ selectedIndex === 2 }
                               onClick={ event => this.handleListItemClick(event, 2) }
                             >
                                 <ListItemIcon className={ classes.icon }>
@@ -245,7 +247,7 @@ class MiniDrawer extends React.Component {
                               component="a"
                               href="/invoice/create"
                               className={ classes.menuItem }
-                              selected={ this.state.selectedIndex === 3 }
+                              selected={ selectedIndex === 3 }
                               onClick={ event => this.handleListItemClick(event, 3) }
                             >
                                 <ListItemIcon className={ classes.icon }>
@@ -258,7 +260,7 @@ class MiniDrawer extends React.Component {
                               component="a"
                               href="/"
                               className={ classes.menuItem }
-                              selected={ this.state.selectedIndex === 4 }
+                              selected={ selectedIndex === 4 }
                               onClick={ event => this.handleListItemClick(event, 4) }
                             >
                                 <ListItemIcon className={ classes.icon }>
@@ -287,7 +289,7 @@ class MiniDrawer extends React.Component {
                             </MenuItem>
                             <MenuItem
                               className={ classes.menuItem }
-                              selected={ this.state.selectedIndex === 5 }
+                              selected={ selectedIndex === 5 }
                               onClick={ event => this.handleListItemClick(event, 5) }
                             >
                                 <ListItemIcon className={ classes.icon }>
@@ -301,7 +303,7 @@ class MiniDrawer extends React.Component {
             </Drawer>
             <main className={ classes.content }>
                 <div className={ classes.toolbar } />
-                {this.props.children}
+                { children }
             </main>
         </div>
     );
