@@ -34,11 +34,9 @@ import CreateIcon from '@material-ui/icons/Create';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import Paper from '@material-ui/core/Paper';
 import MenuList from '@material-ui/core/MenuList';
-
-
+import Authenticate  from '../pages/auth';
 
 const drawerWidth = 280;
-
 
 const style = {
   color:'white',
@@ -146,8 +144,14 @@ class MiniDrawer extends React.Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
   handleListItemClick = (event, index) => {
     this.setState({ selectedIndex: index });
+  };
+
+  logout(){
+    Authenticate.logout();
+    window.location.href = "http://localhost:3000/login";
   };
 
   render() {
@@ -194,7 +198,7 @@ class MiniDrawer extends React.Component {
                      onClose={this.handleClose}
                    >
                      <MenuItem onClick={this.handleClose}>Minha conta</MenuItem>
-                     <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                     <MenuItem onClick={this.logout}>Logout</MenuItem>
                    </Menu>
                  </div>
            )}
