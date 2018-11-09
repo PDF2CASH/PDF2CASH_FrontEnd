@@ -258,7 +258,7 @@ class MiniDrawer extends React.Component {
                             <MenuItem
                               button
                               component="a"
-                              href="/"
+                              href="/worker/create"
                               className={ classes.menuItem }
                               selected={ selectedIndex === 4 }
                               onClick={ event => this.handleListItemClick(event, 4) }

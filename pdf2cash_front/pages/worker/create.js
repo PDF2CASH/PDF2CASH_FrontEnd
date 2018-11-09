@@ -17,6 +17,7 @@ class WorkerCreate extends Component {
     super(props);
     this.state = {
       name: '',
+      username: '',
       cpf: '',
       email: '',
       password: '',
@@ -24,6 +25,7 @@ class WorkerCreate extends Component {
 
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeCPF = this.handleChangeCPF.bind(this);
+    this.handleChangeUserName = this. handleChangeUserName.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,6 +38,11 @@ class WorkerCreate extends Component {
   handleChangeName(event) {
     this.setState({
       name: event.target.value,
+    });
+  }
+  handleChangeUserName(event) {
+    this.setState({
+      username: event.target.value,
     });
   }
 
@@ -59,10 +66,10 @@ class WorkerCreate extends Component {
 
   async handleSubmit(event) {
     const {
-      name, cpf, email, password,
+      name, username, cpf, email, password,
     } = this.state;
     event.preventDefault();
-    const urlWorker = 'http://0.0.0.0:8008/api/worker/worker/';
+    const urlWorker = 'http://0.0.0.0:8000/api/worker/worker/';
     fetch(urlWorker, {
       method: 'POST',
       headers: {
@@ -71,6 +78,7 @@ class WorkerCreate extends Component {
       },
       body: JSON.stringify({
         name,
+        username,
         cpf,
         email,
         password,
@@ -114,7 +122,7 @@ class WorkerCreate extends Component {
   render() {
     const { classes } = this.props;
     const {
-      name, email, cpf, password, errorShow, errors,
+      username,name, email, cpf, password, errorShow, errors,
     } = this.state;
     return (
         <ValidatorForm
@@ -138,6 +146,15 @@ class WorkerCreate extends Component {
                   onChange={ this.handleChangeName }
                   name="name"
                   value={ name }
+                  validators={ [ 'required', 'minStringLength:9' ] }
+                  errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
+                />
+                <br />
+                <TextValidator
+                  label="Username"
+                  onChange={ this.handleChangeUserName }
+                  name="username"
+                  value={ username }
                   validators={ [ 'required', 'minStringLength:9' ] }
                   errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
                 />
