@@ -64,7 +64,7 @@ class InvoiceIndex extends Component {
   }
 
   async componentDidMount() {
-    const urlInvoice = 'http://localhost:8000/api/invoice/invoice/';
+    const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
     this.setState({
@@ -72,7 +72,7 @@ class InvoiceIndex extends Component {
       open: false,
     });
 
-    const urlSeller = 'http://localhost:8000/api/invoice/seller/';
+    const urlSeller = 'http://localhost:8008/api/invoice/seller/';
     const resSeller = await fetch(urlSeller);
     const dataSeller = await resSeller.json();
     this.setState({ sellers: dataSeller });
@@ -81,12 +81,12 @@ class InvoiceIndex extends Component {
   }
 
   async getInvoices() {
-    const urlInvoice = 'http://localhost:8000/api/invoice/invoice/';
+    const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
     this.setState({ invoices: dataInvoice });
 
-    const urlSeller = 'http://localhost:8000/api/invoice/seller/';
+    const urlSeller = 'http://localhost:8008/api/invoice/seller/';
     const resSeller = await fetch(urlSeller);
     const dataSeller = await resSeller.json();
     this.setState({ sellers: dataSeller });
@@ -96,7 +96,7 @@ class InvoiceIndex extends Component {
 
   async delete() {
     const { id } = await this.state;
-    const url = `http://localhost:8000/api/invoice/invoice/${ id }/`;
+    const url = `http://localhost:8008/api/invoice/invoice/${ id }/`;
     await fetch(url, { method: 'DELETE' });
     this.closeModal();
     this.getInvoices();

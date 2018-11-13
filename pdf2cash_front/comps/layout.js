@@ -27,6 +27,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import GroupIcon from '@material-ui/icons/Group';
 import CreateIcon from '@material-ui/icons/Create';
 import TimelineIcon from '@material-ui/icons/Timeline';
+import Authenticate  from '../pages/auth';
 
 const drawerWidth = 280;
 
@@ -142,6 +143,11 @@ class MiniDrawer extends React.Component {
     this.setState({ selectedIndex: index });
   };
 
+  logout(){
+    Authenticate.logout();
+    window.location.href = "http://localhost:3000/login";
+  };
+
   render() {
     const {
       classes,
@@ -167,7 +173,7 @@ class MiniDrawer extends React.Component {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h4" color="inherit" className={ classes.grow }>
-                PDF2CA$H
+                      PDF2CA$H
                     </Typography>
                     {auth && (
                     <div>
@@ -195,7 +201,7 @@ class MiniDrawer extends React.Component {
                           onClose={ this.handleClose }
                         >
                             <MenuItem onClick={ this.handleClose }>Minha conta</MenuItem>
-                            <MenuItem onClick={ this.handleClose }>Logout</MenuItem>
+                            <MenuItem onClick={this.logout}>Logout</MenuItem>
                         </Menu>
                     </div>
                     )}
