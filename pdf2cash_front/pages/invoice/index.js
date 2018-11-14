@@ -158,6 +158,7 @@ class InvoiceIndex extends Component {
             Deseja realmete deletar essa nota fiscal ?
           </Typography>
           <Button
+            id='SIM'
             className={classes.buttom}
             color='primary'
             onClick={() => this.delete(this.state.id)}
@@ -165,6 +166,7 @@ class InvoiceIndex extends Component {
             SIM
           </Button>
           <Button
+            id='NAO'
             className={classes.buttom}
             color='secondary'
             onClick={this.closeModal}
