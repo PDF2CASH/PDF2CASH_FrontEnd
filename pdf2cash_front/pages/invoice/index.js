@@ -210,7 +210,7 @@ class InvoiceIndex extends Component {
                       </Button>
                     </TableCell>
                     <TableCell className={classes.cell}>
-                    <Button onClick={() => this.openModal(invoice.id)}>
+                    <Button id={invoice.access_key} onClick={() => this.openModal(invoice.id)}>
                         <DeleteIcon />
                       </Button>
                     </TableCell>

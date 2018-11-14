@@ -1,5 +1,7 @@
 import puppeteer from "puppeteer";
 
+const APP = "http://localhost:3000/invoice";
+
 describe('invoices pages tests', () => {
     test('test invoices list', async () => {
         let browser = await puppeteer.launch({
