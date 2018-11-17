@@ -39,10 +39,17 @@ module.exports = {
         "react/jsx-filename-extension": 0,
         "react/jsx-curly-spacing": [2, "always"],
         "react/jsx-indent": [2, 4],
-        "react/prop-types": [1, 
-            { "ignore": ["classes", "children"] }
+        "react/prop-types": [1,
+            { "ignore": ["classes",
+            "children",
+            "handleChangeName",
+            "handleChangeUsername",
+            "handleChangeCPF",
+            "handleChangeEmail",
+            "handleChangePassword",
+            "validateLogin"] }
         ],
-        "react/forbid-prop-types": [1, 
+        "react/forbid-prop-types": [1,
             { "forbid": ['any', 'array'] }
         ],
         "react/no-array-index-key": [1],
