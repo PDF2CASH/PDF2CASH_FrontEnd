@@ -21,13 +21,11 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import SendIcon from '@material-ui/icons/Send';
-import DeleteIcon from '@material-ui/icons/Delete';
-import ReportIcon from '@material-ui/icons/Report';
 import DescriptionIcon from '@material-ui/icons/Description';
 import GroupIcon from '@material-ui/icons/Group';
 import CreateIcon from '@material-ui/icons/Create';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import Authenticate  from '../pages/auth';
+import Authenticate from '../pages/auth';
 
 const drawerWidth = 280;
 
@@ -116,7 +114,6 @@ class MiniDrawer extends React.Component {
     open: false,
     auth: true,
     anchorEl: null,
-    selectedIndex: 0,
   };
 
   handleDrawerOpen = () => {
@@ -139,14 +136,10 @@ class MiniDrawer extends React.Component {
     this.setState({ anchorEl: null });
   };
 
-  handleListItemClick = (event, index) => {
-    this.setState({ selectedIndex: index });
-  };
-
-  logout(){
+  logout() {
     Authenticate.logout();
-    window.location.href = "http://localhost:3000/login";
-  };
+    window.location.href = 'http://localhost:3000/login';
+  }
 
   render() {
     const {
@@ -158,7 +151,6 @@ class MiniDrawer extends React.Component {
       auth,
       anchorEl,
       open,
-      selectedIndex,
     } = this.state;
     const openAnchorEl = Boolean(anchorEl);
 
@@ -173,7 +165,7 @@ class MiniDrawer extends React.Component {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h4" color="inherit" className={ classes.grow }>
-                      PDF2CA$H
+                  PDF2CA$H
                     </Typography>
                     {auth && (
                     <div>
@@ -201,7 +193,7 @@ class MiniDrawer extends React.Component {
                           onClose={ this.handleClose }
                         >
                             <MenuItem onClick={ this.handleClose }>Minha conta</MenuItem>
-                            <MenuItem onClick={this.logout}>Logout</MenuItem>
+                            <MenuItem onClick={ this.logout }>Logout</MenuItem>
                         </Menu>
                     </div>
                     )}
@@ -210,7 +202,8 @@ class MiniDrawer extends React.Component {
             <Drawer
               variant="permanent"
               classes={ {
-                paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
+                paper: classNames(classes.drawerPaper,
+                  !open && classes.drawerPaperClose),
               } }
               open={ open }
             >
@@ -227,8 +220,6 @@ class MiniDrawer extends React.Component {
                               component="a"
                               href="/worker"
                               className={ classes.menuItem }
-                              selected={ selectedIndex === 1 }
-                              onClick={ event => this.handleListItemClick(event, 1) }
                             >
                                 <ListItemIcon className={ classes.icon }>
                                     <GroupIcon style={ style } />
@@ -238,36 +229,8 @@ class MiniDrawer extends React.Component {
                             <MenuItem
                               button
                               component="a"
-                              href="/invoice"
-                              className={ classes.menuItem }
-                              selected={ selectedIndex === 2 }
-                              onClick={ event => this.handleListItemClick(event, 2) }
-                            >
-                                <ListItemIcon className={ classes.icon }>
-                                    <DescriptionIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Listar Notas Fiscais" />
-                            </MenuItem>
-                            <MenuItem
-                              button
-                              component="a"
-                              href="/invoice/create"
-                              className={ classes.menuItem }
-                              selected={ selectedIndex === 3 }
-                              onClick={ event => this.handleListItemClick(event, 3) }
-                            >
-                                <ListItemIcon className={ classes.icon }>
-                                    <SendIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Criar Nota Fiscal" />
-                            </MenuItem>
-                            <MenuItem
-                              button
-                              component="a"
                               href="/worker/create"
                               className={ classes.menuItem }
-                              selected={ selectedIndex === 4 }
-                              onClick={ event => this.handleListItemClick(event, 4) }
                             >
                                 <ListItemIcon className={ classes.icon }>
                                     <CreateIcon style={ style } />
@@ -281,27 +244,40 @@ class MiniDrawer extends React.Component {
                 <List>
                     <div>
                         <MenuList>
+                            <MenuItem
+                              button
+                              component="a"
+                              href="/invoice"
+                              className={ classes.menuItem }
+                            >
+                                <ListItemIcon className={ classes.icon }>
+                                    <DescriptionIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Listar Notas Fiscais" />
+                            </MenuItem>
+                            <MenuItem
+                              button
+                              component="a"
+                              href="/invoice/create"
+                              className={ classes.menuItem }
+                            >
+                                <ListItemIcon className={ classes.icon }>
+                                    <SendIcon style={ style } />
+                                </ListItemIcon>
+                                <ListItemText style={ style } disableTypography inset primary="Criar Nota Fiscal" />
+                            </MenuItem>
+                        </MenuList>
+                    </div>
+                </List>
+                <Divider />
+                <List>
+                    <div>
+                        <MenuList>
                             <MenuItem button component="a" href="/" className={ classes.menuItem }>
                                 <ListItemIcon className={ classes.icon }>
                                     <TimelineIcon style={ style } />
                                 </ListItemIcon>
                                 <ListItemText style={ style } disableTypography inset primary="Visualizar Analise" />
-                            </MenuItem>
-                            <MenuItem className={ classes.menuItem }>
-                                <ListItemIcon className={ classes.icon }>
-                                    <DeleteIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Lixo" />
-                            </MenuItem>
-                            <MenuItem
-                              className={ classes.menuItem }
-                              selected={ selectedIndex === 5 }
-                              onClick={ event => this.handleListItemClick(event, 5) }
-                            >
-                                <ListItemIcon className={ classes.icon }>
-                                    <ReportIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Spam" />
                             </MenuItem>
                         </MenuList>
                     </div>
