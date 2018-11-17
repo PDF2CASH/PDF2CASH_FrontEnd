@@ -6,6 +6,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
+import Link from 'next/link'
 
 const styles = theme => ({
   cell: {
@@ -205,9 +206,11 @@ class InvoiceIndex extends Component {
                       </Typography>
                     </TableCell>
                     <TableCell className={classes.cell}>
-                      <Button>
-                        <VisibilityIcon />
-                      </Button>
+                      <Link href={{ pathname: '/invoice/show', query: { id: invoice.id } }}>
+                        <Button>
+                          <VisibilityIcon />
+                        </Button>
+                      </Link>
                     </TableCell>
                     <TableCell className={classes.cell}>
                     <Button onClick={() => this.openModal(invoice.id)}>
