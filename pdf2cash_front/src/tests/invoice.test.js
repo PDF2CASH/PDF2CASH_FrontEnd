@@ -21,7 +21,7 @@ describe('invoices pages tests', () => {
         await page.goto(APP);
         let html = await page.evaluate(() => document.body.innerHTML);
         expect(html).toMatch('Listar Notas Fiscais');
-        expect(html).toMatch('00000000000000000000000000000000000000000000');
+        expect(html).toMatch('86180915129564000104550010000027811004640364');
         browser.close();
     }, 160000);
 
@@ -42,12 +42,12 @@ describe('invoices pages tests', () => {
         await page.goto(APP);
         let html = await page.evaluate(() => document.body.innerHTML);
         expect(html).toMatch('Listar Notas Fiscais');
-        expect(html).toMatch('00000000000000000000000000000000000000000000');
-        await page.click("button[id='00000000000000000000000000000000000000000000']");
+        expect(html).toMatch('86180915129564000104550010000027811004640364');
+        await page.click("button[id='86180915129564000104550010000027811004640364']");
         await page.click("button[id='NAO']");
         html = await page.evaluate(() => document.body.innerHTML);
         expect(html).toMatch('Listar Notas Fiscais');
-        expect(html).toMatch('00000000000000000000000000000000000000000000');
+        expect(html).toMatch('86180915129564000104550010000027811004640364');
 
         browser.close();
     }, 160000);
@@ -69,13 +69,13 @@ describe('invoices pages tests', () => {
         await page.goto(APP);
         let html = await page.evaluate(() => document.body.innerHTML);
         expect(html).toMatch('Listar Notas Fiscais');
-        expect(html).toMatch('00000000000000000000000000000000000000000000');
-        await page.click("button[id='00000000000000000000000000000000000000000000']");
+        expect(html).toMatch('86180915129564000104550010000027811004640364');
+        await page.click("button[id='86180915129564000104550010000027811004640364']");
         await page.click("button[id='SIM']");
         await page.goto(APP);
         html = await page.evaluate(() => document.body.innerHTML);
         expect(html).toMatch('Listar Notas Fiscais');
-        expect(html).not.toMatch('00000000000000000000000000000000000000000000');
+        expect(html).not.toMatch('86180915129564000104550010000027811004640364');
 
         browser.close();
     }, 160000);
