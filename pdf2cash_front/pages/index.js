@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
-const styles = theme => ({
+const styles = ({
 });
 
 class Index extends React.Component {
@@ -27,6 +27,5 @@ class Index extends React.Component {
     }
 
 }
-
 
 export default withStyles(styles)(Index);

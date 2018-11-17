@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -15,35 +17,37 @@ const styles = theme => ({
     overflowX: 'auto',
   },
   table: {
-    minWidth: 700,
+    maxWidth: '90%',
+    maxWeight: '90%',
+    overflowX: 'auto',
   },
   cell: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 function SimpleTable(props) {
-  const { classes } = props;
+  const { classes, children } = props;
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.cell}>Data</TableCell>
-            <TableCell className={classes.cell}>Chave de acesso</TableCell>
-            <TableCell className={classes.cell}>Empresa</TableCell>
-            <TableCell className={classes.cell}>CNPJ</TableCell>
-            <TableCell className={classes.cell}>Valor</TableCell>
-            <TableCell className={classes.cell}>Vizualizar</TableCell>
-            <TableCell className={classes.cell}>Excluir</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.children}
-        </TableBody>
-      </Table>
-    </Paper>
+      <Paper className={ classes.root }>
+          <Table className={ classes.table }>
+              <TableHead>
+                  <TableRow>
+                      <TableCell className={ classes.cell }>Data</TableCell>
+                      <TableCell className={ classes.cell }>Chave de acesso</TableCell>
+                      <TableCell className={ classes.cell }>Empresa</TableCell>
+                      <TableCell className={ classes.cell }>CNPJ</TableCell>
+                      <TableCell className={ classes.cell }>Valor</TableCell>
+                      <TableCell className={ classes.cell }>Vizualizar</TableCell>
+                      <TableCell className={ classes.cell }>Excluir</TableCell>
+                  </TableRow>
+              </TableHead>
+              <TableBody>
+                  { children }
+              </TableBody>
+          </Table>
+      </Paper>
   );
 }
 
