@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import {
   Button,
   SnackbarContent,
+  Paper,
+  Typography,
+  Grid,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
@@ -9,6 +12,22 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 const styles = theme => ({
   snackbar: {
     margin: theme.spacing.unit,
+  },
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+    textAlign: 'center',
+    'max-width': '30%',
+    'max-weight': '100%',
+    marginLeft: '32%',
+    marginTop: '10%',
+  },
+  grid: {
+    margin: '5%',
+  },
+  button: {
+    marginTop: '10%',
   },
 });
 
@@ -25,7 +44,7 @@ class WorkerCreate extends Component {
 
     this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeCPF = this.handleChangeCPF.bind(this);
-    this.handleChangeUserName = this. handleChangeUserName.bind(this);
+    this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,6 +59,7 @@ class WorkerCreate extends Component {
       name: event.target.value,
     });
   }
+
   handleChangeUserName(event) {
     this.setState({
       username: event.target.value,
@@ -122,14 +142,18 @@ class WorkerCreate extends Component {
   render() {
     const { classes } = this.props;
     const {
-      username,name, email, cpf, password, errorShow, errors,
+      username, name, email, cpf, password, errorShow, errors,
     } = this.state;
     return (
-        <ValidatorForm
-          onSubmit={ this.handleSubmit }
-        >
-            <h2>CADASTRAR FUNCIONÁRIO</h2>
-            {
+        <Paper className={ classes.root } elevation={ 5 }>
+            <Grid className={ classes.grid }>
+                <ValidatorForm
+                  onSubmit={ this.handleSubmit }
+                >
+                    <Typography variant="h4" color="inherit" className={ classes.grow }>
+          Cadastrar Funcionario
+                    </Typography>
+                    {
                     errorShow && errors.map(
                       error => (
                           <SnackbarContent
@@ -140,59 +164,62 @@ class WorkerCreate extends Component {
                       ),
                     )
                 }
-            <div className="form_worker">
-                <TextValidator
-                  label="Nome"
-                  onChange={ this.handleChangeName }
-                  name="name"
-                  value={ name }
-                  validators={ [ 'required', 'minStringLength:9' ] }
-                  errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
-                />
-                <br />
-                <TextValidator
-                  label="Username"
-                  onChange={ this.handleChangeUserName }
-                  name="username"
-                  value={ username }
-                  validators={ [ 'required', 'minStringLength:9' ] }
-                  errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
-                />
-                <br />
-                <TextValidator
-                  label="CPF"
-                  onChange={ this.handleChangeCPF }
-                  name="cpf"
-                  inputProps={ { maxLength: 11 } }
-                  value={ cpf }
-                  validators={ [ 'required', 'matchRegexp:^([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})$' ] }
-                  errorMessages={ [ 'Este campo é obrigatório', 'Digite um CPF válido' ] }
-                />
-                <br />
-                <TextValidator
-                  label="E-mail"
-                  onChange={ this.handleChangeEmail }
-                  name="email"
-                  value={ email }
-                  validators={ [ 'required', 'isEmail' ] }
-                  errorMessages={ [ 'Este campo é obrigatório', 'Este e-mail não é válido' ] }
-                />
-                <br />
-                <TextValidator
-                  label="Senha"
-                  onChange={ this.handleChangePassword }
-                  name="password"
-                  type="password"
-                  value={ password }
-                  validators={ [ 'required', 'minStringLength:6', 'maxStringLength:30' ] }
-                  errorMessages={ [ 'Este campo é obrigatório', 'Digite uma senha maior que 6 dígitos', 'Digite uma senha menor que 30 dígitos' ] }
-                />
-                <br />
-            </div>
-            <Button type="submit" variant="contained" color="primary">
+                    <div className="form_worker">
+                        <TextValidator
+                          label="Nome"
+                          onChange={ this.handleChangeName }
+                          name="name"
+                          value={ name }
+                          validators={ [ 'required', 'minStringLength:9' ] }
+                          errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
+                        />
+                        <br />
+                        <TextValidator
+                          label="Username"
+                          onChange={ this.handleChangeUserName }
+                          name="username"
+                          value={ username }
+                          validators={ [ 'required', 'minStringLength:9' ] }
+                          errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
+                        />
+                        <br />
+                        <TextValidator
+                          label="CPF"
+                          onChange={ this.handleChangeCPF }
+                          name="cpf"
+                          inputProps={ { maxLength: 11 } }
+                          value={ cpf }
+                          validators={ [ 'required', 'matchRegexp:^([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})$' ] }
+                          errorMessages={ [ 'Este campo é obrigatório', 'Digite um CPF válido' ] }
+                        />
+                        <br />
+                        <TextValidator
+                          label="E-mail"
+                          onChange={ this.handleChangeEmail }
+                          name="email"
+                          value={ email }
+                          validators={ [ 'required', 'isEmail' ] }
+                          errorMessages={ [ 'Este campo é obrigatório', 'Este e-mail não é válido' ] }
+                        />
+                        <br />
+                        <TextValidator
+                          label="Senha"
+                          onChange={ this.handleChangePassword }
+                          name="password"
+                          type="password"
+                          value={ password }
+                          validators={ [ 'required', 'minStringLength:6', 'maxStringLength:30' ] }
+                          errorMessages={ [ 'Este campo é obrigatório', 'Minimo de 6 dígitos', 'Digite uma senha menor que 30 dígitos' ] }
+                        />
+                        <br />
+                    </div>
+                    <Button className={ classes.button } type="submit" variant="contained" color="primary">
                     CADASTRAR
-            </Button>
-        </ValidatorForm>
+                    </Button>
+                </ValidatorForm>
+            </Grid>
+        </Paper>
+
     );
   }
 }
