@@ -292,17 +292,17 @@ class Show extends React.Component {
     async componentDidMount() {
 
         const invoice_id = this.props.router.query.id;
-        const invoice_url = 'http://localhost:8000/api/invoice/invoice/'+invoice_id; 
+        const invoice_url = 'http://localhost:8000/api/invoice/invoice/'+invoice_id+'/';
         const invoice_res = await fetch(invoice_url);
         const invoice = await invoice_res.json();
 
         const receiver_id = await invoice.receiver;
-        const receiver_url = 'http://localhost:8000/api/invoice/receiver/'+receiver_id;
+        const receiver_url = 'http://localhost:8000/api/invoice/receiver/'+receiver_id+'/';
         const receiver_res = await fetch(receiver_url);
         const receiver = await receiver_res.json();
 
         const seller_id = await invoice.seller;
-        const seller_url = 'http://localhost:8000/api/invoice/seller/'+seller_id;
+        const seller_url = 'http://localhost:8000/api/invoice/seller/'+seller_id+'/';
         const seller_res = await fetch(seller_url);
         const seller = await seller_res.json();
 
