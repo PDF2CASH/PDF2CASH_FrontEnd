@@ -1,22 +1,22 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const styles = ({
 });
 
 class Index extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = [];
+  }
 
-    constructor(props) {
-        super(props);
-        this.state= [];
-    }
-
-    render() {
-
-        return (<hello/>);
-    }
-
+  render() {
+    return (
+        <head>
+            <title>PDF2CASH</title>
+        </head>
+    );
+  }
 }
-
 
 export default withStyles(styles)(Index);

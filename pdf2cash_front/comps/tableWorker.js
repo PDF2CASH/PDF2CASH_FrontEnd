@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -18,30 +20,30 @@ const styles = theme => ({
     minWidth: 700,
   },
   cell: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 function SimpleTable(props) {
-  const { classes } = props;
+  const { classes, children } = props;
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.cell}>Nome</TableCell>
-            <TableCell className={classes.cell}>CPF</TableCell>
-            <TableCell className={classes.cell}>Vizualizar</TableCell>
-            <TableCell className={classes.cell}>Editar</TableCell>
-            <TableCell className={classes.cell}>Excluir</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.children}
-        </TableBody>
-      </Table>
-    </Paper>
+      <Paper className={ classes.root }>
+          <Table className={ classes.table }>
+              <TableHead>
+                  <TableRow>
+                      <TableCell className={ classes.cell }>Nome</TableCell>
+                      <TableCell className={ classes.cell }>CPF</TableCell>
+                      <TableCell className={ classes.cell }>Vizualizar</TableCell>
+                      <TableCell className={ classes.cell }>Editar</TableCell>
+                      <TableCell className={ classes.cell }>Excluir</TableCell>
+                  </TableRow>
+              </TableHead>
+              <TableBody>
+                  { children }
+              </TableBody>
+          </Table>
+      </Paper>
   );
 }
 
