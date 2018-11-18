@@ -273,7 +273,7 @@ class MiniDrawer extends React.Component {
                 <List>
                     <div>
                         <MenuList>
-                            <MenuItem button component="a" href="/" className={ classes.menuItem }>
+                            <MenuItem button component="a" href="/graph/graphs" className={ classes.menuItem }>
                                 <ListItemIcon className={ classes.icon }>
                                     <TimelineIcon style={ style } />
                                 </ListItemIcon>

@@ -15,13 +15,7 @@ class Index extends React.Component {
     render() {
 
         return (
-            <iframe
-                src="http://localhost:3030/public/dashboard/2c1a7ad7-8c66-4e6d-8493-73cb5cad0b13"
-                frameborder="0"
-                width="100%"
-                height="90%"
-                allowtransparency
-            />
+            <h1> PDF2CASH </h1>
         );
 
     }
