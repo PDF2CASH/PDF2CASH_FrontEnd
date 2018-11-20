@@ -3,29 +3,27 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "^3.0.1",
+    "babel-eslint": "latest",
+    "babel-loader": "latest",
+    "classnames": "latest",
+    "eslint-loader": "latest",
+    "express": "^4.16.3",
+    "isomorphic-unfetch": "^3.0.0",
+    "jest": "^23.6.0",
+    "jss": "latest",
+    "materialui-pagination": "0.0.6",
     "next": "latest",
+    "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-scripts": "1.1.4",
     "react-form-validator-core": "^0.5.0",
     "react-jss": "latest",
     "react-material-ui-form-validator": "^2.0.2",
-    "prop-types": "latest",
+    "react-scripts": "1.1.4",
     "typeface-roboto": "0.0.54",
-    "whatwg-fetch": "^3.0.0",
-    "@material-ui/core": "latest",
-    "@material-ui/icons": "^3.0.1",
-    "express": "^4.16.3",
-    "isomorphic-unfetch": "^3.0.0",
-    "jss": "latest",
-    "materialui-pagination": "0.0.6"
-  },
-  "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-jest": "^23.6.0",
-    "babel-preset-env": "^1.7.0",
-    "faker": "^4.1.0",
-    "puppeteer": "^1.10.0"
+    "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
     "dev": "next",
@@ -35,5 +33,17 @@
     "test:integration": "jest -c integration/jest.config.js",
     "debug": "NODE_ENV=debug npm test",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "faker": "^4.1.0",
+    "puppeteer": "^1.10.0"
   }
 }
