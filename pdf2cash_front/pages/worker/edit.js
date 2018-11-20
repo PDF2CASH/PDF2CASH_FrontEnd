@@ -34,14 +34,12 @@ class WorkerEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
             username: "",
             cpf: "",
             email: "",
             password: "",
         };
 
-        this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangeCPF = this.handleChangeCPF.bind(this);
         this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
@@ -57,19 +55,11 @@ class WorkerEdit extends Component {
         this.setState({
             id: data['id'],
             cpf: data['cpf'],
-            name: data['name'],
             email: data['email'],
             password: data['password'],
             data_has_loaded: true,
         });
 
-    }
-
-    handleChangeName(event) {
-
-        this.setState({
-            name: event.target.value,
-        });
     }
 
     handleChangeCPF(event) {
@@ -112,7 +102,6 @@ class WorkerEdit extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: this.state.name,
                 cpf: this.state.cpf,
                 username:this.state.username,
                 email: this.state.email,
@@ -161,7 +150,7 @@ class WorkerEdit extends Component {
     render() {
         const { classes } = this.props;
         const {
-      username, name, email, cpf, password, errorShow, errors,
+      username, email, cpf, password, errorShow, errors,
       } = this.state;
         return (
           <Paper className={ classes.root } elevation={ 5 }>
@@ -184,15 +173,6 @@ class WorkerEdit extends Component {
                     )
                 }
                     <div className="form_worker">
-                        <TextValidator
-                          label="Nome"
-                          onChange={ this.handleChangeName }
-                          name="name"
-                          value={ name }
-                          validators={ [ 'required', 'minStringLength:9' ] }
-                          errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
-                        />
-                        <br />
                         <TextValidator
                           label="Username"
                           onChange={ this.handleChangeUserName }
