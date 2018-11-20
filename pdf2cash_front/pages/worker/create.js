@@ -78,6 +78,7 @@ class WorkerCreate extends Component {
   }
 
   async handleSubmit(event) {
+    Authenticate.loginValidationdation();
     event.preventDefault();
     const urlWorker = 'http://0.0.0.0:8000/api/worker/worker/';
     fetch(urlWorker, {

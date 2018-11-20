@@ -11,6 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
 import CustomatizedTable from '../../comps/table';
+import Authenticate from './../auth.js';
 
 const styles = theme => ({
   cell: {
@@ -64,6 +65,7 @@ class InvoiceIndex extends Component {
   }
 
   async componentDidMount() {
+    Authenticate.loginValidationdation();
     const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
@@ -81,6 +83,7 @@ class InvoiceIndex extends Component {
   }
 
   async getInvoices() {
+    Authenticate.loginValidationdation();
     const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();

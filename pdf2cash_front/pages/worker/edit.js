@@ -7,6 +7,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { withRouter } from 'next/router';
 import Typography from '@material-ui/core/Typography';
+import Authenticate from './../auth.js';
 
 const styles = theme => ({
   snackbar: {
@@ -48,6 +49,7 @@ class WorkerEdit extends Component {
     }
 
     async componentDidMount() {
+        Authenticate.loginValidationdation();
         const id = this.props.router.query.id;
         const url = 'http://localhost:8000/api/worker/worker/' + id + '/';
         const res = await fetch(url);
