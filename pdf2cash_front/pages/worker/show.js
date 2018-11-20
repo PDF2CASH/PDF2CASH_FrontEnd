@@ -27,7 +27,7 @@ class WorkerShow extends React.Component {
   async componentDidMount() {
     const { router } = this.props;
     const { id } = router.query;
-    const url = `http://localhost:8008/api/worker/worker/${ id }/`;
+    const url = `http://localhost:8000/api/worker/worker/${ id }/`;
     const res = await fetch(url);
     const worker = await res.json();
     this.setState({

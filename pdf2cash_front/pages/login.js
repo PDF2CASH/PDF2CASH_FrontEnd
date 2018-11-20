@@ -56,7 +56,7 @@ class Login extends Component {
             password:this.state.password
         }))
         event.preventDefault();
-        const url_worker = 'http://localhost:8008/api/authenticate/';
+        const url_worker = 'http://localhost:8000/api/authenticate/';
         fetch(url_worker, {
             method: 'POST',
             body: JSON.stringify({

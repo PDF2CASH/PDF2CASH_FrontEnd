@@ -49,7 +49,7 @@ class WorkerEdit extends Component {
 
     async componentDidMount() {
         const id = this.props.router.query.id;
-        const url = 'http://localhost:8008/api/worker/worker/' + id + '/';
+        const url = 'http://localhost:8000/api/worker/worker/' + id + '/';
         const res = await fetch(url);
         const data = await res.json();
         this.setState({
@@ -94,7 +94,7 @@ class WorkerEdit extends Component {
     async handleSubmit(event) {
         event.preventDefault();
         const id = this.state.id;
-        const url_worker = 'http://0.0.0.0:8008/api/worker/worker/' + id + '/';
+        const url_worker = 'http://0.0.0.0:8000/api/worker/worker/' + id + '/';
         fetch(url_worker, {
             method: 'PATCH',
             headers: {

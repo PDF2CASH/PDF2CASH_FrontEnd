@@ -79,7 +79,7 @@ class WorkerCreate extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const urlWorker = 'http://0.0.0.0:8008/api/worker/worker/';
+    const urlWorker = 'http://0.0.0.0:8000/api/worker/worker/';
     fetch(urlWorker, {
       method: 'POST',
       headers: {

@@ -83,7 +83,7 @@ class AdminCreate extends Component {
     }
 
     async componentDidMount() {
-      const url = 'http://localhost:8008/api/worker/worker/';
+      const url = 'http://localhost:8000/api/worker/worker/';
       const res = await fetch(url);
       const data = await res.json();
       this.setState({
@@ -95,7 +95,7 @@ class AdminCreate extends Component {
     handleSubmit(event){
       event.preventDefault();
 
-      const url_worker = 'http://localhost:8008/api/worker/worker/';
+      const url_worker = 'http://localhost:8000/api/worker/worker/';
       fetch(url_worker, {
           method: 'POST',
           headers: {
