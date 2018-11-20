@@ -5,6 +5,11 @@
   "dependencies": {
     "@material-ui/core": "latest",
     "@material-ui/icons": "^3.0.1",
+    "babel-eslint": "latest",
+    "babel-loader": "latest",
+    "chart.js": "^2.7.3",
+    "classnames": "latest",
+    "eslint-loader": "latest",
     "express": "^4.16.3",
     "isomorphic-unfetch": "^3.0.0",
     "jest": "^23.6.0",
@@ -13,17 +18,14 @@
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
+    "react-chartjs-2": "^2.7.4",
     "react-dom": "latest",
     "react-form-validator-core": "^0.5.0",
     "react-jss": "latest",
     "react-material-ui-form-validator": "^2.0.2",
     "react-scripts": "1.1.4",
     "typeface-roboto": "0.0.54",
-    "whatwg-fetch": "^3.0.0",
-    "eslint-loader": "latest",
-    "babel-eslint": "latest",
-    "babel-loader": "latest",
-    "classnames": "latest"
+    "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
     "dev": "next",

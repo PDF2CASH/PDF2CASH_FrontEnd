@@ -82,16 +82,6 @@ class AdminCreate extends Component {
       }
     }
 
-    async componentDidMount() {
-      const url = 'http://localhost:8000/api/worker/worker/';
-      const res = await fetch(url);
-      const data = await res.json();
-      this.setState({
-        workers: data,
-      });
-      this.validateAdmin;
-    }
-
     handleSubmit(event){
       event.preventDefault();
 
