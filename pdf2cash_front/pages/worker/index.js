@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import CustomatizedTable from '../../comps/tableWorker';
 import { TableRow, TableCell, Button, Grid } from '@material-ui/core';
@@ -8,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
 import Modal from '@material-ui/core/Modal';
+import Authenticate  from '../auth';
 
 
 const styles = theme => ({
@@ -58,8 +60,15 @@ class WorkerIndex extends Component{
   }
 
   async componentDidMount() {
-    const url = 'http://localhost:8008/api/worker/worker/';
-    const res = await fetch(url);
+    const url = 'http://localhost:8000/api/worker/worker/';
+    const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+         'Content-Type': 'application/json',
+         'Authorization': 'JWT ' + Authenticate.getToken()
+    },
+    credentials: 'omit',
+  });
     const data_workers = await res.json();
     this.setState({
       workers: data_workers,
@@ -68,15 +77,15 @@ class WorkerIndex extends Component{
   }
 
   async getWorkers() {
-    const url = 'http://localhost:8008/api/worker/worker/';
-    const res = await fetch(url);
+    const url = 'http://localhost:8000/api/worker/worker/';
+    const res = await fetch(url)
     const data_workers = await res.json();
     this.setState({ workers: data_workers });
   }
 
   async delete(){
     const id = await this.state.id;
-    const url = 'http://localhost:8008/api/worker/worker/'+ id + '/';
+    const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
     this.closeModal();
     this.getWorkers();
@@ -113,6 +122,7 @@ class WorkerIndex extends Component{
               Deseja realmete deletar esse funcionário ?
             </Typography>
             <Button
+              id = 'SIM'
               className={classes.buttom}
               color='primary'
               onClick={() => this.delete(this.state.id)}
@@ -120,6 +130,7 @@ class WorkerIndex extends Component{
               SIM
             </Button>
             <Button
+              id = 'NAO'
               className={classes.buttom}
               color='secondary'
               onClick={this.closeModal}
@@ -136,7 +147,7 @@ class WorkerIndex extends Component{
               <TableRow key={worker.id}>
                 <TableCell className={classes.cell}>
                   <Typography>
-                    {worker.name}
+                    {worker.username}
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.cell}>
@@ -153,7 +164,9 @@ class WorkerIndex extends Component{
                 </TableCell>
                 <TableCell className={classes.cell}>
                   <Link href={{ pathname: '/worker/edit', query: { id: worker.id } }}>
-                    <Button>
+                    <Button
+                    id = 'EDIT'
+                    >
                       <CreateIcon />
                     </Button>
                   </Link>

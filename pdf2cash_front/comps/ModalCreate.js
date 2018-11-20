@@ -5,6 +5,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
+import Modal from '@material-ui/core/Modal';
 
 const styles = theme => ({
   input: {
@@ -23,9 +24,6 @@ const styles = theme => ({
     marginLeft: '32%',
     marginTop: '10%',
   },
-  grid: {
-    margin: '5%',
-  },
   button: {
     marginTop: '10%',
   },
@@ -43,9 +41,12 @@ class InvoiceCreate extends Component {
     super(props);
     this.state = {
       file: null,
+      open: true,
     }
     this.setFile = this.setFile.bind(this);
     this.sendForm = this.sendForm.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   setFile(event) {
@@ -60,11 +61,29 @@ class InvoiceCreate extends Component {
     fetch(url, { method: 'POST', body: data });
   }
 
+  openModal() {
+    this.setState({
+      open: true,
+    });
+  }
+
+  closeModal() {
+    this.setState({
+      open: false,
+    });
+  }
+
   render() {
+    const { open } = this.state;
     const { classes } = this.props;
 
     return (
-        <div>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={ open }
+          onClose={ this.closeModal }
+        >
             <Paper className={ classes.root } elevation={ 5 }>
                 <Typography variant="h4" color="inherit" className={ classes.grow }>
           Criar Nota Fiscal
@@ -80,9 +99,9 @@ class InvoiceCreate extends Component {
                       multiple
                       type="file"
                     />
-                    <label htmlFor="contained-button-file">
+                    <label htmlFor="contained-button-files">
                         <Button variant="contained" component="span" color="primary" className={ classes.button }>
-          Upload
+                          Upload
                         </Button>
                     </label>
                     <br />
@@ -92,7 +111,7 @@ class InvoiceCreate extends Component {
                     </Button>
                 </form>
             </Paper>
-        </div>
+        </Modal>
     )
   }
 }

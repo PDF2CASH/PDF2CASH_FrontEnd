@@ -31,14 +31,13 @@ class AdminCreate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
             cpf: "",
             email: "",
             password: "",
             adminExists: false,
         };
 
-        this.handleChangeName = this.handleChangeName.bind(this);
+        this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleChangeCPF = this.handleChangeCPF.bind(this);
         this.handleChangeEmail = this.handleChangeEmail.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -49,10 +48,10 @@ class AdminCreate extends Component {
         document.title = "Cadastrar funcionário";
     }
 
-    handleChangeName(event) {
+    handleChangeUserName(event) {
 
         this.setState({
-            name: event.target.value,
+            username: event.target.value,
         });
     }
 
@@ -84,7 +83,7 @@ class AdminCreate extends Component {
     }
 
     async componentDidMount() {
-      const url = 'http://localhost:8008/api/worker/worker/';
+      const url = 'http://localhost:8000/api/worker/worker/';
       const res = await fetch(url);
       const data = await res.json();
       this.setState({
@@ -104,7 +103,7 @@ class AdminCreate extends Component {
               'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-              name: this.state.name,
+              username:this.state.username,
               cpf: this.state.cpf,
               email: this.state.email,
               password: this.state.password,
@@ -144,11 +143,11 @@ class AdminCreate extends Component {
                 }
                 <div className="form_worker">
                     <TextValidator
-                        label="Nome"
-                        onChange={this.handleChangeName}
+                        label="username"
+                        onChange={this.handleChangeUserName}
                         name="name"
                         maxWeight="40%"
-                        value={this.state.name}
+                        value={this.state.username}
                         validators={['required', 'minStringLength:9']}
                         errorMessages={['Este campo é obrigatório', 'Digite um nome válido']}
                     /><br />

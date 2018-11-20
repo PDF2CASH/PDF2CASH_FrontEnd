@@ -28,7 +28,7 @@ const styles = theme => ({
     }
 });
 
-class Login extends Component { 
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,7 +42,7 @@ class Login extends Component {
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleClose = this.handleClose.bind(this);
-    } 
+    }
 
     componentDidMount(){
         if(Authenticate.checkLogin()){
@@ -114,8 +114,8 @@ class Login extends Component {
 
             {
                 this.state.msg ? (
-                    <Snackbar 
-                        variant='error' 
+                    <Snackbar
+                        variant='error'
                         message={this.state.msg}
                         className={classes.margin}
                     />
@@ -130,7 +130,7 @@ class Login extends Component {
                             id='username'
                             label='Username'
                             value={this.state.username}
-                            onChange={this.handleChangeUsername} 
+                            onChange={this.handleChangeUsername}
                         />
                         <TextField
                             type='passsword-input'
@@ -139,9 +139,9 @@ class Login extends Component {
                             value={this.state.password}
                             onChange={this.handleChangePassword}
                         />
-                        <Button  
-                            className={classes.button}  
-                            type='submit' 
+                        <Button
+                            className={classes.button}
+                            type='submit'
                             variant='contained'
                             color='primary'
                         >
