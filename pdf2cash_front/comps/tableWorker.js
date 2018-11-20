@@ -32,7 +32,7 @@ function SimpleTable(props) {
           <Table className={ classes.table }>
               <TableHead>
                   <TableRow>
-                      <TableCell className={ classes.cell }>Nome</TableCell>
+                      <TableCell className={ classes.cell }>Username</TableCell>
                       <TableCell className={ classes.cell }>CPF</TableCell>
                       <TableCell className={ classes.cell }>Vizualizar</TableCell>
                       <TableCell className={ classes.cell }>Editar</TableCell>

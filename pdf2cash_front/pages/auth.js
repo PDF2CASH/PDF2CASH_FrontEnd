@@ -37,7 +37,7 @@ export default class Authenticate {
   }
 
   static authValidation() {
-    const urlVerify = 'http://localhost:8008/api/worker/api-token-verify/';
+    const urlVerify = 'http://localhost:8000/api/worker/api-token-verify/';
     fetch(urlVerify, {
       method: 'POST',
       body: JSON.stringify({ token: Authenticate.getToken() }),
@@ -54,7 +54,7 @@ export default class Authenticate {
   }
 
   static refresh() {
-    const urlRefresh = 'http://localhost:8008/api/worker/refresh/';
+    const urlRefresh = 'http://localhost:8000/api/worker/refresh/';
     fetch(urlRefresh, {
       method: 'POST',
       body: JSON.stringify({ token: Authenticate.getToken() }),

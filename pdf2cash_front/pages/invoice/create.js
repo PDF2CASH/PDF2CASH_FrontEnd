@@ -54,7 +54,7 @@ class InvoiceCreate extends Component {
 
   sendForm() {
     const { file } = this.state;
-    const url = 'http://localhost:8000/api/invoice/invoice/';
+    const url = 'http://localhost:8008/api/invoice/invoice/';
     const data = new FormData();
     data.append('file', file);
     fetch(url, { method: 'POST', body: data });

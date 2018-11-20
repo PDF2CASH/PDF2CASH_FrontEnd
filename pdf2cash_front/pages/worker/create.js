@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Authenticate  from '../auth';
 
 const styles = theme => ({
   snackbar: {
@@ -35,14 +36,12 @@ class WorkerCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
       username: '',
       cpf: '',
       email: '',
       password: '',
     };
 
-    this.handleChangeName = this.handleChangeName.bind(this);
     this.handleChangeCPF = this.handleChangeCPF.bind(this);
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
@@ -52,12 +51,6 @@ class WorkerCreate extends Component {
 
   async componentDidMount() {
     document.title = 'Cadastrar funcionário';
-  }
-
-  handleChangeName(event) {
-    this.setState({
-      name: event.target.value,
-    });
   }
 
   handleChangeUserName(event) {
@@ -85,23 +78,21 @@ class WorkerCreate extends Component {
   }
 
   async handleSubmit(event) {
-    const {
-      name, username, cpf, email, password,
-    } = this.state;
     event.preventDefault();
     const urlWorker = 'http://0.0.0.0:8000/api/worker/worker/';
     fetch(urlWorker, {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+           'Content-Type': 'application/json',
+           'Authorization': 'JWT ' + Authenticate.getToken()
       },
+      credentials: 'omit',
       body: JSON.stringify({
-        name,
-        username,
-        cpf,
-        email,
-        password,
+        username:this.state.username,
+        cpf: this.state.cpf,
+        email: this.state.email,
+        password: this.state.password,
+        permission:  '1',
       }),
     })
       .then((response) => {
@@ -142,7 +133,7 @@ class WorkerCreate extends Component {
   render() {
     const { classes } = this.props;
     const {
-      username, name, email, cpf, password, errorShow, errors,
+      username, email, cpf, password, errorShow, errors,
     } = this.state;
     return (
         <Paper className={ classes.root } elevation={ 5 }>
@@ -165,15 +156,6 @@ class WorkerCreate extends Component {
                     )
                 }
                     <div className="form_worker">
-                        <TextValidator
-                          label="Nome"
-                          onChange={ this.handleChangeName }
-                          name="name"
-                          value={ name }
-                          validators={ [ 'required', 'minStringLength:9' ] }
-                          errorMessages={ [ 'Este campo é obrigatório', 'Digite um nome válido' ] }
-                        />
-                        <br />
                         <TextValidator
                           label="Username"
                           onChange={ this.handleChangeUserName }
