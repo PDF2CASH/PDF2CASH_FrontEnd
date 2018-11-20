@@ -79,4 +79,8 @@ describe('on register admin page', () => {
     await expect(html).toMatch('Minimo de 6 dígitos');
     browser.close();
   }, 160000);
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> development
