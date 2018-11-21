@@ -5,6 +5,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
+import Authenticate from './../auth.js';
 
 const styles = theme => ({
   input: {
@@ -53,6 +54,7 @@ class InvoiceCreate extends Component {
   }
 
   sendForm() {
+    Authenticate.loginValidationdation();
     const { file } = this.state;
     const url = 'http://localhost:8008/api/invoice/invoice/';
     const data = new FormData();

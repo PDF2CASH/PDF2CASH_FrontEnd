@@ -13,9 +13,9 @@ const styles = theme => ({
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
         textAlign: 'center',
-        maxWidth: '30%',
+        maxWidth: '25%',
         maxWeight: '100%',
-        marginLeft: '32%',
+        marginLeft: '35%',
         marginTop: '10%',
     },
     button: {

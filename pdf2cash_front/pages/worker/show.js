@@ -8,6 +8,7 @@ import {
   TextField,
   CircularProgress,
 } from '@material-ui/core';
+import Authenticate from './../auth.js';
 
 const styles = ({
   cell: {
@@ -25,6 +26,7 @@ class WorkerShow extends React.Component {
   }
 
   async componentDidMount() {
+    Authenticate.loginValidationdation();
     const { router } = this.props;
     const { id } = router.query;
     const url = `http://localhost:8000/api/worker/worker/${ id }/`;

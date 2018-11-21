@@ -15,6 +15,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Authenticate from './../auth.js';
 
 const styles = ({
 
@@ -49,6 +50,7 @@ class Show extends React.Component {
   }
 
   async componentDidMount() {
+    Authenticate.loginValidationdation();
     const { router } = this.props;
     const invoiceId = router.query.id;
     const invoiceUrl = `http://localhost:8008/api/invoice/invoice/${ invoiceId }`;
