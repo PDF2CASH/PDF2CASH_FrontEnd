@@ -10,13 +10,14 @@ import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
 import Modal from '@material-ui/core/Modal';
 import Authenticate  from '../auth';
-
+import AddIcon from '@material-ui/icons/Add';
+import WorkerCreate from '../../comps/createWorker'
 
 const styles = theme => ({
   cell: {
     textAlign: 'center'
   },
-  paper: {
+  paperDelete: {
     position: 'absolute',
     width: theme.spacing.unit * 50,
     backgroundColor: theme.palette.background.paper,
@@ -24,11 +25,19 @@ const styles = theme => ({
     padding: theme.spacing.unit * 4,
     textAlign: 'center',
   },
+  paperCreate: {
+    position: 'absolute',
+    width: theme.spacing.unit * 70,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+    textAlign: 'center'
+  },
   warning: {
     textAlign: 'center',
     marginTop: 100,
   },
-  buttom: {
+  button: {
     marginTop: 30,
   },
 });
@@ -50,13 +59,16 @@ class WorkerIndex extends Component{
     super(props);
     this.state = {
       workers: [],
-      open: false,
+      openDelete: false,
+      openCreate: false,
       id: 0,
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openModalDelete = this.openModalDelete.bind(this);
+    this.closeModalDelete = this.closeModalDelete.bind(this);
+    this.openModalCreate = this.openModalCreate.bind(this);
+    this.closeModalCreate = this.closeModalCreate.bind(this);
   }
 
   async componentDidMount() {
@@ -72,7 +84,8 @@ class WorkerIndex extends Component{
     const data_workers = await res.json();
     this.setState({
       workers: data_workers,
-      open: false,
+      openDelete: false,
+      openCreate: false,
     });
   }
 
@@ -91,47 +104,76 @@ class WorkerIndex extends Component{
     this.getWorkers();
   }
 
-  openModal(id){
-    this.setState ({
-      open: true,
-      id: id,
+  openModalDelete(id) {
+    this.setState({
+      openDelete: true,
+      id,
     });
   }
 
-  closeModal(){
+  closeModalDelete() {
     this.setState({
-      open: false
+      openDelete: false,
+    });
+  }
+
+  openModalCreate() {
+    this.setState({
+      openCreate: true,
+    });
+  }
+
+  async closeModalCreate() {
+    this.setState({
+      openCreate: false
     });
   }
 
   render() {
     const { classes } = this.props;
+    const {
+      openDelete,
+      openCreate,
+      id,
+      workers
+    } = this.state;
     return (
       <Grid>
         <Typography variant="display2">
           Listar Funcionarios
         </Typography>
+        <Button
+              variant="fab"
+              color="secondary"
+              aria-label="Add"
+              className={classes.buttonCreate}
+              onClick={() => this.openModalCreate()}
+            >
+              <AddIcon />
+            </Button>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={this.closeModal}
+          open={openDelete}
+          onClose={this.closeModalDelete}
         >
           <Grid style={getModalStyle()} className={classes.paper}>
             <Typography variant='h6' className={classes.cell} >
-              Deseja realmete deletar esse funcionário ?
+              Deseja realmente deletar esse funcionário ?
             </Typography>
             <Button
               id = 'SIM'
-              className={classes.buttom}
+              variant = "contained"
+              className={classes.button}
               color='primary'
-              onClick={() => this.delete(this.state.id)}
+              onClick={() => this.delete(id)}
             >
               SIM
             </Button>
             <Button
               id = 'NAO'
-              className={classes.buttom}
+              variant = "contained"
+              className={classes.button}
               color='secondary'
               onClick={this.closeModal}
             >
@@ -139,11 +181,21 @@ class WorkerIndex extends Component{
             </Button>
           </Grid>
         </Modal>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={ openCreate }
+          onClose={ this.closeModalCreate }
+        >
+          <Grid style={ getModalStyle() } className={ classes.paperCreate }>
+            < WorkerCreate />
+          </Grid>
+        </Modal>
         {
-          this.state.workers.length ? (
+          workers.length ? (
         <CustomatizedTable>
           {
-            this.state.workers.map(worker => (
+            workers.map(worker => (
               <TableRow key={worker.id}>
                 <TableCell className={classes.cell}>
                   <Typography>

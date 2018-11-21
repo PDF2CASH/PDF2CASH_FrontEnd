@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {
-  Button, Typography,
+  Button,
+  Typography,
+  Grid,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -27,7 +29,7 @@ const styles = theme => ({
     margin: '5%',
   },
   button: {
-    marginTop: '10%',
+    marginTop: '1%',
   },
   buttonSend: {
     marginLeft: '85%',
@@ -62,37 +64,40 @@ class InvoiceCreate extends Component {
 
   render() {
     const { classes } = this.props;
-
+    const { file } = this.state;
+    
     return (
-        <div>
-            <Paper className={ classes.root } elevation={ 5 }>
-                <Typography variant="h4" color="inherit" className={ classes.grow }>
-          Criar Nota Fiscal
-                </Typography>
-                <br />
-                <br />
-                <form onSubmit={ this.sendForm }>
-                    <input
-                      accept=".pdf"
-                      className={ classes.input }
-                      id="contained-button-file"
-                      onChange={ this.setFile }
-                      multiple
-                      type="file"
-                    />
-                    <label htmlFor="contained-button-file">
-                        <Button variant="contained" component="span" color="primary" className={ classes.button }>
-          Upload
-                        </Button>
-                    </label>
-                    <br />
-                    <br />
-                    <Button variant="fab" color="secondary" aria-label="Add" className={ classes.buttonSend }>
-                        <AddIcon />
-                    </Button>
-                </form>
-            </Paper>
-        </div>
+      <Grid>
+          <Typography variant="h4" color="inherit" className={ classes.grow }>
+            Criar Nota Fiscal
+          </Typography>
+          <br />
+          <Typography variant="h6" color="inherit" className={ classes.grow }>
+          {
+            file != null ? 
+              file['name']
+               : ''
+          }
+          </Typography>
+          <form onSubmit={ this.sendForm }>
+              <input
+                accept=".pdf"
+                className={ classes.input }
+                id="contained-button-file"
+                onChange={ this.setFile }
+                multiple
+                type="file"
+              />
+              <label htmlFor="contained-button-file">
+                  <Button variant="contained" component="span" color="primary" className={ classes.button }>
+                    Upload
+                  </Button>
+              </label>
+              <Button type='submit' variant="fab" color="secondary" aria-label="Add" className={ classes.buttonSend }>
+                  <AddIcon />
+              </Button>
+          </form>
+        </Grid>
     )
   }
 }
