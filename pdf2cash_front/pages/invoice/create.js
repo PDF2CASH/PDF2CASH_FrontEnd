@@ -5,7 +5,9 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
-import Authenticate from './../auth.js';
+import Authenticate  from '../auth';
+import { FilePond, File, registerPlugin } from 'react-filepond';
+import __all__ from 'filepond';
 
 const styles = theme => ({
   input: {
@@ -43,7 +45,7 @@ class InvoiceCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      file: null,
+      files: []
     }
     this.setFile = this.setFile.bind(this);
     this.sendForm = this.sendForm.bind(this);
@@ -53,18 +55,28 @@ class InvoiceCreate extends Component {
     this.setState({ file: event.target.files[ 0 ] });
   }
 
-  sendForm() {
+  sendForm(event) {
     Authenticate.loginValidationdation();
+    event.preventDefault();
     const { file } = this.state;
     const url = 'http://localhost:8008/api/invoice/invoice/';
     const data = new FormData();
     data.append('file', file);
-    fetch(url, { method: 'POST', body: data });
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+           'Content-Type': 'application/json',
+           'Authorization': 'JWT ' + Authenticate.getToken()
+      },
+      credentials: 'omit',
+      body: data
+    })
   }
 
   render() {
     const { classes } = this.props;
-
+    console.log(this.state.files);
     return (
         <div>
             <Paper className={ classes.root } elevation={ 5 }>
@@ -73,26 +85,22 @@ class InvoiceCreate extends Component {
                 </Typography>
                 <br />
                 <br />
-                <form onSubmit={ this.sendForm }>
-                    <input
-                      accept=".pdf"
-                      className={ classes.input }
-                      id="contained-button-file"
-                      onChange={ this.setFile }
-                      multiple
-                      type="file"
-                    />
-                    <label htmlFor="contained-button-file">
-                        <Button variant="contained" component="span" color="primary" className={ classes.button }>
-          Upload
-                        </Button>
-                    </label>
-                    <br />
-                    <br />
-                    <Button variant="fab" color="secondary" aria-label="Add" className={ classes.buttonSend }>
-                        <AddIcon />
-                    </Button>
-                </form>
+                <FilePond allowMultiple={true} 
+                          maxFiles={3} 
+                          server="http://localhost:8008/api/invoice/invoice/"
+                          onupdatefiles={(fileItems) => {
+                              // Set current file objects to this.state
+                              this.setState({
+                                  files: fileItems.map(fileItem => fileItem.file)
+                              });
+                          }}>
+                    
+                    {/* Update current files  */}
+                    {this.state.files.map(file => (
+                        <File key={file} src={file} origin="local" />
+                    ))}
+                    
+                </FilePond>
             </Paper>
         </div>
     )
