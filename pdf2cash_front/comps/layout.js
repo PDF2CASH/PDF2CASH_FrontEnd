@@ -138,7 +138,6 @@ class MiniDrawer extends React.Component {
 
   logout() {
     Authenticate.logout();
-    window.location.href = 'http://localhost:3000/login';
   }
 
   render() {

@@ -133,7 +133,7 @@ class Login extends Component {
                             onChange={this.handleChangeUsername}
                         />
                         <TextField
-                            type='passsword-input'
+                            type='password'
                             id='password'
                             label='Password'
                             value={this.state.password}
