@@ -6,6 +6,7 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Authenticate from './auth.js';
 
 
 const styles = theme => ({
@@ -83,6 +84,7 @@ class AdminCreate extends Component {
     }
 
     async componentDidMount() {
+      Authenticate.loginValidationdation();
       const url = 'http://localhost:8000/api/worker/worker/';
       const res = await fetch(url);
       const data = await res.json();
@@ -94,7 +96,7 @@ class AdminCreate extends Component {
 
     handleSubmit(event){
       event.preventDefault();
-
+      Authenticate.loginValidationdation();
       const url_worker = 'http://localhost:8000/api/worker/worker/';
       fetch(url_worker, {
           method: 'POST',

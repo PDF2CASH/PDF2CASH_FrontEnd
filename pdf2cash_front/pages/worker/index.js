@@ -72,6 +72,7 @@ class WorkerIndex extends Component{
   }
 
   async componentDidMount() {
+    Authenticate.loginValidationdation();
     const url = 'http://localhost:8000/api/worker/worker/';
     const res = await fetch(url, {
     method: 'GET',

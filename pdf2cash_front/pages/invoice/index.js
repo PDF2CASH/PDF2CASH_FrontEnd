@@ -78,6 +78,7 @@ class InvoiceIndex extends Component {
   }
 
   async componentDidMount() {
+    Authenticate.loginValidationdation();
     const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice,
       {
@@ -103,6 +104,7 @@ class InvoiceIndex extends Component {
   }
 
   async getInvoices() {
+    Authenticate.loginValidationdation();
     const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
