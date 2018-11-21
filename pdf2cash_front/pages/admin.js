@@ -84,7 +84,7 @@ class AdminCreate extends Component {
     }
 
     async componentDidMount() {
-      Authenticate.loginValidationdation();
+     
       const url = 'http://localhost:8000/api/worker/worker/';
       const res = await fetch(url);
       const data = await res.json();
@@ -96,7 +96,7 @@ class AdminCreate extends Component {
 
     handleSubmit(event){
       event.preventDefault();
-      Authenticate.loginValidationdation();
+  
       const url_worker = 'http://localhost:8000/api/worker/worker/';
       fetch(url_worker, {
           method: 'POST',
@@ -114,7 +114,7 @@ class AdminCreate extends Component {
       })
       .then((response) => {
           if (response.ok) {
-              window.location.href = "http://localhost:3000/worker";
+              window.location.href = "http://localhost:3000/login";
           }
           else
               return response.json()

@@ -21,6 +21,7 @@ export default class Authenticate {
 
   static logout() {
     localStorage.removeItem('token');
+    window.location.href = 'http://localhost:3000/login';
   }
 
   static loginValidationdation() {
@@ -54,7 +55,7 @@ export default class Authenticate {
   }
 
   static refresh() {
-    const urlRefresh = 'http://localhost:8000/api/worker/refresh/';
+    const urlRefresh = 'http://localhost:8000/api/refresh/';
     fetch(urlRefresh, {
       method: 'POST',
       body: JSON.stringify({ token: Authenticate.getToken() }),
