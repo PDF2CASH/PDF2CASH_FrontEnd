@@ -8,6 +8,9 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { withRouter } from 'next/router';
 import Typography from '@material-ui/core/Typography';
 import Authenticate from './../auth.js';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = theme => ({
   snackbar: {
@@ -51,7 +54,7 @@ class WorkerEdit extends Component {
     async componentDidMount() {
         Authenticate.loginValidationdation();
         const id = this.props.router.query.id;
-        const url = 'http://localhost:8000/api/worker/worker/' + id + '/';
+        const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/' + id + '/';
         const res = await fetch(url);
         const data = await res.json();
         this.setState({
@@ -96,7 +99,7 @@ class WorkerEdit extends Component {
     async handleSubmit(event) {
         event.preventDefault();
         const id = this.state.id;
-        const url_worker = 'http://0.0.0.0:8000/api/worker/worker/' + id + '/';
+        const url_worker = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/' + id + '/';
         fetch(url_worker, {
             method: 'PATCH',
             headers: {

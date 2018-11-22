@@ -9,6 +9,9 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Authenticate  from '../auth';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = theme => ({
   snackbar: {
@@ -80,7 +83,7 @@ class WorkerCreate extends Component {
   async handleSubmit(event) {
     Authenticate.loginValidationdation();
     event.preventDefault();
-    const urlWorker = 'http://0.0.0.0:8000/api/worker/worker/';
+    const urlWorker = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/';
     fetch(urlWorker, {
       method: 'POST',
       headers: {

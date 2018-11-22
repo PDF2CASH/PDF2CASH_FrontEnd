@@ -12,6 +12,10 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
 import CustomatizedTable from '../../comps/table';
 import Authenticate from './../auth.js';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+
 
 const styles = theme => ({
   cell: {
@@ -66,7 +70,7 @@ class InvoiceIndex extends Component {
 
   async componentDidMount() {
     Authenticate.loginValidationdation();
-    const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
+    const urlInvoice = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
     this.setState({
@@ -74,7 +78,7 @@ class InvoiceIndex extends Component {
       open: false,
     });
 
-    const urlSeller = 'http://localhost:8008/api/invoice/seller/';
+    const urlSeller = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/seller/';
     const resSeller = await fetch(urlSeller);
     const dataSeller = await resSeller.json();
     this.setState({ sellers: dataSeller });
@@ -84,12 +88,12 @@ class InvoiceIndex extends Component {
 
   async getInvoices() {
     Authenticate.loginValidationdation();
-    const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
+    const urlInvoice = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
     this.setState({ invoices: dataInvoice });
 
-    const urlSeller = 'http://localhost:8008/api/invoice/seller/';
+    const urlSeller = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/seller/';
     const resSeller = await fetch(urlSeller);
     const dataSeller = await resSeller.json();
     this.setState({ sellers: dataSeller });
@@ -99,7 +103,7 @@ class InvoiceIndex extends Component {
 
   async delete() {
     const { id } = await this.state;
-    const url = `http://localhost:8008/api/invoice/invoice/${ id }/`;
+    const url = publicRuntimeConfig.invoiceHostDomain+`/api/invoice/invoice/${ id }/`;
     await fetch(url, { method: 'DELETE' });
     this.closeModal();
     this.getInvoices();
