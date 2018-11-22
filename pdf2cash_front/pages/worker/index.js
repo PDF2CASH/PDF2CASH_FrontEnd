@@ -120,7 +120,7 @@ class WorkerIndex extends Component{
         >
           <Grid style={getModalStyle()} className={classes.paper}>
             <Typography variant='h6' className={classes.cell} >
-              Deseja realmete deletar esse funcionário ?
+              Deseja realmente deletar esse funcionário ?
             </Typography>
             <Button
               id = 'SIM'

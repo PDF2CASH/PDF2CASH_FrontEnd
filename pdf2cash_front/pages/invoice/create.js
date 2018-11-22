@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
 import Authenticate  from '../auth';
 import { FilePond, File, registerPlugin } from 'react-filepond';
-import __all__ from 'filepond';
+//import '../../comps/dist/filepond.min.css';
 
 const styles = theme => ({
   input: {
@@ -49,31 +49,29 @@ class InvoiceCreate extends Component {
     }
     this.setFile = this.setFile.bind(this);
     this.sendForm = this.sendForm.bind(this);
+    this.sendFile = this.sendFile.bind(this);
   }
 
   setFile(event) {
     this.setState({ file: event.target.files[ 0 ] });
   }
 
-  sendForm(event) {
+  async sendFile(data){
+    console.log('BBBBBBBBBBBBBBB');
     Authenticate.loginValidationdation();
-    event.preventDefault();
-    const { file } = this.state;
-    const url = 'http://localhost:8008/api/invoice/invoice/';
-    const data = new FormData();
-    data.append('file', file);
-
-    fetch(url, {
-      method: 'POST',
-      headers: {
-           'Content-Type': 'application/json',
+    const A = await fetch(
+      'http://localhost:8008/api/invoice/invoice/', 
+      {
+        method: 'POST',
+        headers: {
            'Authorization': 'JWT ' + Authenticate.getToken()
-      },
-      credentials: 'omit',
-      body: data
-    })
+        },
+        credentials: 'omit',
+        body: data
+      })
+      console.log(A);
   }
-
+  
   render() {
     const { classes } = this.props;
     console.log(this.state.files);
@@ -85,22 +83,26 @@ class InvoiceCreate extends Component {
                 </Typography>
                 <br />
                 <br />
-                <FilePond allowMultiple={true} 
-                          maxFiles={3} 
-                          server="http://localhost:8008/api/invoice/invoice/"
+                <form onSubmit={this.sendForm}>
+                <FilePond allowMultiple={true}
+                          className={ classes.root }
                           onupdatefiles={(fileItems) => {
                               // Set current file objects to this.state
                               this.setState({
                                   files: fileItems.map(fileItem => fileItem.file)
                               });
                           }}>
-                    
+
                     {/* Update current files  */}
                     {this.state.files.map(file => (
                         <File key={file} src={file} origin="local" />
                     ))}
                     
                 </FilePond>
+                <Button type='submit'>
+                ENVIAR
+                </Button>
+                </form>
             </Paper>
         </div>
     )
