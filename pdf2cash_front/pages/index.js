@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Authenticate  from './auth';
 import { Grid } from '@material-ui/core';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar } from 'react-chartjs-2';
 
 const styles = ({
     chart: {
@@ -78,10 +78,29 @@ class Index extends Component {
                 },
             ]
         }
+        
+        const urlQ = 'http://localhost:8008/api/invoice/chart_qtd_per_time/';
+        const resQ = await fetch(urlQ, head);
+        const dataQ = await resQ.json();
+
+        const chart_dataQtd = await {
+            labels: dataQ.date,
+            datasets: [{
+                label: 'Quantidade de notas/Tempo',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: dataQ.count
+            }, ]
+        }
+
         await this.setState({
             chart_data,
             chart_dataM,
-            chart_dataY
+            chart_dataY,
+            chart_dataQtd
         });
     }
 
@@ -90,7 +109,8 @@ class Index extends Component {
         const {
             chart_data,
             chart_dataM,
-            chart_dataY
+            chart_dataY,
+            chart_dataQtd
         } = this.state;
 
         return (
@@ -115,13 +135,31 @@ class Index extends Component {
                         }}
                     />
                 </Grid>
-                <Grid>
+                {/* <Grid>
                     <Line
                         data={chart_dataY}
                         height={250}
                         classesName={classes.chart}
                         options={{
                             maintainAspectRatio: false
+                        }}
+                    />
+                </Grid> */}
+                <Grid>
+                    <Bar
+                        data={chart_dataQtd}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
                         }}
                     />
                 </Grid>
