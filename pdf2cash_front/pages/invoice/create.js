@@ -56,6 +56,18 @@ class InvoiceCreate extends Component {
     this.setState({ file: event.target.files[ 0 ] });
   }
 
+  sendForm(event) {
+    console.log('AAAAAAAAAAAA');
+    event.preventDefault();
+    const { files } = this.state;
+    var data = new FormData();
+    for(let i = 0; i<files.length; i+=1){
+      data.append('file', files[i]);
+      this.sendFile(data);
+      data = new FormData();
+    }
+  }
+
   async sendFile(data){
     console.log('BBBBBBBBBBBBBBB');
     Authenticate.loginValidationdation();
@@ -72,6 +84,7 @@ class InvoiceCreate extends Component {
       console.log(A);
   }
   
+
   render() {
     const { classes } = this.props;
     console.log(this.state.files);
