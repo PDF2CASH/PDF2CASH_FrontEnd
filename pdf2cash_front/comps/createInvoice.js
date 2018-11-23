@@ -3,11 +3,10 @@ import {
   Button, Typography,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import AddIcon from '@material-ui/icons/Add';
-import Authenticate  from '../auth';
-import { FilePond, File, registerPlugin } from 'react-filepond';
-//import '../../comps/dist/filepond.min.css';
+import { Paper, Grid } from '@material-ui/core';
+import Authenticate  from '../pages/auth';
+import { FilePond, File } from 'react-filepond';
+import './dist/filepond.css'
 
 const styles = theme => ({
   input: {
@@ -21,20 +20,18 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
     textAlign: 'center',
-    'max-width': '30%',
-    'max-weight': '100%',
-    marginLeft: '32%',
-    marginTop: '10%',
+    'max-width': '100%',
+    'max-height': '100%',
+    border: '0.5px solid black',
+  },
+  pond: {
+    marginBottom: 55,
   },
   grid: {
     margin: '5%',
   },
   button: {
-    marginTop: '10%',
-  },
-  buttonSend: {
-    marginLeft: '85%',
-    marginTop: '10%',
+    marginBottom: '10%',
   },
   extendedIcon: {
     marginRight: theme.spacing.unit,
@@ -57,7 +54,7 @@ class InvoiceCreate extends Component {
   }
 
   sendForm(event) {
-    console.log('AAAAAAAAAAAA');
+    console.log('AAAAAAAAA');
     event.preventDefault();
     const { files } = this.state;
     var data = new FormData();
@@ -66,10 +63,10 @@ class InvoiceCreate extends Component {
       this.sendFile(data);
       data = new FormData();
     }
+    this.props.close();
   }
 
   async sendFile(data){
-    console.log('BBBBBBBBBBBBBBB');
     Authenticate.loginValidationdation();
     const A = await fetch(
       'http://localhost:8008/api/invoice/invoice/', 
@@ -81,43 +78,44 @@ class InvoiceCreate extends Component {
         credentials: 'omit',
         body: data
       })
-      console.log(A);
+      
   }
   
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.files);
     return (
-        <div>
-            <Paper className={ classes.root } elevation={ 5 }>
-                <Typography variant="h4" color="inherit" className={ classes.grow }>
-          Criar Nota Fiscal
-                </Typography>
-                <br />
-                <br />
-                <form onSubmit={this.sendForm}>
-                <FilePond allowMultiple={true}
-                          className={ classes.root }
-                          onupdatefiles={(fileItems) => {
-                              // Set current file objects to this.state
-                              this.setState({
-                                  files: fileItems.map(fileItem => fileItem.file)
-                              });
-                          }}>
-
-                    {/* Update current files  */}
-                    {this.state.files.map(file => (
-                        <File key={file} src={file} origin="local" />
-                    ))}
-                    
-                </FilePond>
-                <Button type='submit'>
-                ENVIAR
+        <Grid>
+            <Paper elevation={ 5 } className={ classes.root }>
+              <Typography variant="h4" color="inherit">
+                Criar Nota Fiscal
+              </Typography>
+              <br />
+              <br />
+              <form onSubmit={this.sendForm}>
+                <Button 
+                  type='submit' 
+                  color='primary'
+                  variant='contained'
+                  className={ classes.button }
+                >
+                  SALVAR
                 </Button>
-                </form>
+                    <FilePond
+                      className={ classes.pond } 
+                      allowMultiple={true}
+                      onupdatefiles={(fileItems) => {
+                        this.setState({
+                          files: fileItems.map(fileItem => fileItem.file)
+                        });
+                      }}>
+                      {this.state.files.map(file => (
+                        <File key={file} src={file} origin="local" />
+                      ))}
+                    </FilePond>
+              </form>
             </Paper>
-        </div>
+        </Grid>
     )
   }
 }
