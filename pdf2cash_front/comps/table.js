@@ -10,19 +10,29 @@ import {
   Paper,
 } from '@material-ui/core';
 
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    'background-color': '#3f51b5',
+    color: theme.palette.common.white,
+    fontSize: 15,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
 const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
+    overflow: 'auto',
+    'max-width': '93%',
+    'max-weight': '93%',
   },
   table: {
-    maxWidth: '90%',
-    maxWeight: '90%',
+    'max-width': '10%',
+    'max-weight': '10%',
     overflowX: 'auto',
-  },
-  cell: {
-    textAlign: 'center',
   },
 });
 
@@ -34,13 +44,12 @@ function SimpleTable(props) {
           <Table className={ classes.table }>
               <TableHead>
                   <TableRow>
-                      <TableCell className={ classes.cell }>Data</TableCell>
-                      <TableCell className={ classes.cell }>Chave de acesso</TableCell>
-                      <TableCell className={ classes.cell }>Empresa</TableCell>
-                      <TableCell className={ classes.cell }>CNPJ</TableCell>
-                      <TableCell className={ classes.cell }>Valor</TableCell>
-                      <TableCell className={ classes.cell }>Vizualizar</TableCell>
-                      <TableCell className={ classes.cell }>Excluir</TableCell>
+                      <CustomTableCell style={{ textAlign: 'center' }}>Data</CustomTableCell>
+                      <CustomTableCell style={{ textAlign: 'center' }}>Chave de acesso</CustomTableCell>
+                      <CustomTableCell style={{ textAlign: 'center' }}>Empresa</CustomTableCell>
+                      <CustomTableCell style={{ textAlign: 'center' }}>Valor</CustomTableCell>
+                      <CustomTableCell style={{ textAlign: 'center' }}>Vizualizar</CustomTableCell>
+                      <CustomTableCell style={{ textAlign: 'center' }}>Excluir</CustomTableCell>
                   </TableRow>
               </TableHead>
               <TableBody>
