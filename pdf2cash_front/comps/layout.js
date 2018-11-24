@@ -47,15 +47,15 @@ const styles = theme => ({
     backgroundColor: '#3f51b5',
     fontFamily: 'Roboto',
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create([ 'width', 'margin' ], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
   appBarShift: {
     marginLeft: drawerWidth,
-    width: `calc(100% - ${ drawerWidth }px)`,
-    transition: theme.transitions.create([ 'width', 'margin' ], {
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -91,7 +91,7 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing.unit * 7,
-    [ theme.breakpoints.up('sm') ]: {
+    [theme.breakpoints.up('sm')]: {
       width: theme.spacing.unit * 9,
     },
   },
@@ -111,6 +111,7 @@ const styles = theme => ({
 
 class MiniDrawer extends React.Component {
   state = {
+    isLoggedIn: false,
     open: false,
     auth: true,
     anchorEl: null,
@@ -140,6 +141,10 @@ class MiniDrawer extends React.Component {
     Authenticate.logout();
   }
 
+  componentDidMount() {
+    this.setState({isLoggedIn: Authenticate.checkLogin()})
+  }
+
   render() {
     const {
       classes,
@@ -152,142 +157,153 @@ class MiniDrawer extends React.Component {
       open,
     } = this.state;
     const openAnchorEl = Boolean(anchorEl);
+    const { isLoggedIn } = this.state ;
 
-    return (
-        <div className={ classes.root }>
-            <AppBar
-              position="absolute"
-              className={ classNames(classes.appBar, open && classes.appBarShift) }
-            >
-                <Toolbar disableGutters={ !open }>
-                    <IconButton className={ classes.menuButton } onClick={ this.handleDrawerOpen } color="inherit" aria-label="Menu">
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h4" color="inherit" className={ classes.grow }>
-                  PDF2CA$H
+    if (isLoggedIn) {
+      return (
+        <div className={classes.root}>
+          <AppBar
+            position="absolute"
+            className={classNames(classes.appBar, open && classes.appBarShift)}
+          >
+            <Toolbar disableGutters={!open}>
+              <IconButton className={classes.menuButton} onClick={this.handleDrawerOpen} color="inherit" aria-label="Menu">
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h4" color="inherit" className={classes.grow}>
+                PDF2CA$H
                     </Typography>
-                    {auth && (
-                    <div>
-                        <IconButton
-                          aria-owns={ openAnchorEl ? 'menu-appbar' : null }
-                          position="absolute"
-                          aria-haspopup="true"
-                          onClick={ this.handleMenu }
-                          color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                        <Menu
-                          id="menu-appbar"
-                          anchorEl={ anchorEl }
-                          anchorOrigin={ {
-                            vertical: 'top',
-                            horizontal: 'right',
-                          } }
-                          transformOrigin={ {
-                            vertical: 'top',
-                            horizontal: 'right',
-                          } }
-                          open={ openAnchorEl }
-                          onClose={ this.handleClose }
-                        >
-                            <MenuItem onClick={ this.handleClose }>Minha conta</MenuItem>
-                            <MenuItem onClick={ this.logout }>Logout</MenuItem>
-                        </Menu>
-                    </div>
-                    )}
-                </Toolbar>
-            </AppBar>
-            <Drawer
-              variant="permanent"
-              classes={ {
-                paper: classNames(classes.drawerPaper,
-                  !open && classes.drawerPaperClose),
-              } }
-              open={ open }
-            >
-                <div className={ classes.toolbar }>
-                    <IconButton style={ style } onClick={ this.handleDrawerClose }>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
+              {auth && (
+                <div>
+                  <IconButton
+                    aria-owns={openAnchorEl ? 'menu-appbar' : null}
+                    position="absolute"
+                    aria-haspopup="true"
+                    onClick={this.handleMenu}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={openAnchorEl}
+                    onClose={this.handleClose}
+                  >
+                    <MenuItem onClick={this.handleClose}>Minha conta</MenuItem>
+                    <MenuItem onClick={this.logout}>Logout</MenuItem>
+                  </Menu>
                 </div>
-                <List>
-                    <div>
-                        <MenuList>
-                            <MenuItem
-                              button
-                              component="a"
-                              href="/worker"
-                              className={ classes.menuItem }
-                            >
-                                <ListItemIcon className={ classes.icon }>
-                                    <GroupIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Listar Funcionarios" />
-                            </MenuItem>
-                            <MenuItem
-                              button
-                              component="a"
-                              href="/worker/create"
-                              className={ classes.menuItem }
-                            >
-                                <ListItemIcon className={ classes.icon }>
-                                    <CreateIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Criar Funcionarios" />
-                            </MenuItem>
-                        </MenuList>
-                    </div>
-                </List>
-                <Divider />
-                <List>
-                    <div>
-                        <MenuList>
-                            <MenuItem
-                              button
-                              component="a"
-                              href="/invoice"
-                              className={ classes.menuItem }
-                            >
-                                <ListItemIcon className={ classes.icon }>
-                                    <DescriptionIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Listar Notas Fiscais" />
-                            </MenuItem>
-                            <MenuItem
-                              button
-                              component="a"
-                              href="/invoice/create"
-                              className={ classes.menuItem }
-                            >
-                                <ListItemIcon className={ classes.icon }>
-                                    <SendIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Criar Nota Fiscal" />
-                            </MenuItem>
-                        </MenuList>
-                    </div>
-                </List>
-                <Divider />
-                <List>
-                    <div>
-                        <MenuList>
-                            <MenuItem button component="a" href="/graph/graphs" className={ classes.menuItem }>
-                                <ListItemIcon className={ classes.icon }>
-                                    <TimelineIcon style={ style } />
-                                </ListItemIcon>
-                                <ListItemText style={ style } disableTypography inset primary="Visualizar Analise" />
-                            </MenuItem>
-                        </MenuList>
-                    </div>
-                </List>
-            </Drawer>
-            <main className={ classes.content }>
-                <div className={ classes.toolbar } />
-                { children }
-            </main>
+              )}
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: classNames(classes.drawerPaper,
+                !open && classes.drawerPaperClose),
+            }}
+            open={open}
+          >
+            <div className={classes.toolbar}>
+              <IconButton style={style} onClick={this.handleDrawerClose}>
+                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              </IconButton>
+            </div>
+            <List>
+              <div>
+                <MenuList>
+                  <MenuItem
+                    button
+                    component="a"
+                    href="/worker"
+                    className={classes.menuItem}
+                  >
+                    <ListItemIcon className={classes.icon}>
+                      <GroupIcon style={style} />
+                    </ListItemIcon>
+                    <ListItemText style={style} disableTypography inset primary="Listar Funcionarios" />
+                  </MenuItem>
+                  <MenuItem
+                    button
+                    component="a"
+                    href="/worker/create"
+                    className={classes.menuItem}
+                  >
+                    <ListItemIcon className={classes.icon}>
+                      <CreateIcon style={style} />
+                    </ListItemIcon>
+                    <ListItemText style={style} disableTypography inset primary="Criar Funcionarios" />
+                  </MenuItem>
+                </MenuList>
+              </div>
+            </List>
+            <Divider />
+            <List>
+              <div>
+                <MenuList>
+                  <MenuItem
+                    button
+                    component="a"
+                    href="/invoice"
+                    className={classes.menuItem}
+                  >
+                    <ListItemIcon className={classes.icon}>
+                      <DescriptionIcon style={style} />
+                    </ListItemIcon>
+                    <ListItemText style={style} disableTypography inset primary="Listar Notas Fiscais" />
+                  </MenuItem>
+                  <MenuItem
+                    button
+                    component="a"
+                    href="/invoice/create"
+                    className={classes.menuItem}
+                  >
+                    <ListItemIcon className={classes.icon}>
+                      <SendIcon style={style} />
+                    </ListItemIcon>
+                    <ListItemText style={style} disableTypography inset primary="Criar Nota Fiscal" />
+                  </MenuItem>
+                </MenuList>
+              </div>
+            </List>
+            <Divider />
+            <List>
+              <div>
+                <MenuList>
+                  <MenuItem button component="a" href="/graph/graphs" className={classes.menuItem}>
+                    <ListItemIcon className={classes.icon}>
+                      <TimelineIcon style={style} />
+                    </ListItemIcon>
+                    <ListItemText style={style} disableTypography inset primary="Visualizar Analise" />
+                  </MenuItem>
+                </MenuList>
+              </div>
+            </List>
+          </Drawer>
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            {children}
+          </main>
         </div>
-    );
+      );
+    } else {
+      return (
+        <div className={classes.root}>
+          {children}
+        </div>
+      )
+    }
+
+
   }
 }
 
