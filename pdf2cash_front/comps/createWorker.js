@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import Authenticate  from '../auth';
+import Authenticate  from '../pages/auth';
 
 const styles = theme => ({
   snackbar: {

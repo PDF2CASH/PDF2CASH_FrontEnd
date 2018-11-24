@@ -10,7 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
 import Modal from '@material-ui/core/Modal';
 import Authenticate  from '../auth';
-
+import WorkerCreate from '../../comps/createWorker';
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
   cell: {
@@ -31,6 +32,9 @@ const styles = theme => ({
   buttom: {
     marginTop: 30,
   },
+  buttonCreate: {
+    marginLeft: '95%',
+  },
 });
 
 function getModalStyle() {
@@ -44,19 +48,22 @@ function getModalStyle() {
   };
 }
 
-class WorkerIndex extends Component{
+class WorkerIndex extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       workers: [],
-      open: false,
+      openDelete: false,
+      openCreate: false,
       id: 0,
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openModalDelete = this.openModalDelete.bind(this);
+    this.closeModalDelete = this.closeModalDelete.bind(this);
+    this.openModalCreate = this.openModalCreate.bind(this);
+    this.closeModalCreate = this.closeModalCreate.bind(this);
   }
 
   async componentDidMount() {
@@ -73,7 +80,7 @@ class WorkerIndex extends Component{
     const data_workers = await res.json();
     this.setState({
       workers: data_workers,
-      open: false,
+      openCreate: false
     });
   }
 
@@ -92,18 +99,31 @@ class WorkerIndex extends Component{
     this.getWorkers();
   }
 
-  openModal(id){
+  openModalDelete(id){
     this.setState ({
-      open: true,
+      openDelete: true,
       id: id,
     });
   }
 
-  closeModal(){
+  closeModalDelete(){
     this.setState({
-      open: false
+      openDelete: false
     });
   }
+
+  openModalCreate(){
+    this.setState ({
+      openCreate: true,
+    });
+  }
+
+  closeModalCreate(){
+    this.setState({
+      openCreate: false,
+    });
+  }
+
 
   render() {
     const { classes } = this.props;
@@ -112,11 +132,28 @@ class WorkerIndex extends Component{
         <Typography variant="display2">
           Listar Funcionarios
         </Typography>
+        <Button
+          variant="fab"
+          color="secondary"
+          aria-label="Add"
+          className={classes.buttonCreate}
+          onClick={this.openModalCreate}
+        >
+          <AddIcon />
+        </Button>
         <Modal
           aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={this.closeModal}
+          aria-describedby="simple-modal-deion"
+          open={this.state.openCreate}
+          onClose={this.closeModalCreate}
+        >
+          <WorkerCreate />
+        </Modal>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-deion"
+          open={this.state.openDelete}
+          onClose={this.closeModalDelete}
         >
           <Grid style={getModalStyle()} className={classes.paper}>
             <Typography variant='h6' className={classes.cell} >
