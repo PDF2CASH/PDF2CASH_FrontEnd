@@ -10,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
 import Modal from '@material-ui/core/Modal';
 import Authenticate  from '../auth';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 
 const styles = theme => ({
@@ -61,7 +64,7 @@ class WorkerIndex extends Component{
 
   async componentDidMount() {
     Authenticate.loginValidationdation();
-    const url = 'http://localhost:8000/api/worker/worker/';
+    const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/';
     const res = await fetch(url, {
     method: 'GET',
     headers: {
@@ -78,7 +81,7 @@ class WorkerIndex extends Component{
   }
 
   async getWorkers() {
-    const url = 'http://localhost:8000/api/worker/worker/';
+    const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/';
     const res = await fetch(url)
     const data_workers = await res.json();
     this.setState({ workers: data_workers });
@@ -86,7 +89,7 @@ class WorkerIndex extends Component{
 
   async delete(){
     const id = await this.state.id;
-    const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
+    const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/'+ id + '/';
     const res = await fetch(url, { method:'DELETE' });
     this.closeModal();
     this.getWorkers();
