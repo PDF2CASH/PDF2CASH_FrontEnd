@@ -35,7 +35,9 @@ const styles = theme => ({
     marginTop: 30,
   },
   buttonCreate: {
-    marginLeft: '95%',
+    marginLeft: '88.5%',
+    position: 'fixed',
+    marginTop: '34.5%',
   },
   paperCreate: {
     position: 'absolute',
