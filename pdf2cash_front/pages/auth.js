@@ -32,9 +32,8 @@ export default class Authenticate {
       } else {
         Authenticate.refresh();
       }
-      return Authenticate.checkLogin();
     }
-    return false;
+    window.location.href = 'http://localhost:3000/login';
   }
 
   static authValidation() {

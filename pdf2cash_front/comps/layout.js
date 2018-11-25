@@ -116,6 +116,14 @@ class MiniDrawer extends React.Component {
     anchorEl: null,
   };
 
+  // componentDidMount(){
+  //   if(document.URL.split('/')[document.URL.split('/').length - 1] !== "login"){
+  //     if(document.URL.split('/')[document.URL.split('/').length - 1] !== "admin"){
+  //       Authenticate.loginValidationdation()
+  //     }
+  //   }
+  // }
+
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
