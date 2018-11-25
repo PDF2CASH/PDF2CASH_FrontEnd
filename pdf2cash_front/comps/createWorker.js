@@ -98,7 +98,8 @@ class WorkerCreate extends Component {
     })
       .then((response) => {
         if (response.ok) {
-          window.location.href = 'http://localhost:3000/worker';
+          this.props.update();
+          this.props.close();
         } else {
           return response.json()
 

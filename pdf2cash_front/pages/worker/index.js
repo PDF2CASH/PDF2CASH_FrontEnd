@@ -66,8 +66,12 @@ class WorkerIndex extends Component {
     this.closeModalCreate = this.closeModalCreate.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     Authenticate.loginValidationdation();
+    this.getWorkers();
+  }
+  
+  async getWorkers() {
     const url = 'http://localhost:8000/api/worker/worker/';
     const res = await fetch(url, {
     method: 'GET',
@@ -77,26 +81,25 @@ class WorkerIndex extends Component {
     },
     credentials: 'omit',
   });
-    const data_workers = await res.json();
+    const data = await res.json();
     this.setState({
-      workers: data_workers,
-      openCreate: false
+      workers: data,
     });
   }
 
-  async getWorkers() {
-    const url = 'http://localhost:8000/api/worker/worker/';
-    const res = await fetch(url)
-    const data_workers = await res.json();
-    this.setState({ workers: data_workers });
-  }
-
-  async delete(){
-    const id = await this.state.id;
+  async delete() {
+    const { id } = await this.state;
     const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
-    const res = await fetch(url, { method:'DELETE' });
-    this.closeModal();
+    await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT ' + Authenticate.getToken()
+      },
+      credentials: 'omit',
+    });
     this.getWorkers();
+    this.closeModalDelete();
   }
 
   openModalDelete(id){
@@ -147,7 +150,10 @@ class WorkerIndex extends Component {
           open={this.state.openCreate}
           onClose={this.closeModalCreate}
         >
-          <WorkerCreate />
+          <WorkerCreate
+            close={this.closeModalCreate}
+            update={this.getWorkers}
+          />
         </Modal>
         <Modal
           aria-labelledby="simple-modal-title"
@@ -210,7 +216,7 @@ class WorkerIndex extends Component {
                   </Link>
                 </TableCell>
                 <TableCell className={classes.cell}>
-                  <Button onClick={() => this.openModal(worker.id)}>
+                  <Button onClick={() => this.openModalDelete(worker.id)}>
                     <DeleteIcon />
                   </Button>
                 </TableCell>
