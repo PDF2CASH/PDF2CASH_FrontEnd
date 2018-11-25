@@ -26,13 +26,12 @@ const styles = theme => ({
     width: '100%',
     marginTop: theme.spacing.unit * 3,
     overflow: 'auto',
-    'max-width': '93%',
-    'max-weight': '93%',
   },
   table: {
-    'max-width': '10%',
-    'max-weight': '10%',
-    overflowX: 'auto',
+    minWidth: 700,
+  },
+  cell: {
+    textAlign: 'center',
   },
 });
 
@@ -44,12 +43,12 @@ function SimpleTable(props) {
           <Table className={ classes.table }>
               <TableHead>
                   <TableRow>
-                      <CustomTableCell style={{ textAlign: 'center' }}>Data</CustomTableCell>
-                      <CustomTableCell style={{ textAlign: 'center' }}>Chave de acesso</CustomTableCell>
-                      <CustomTableCell style={{ textAlign: 'center' }}>Empresa</CustomTableCell>
-                      <CustomTableCell style={{ textAlign: 'center' }}>Valor</CustomTableCell>
-                      <CustomTableCell style={{ textAlign: 'center' }}>Vizualizar</CustomTableCell>
-                      <CustomTableCell style={{ textAlign: 'center' }}>Excluir</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Data</CustomTableCell>
+                      <CustomTableCell style={{ width: '30%', textAlign: 'center' }}>Chave de acesso</CustomTableCell>
+                      <CustomTableCell style={{ width: '20%', textAlign: 'center' }}>Empresa</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Valor</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Vizualizar</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Excluir</CustomTableCell>
                   </TableRow>
               </TableHead>
               <TableBody>
