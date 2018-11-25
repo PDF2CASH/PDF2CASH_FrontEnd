@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import {
-  Button, Typography,
+  Button,
+  Typography,
+  Paper,
+  Grid,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Grid } from '@material-ui/core';
-import Authenticate  from '../pages/auth';
 import { FilePond, File } from 'react-filepond';
+//import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import Authenticate  from '../pages/auth';
 import './dist/filepond.css'
 
 const styles = theme => ({
@@ -42,19 +45,13 @@ class InvoiceCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      files: []
+      files: [],
     }
-    this.setFile = this.setFile.bind(this);
     this.sendForm = this.sendForm.bind(this);
     this.sendFile = this.sendFile.bind(this);
   }
 
-  setFile(event) {
-    this.setState({ file: event.target.files[ 0 ] });
-  }
-
   sendForm(event) {
-    console.log('AAAAAAAAA');
     event.preventDefault();
     const { files } = this.state;
     var data = new FormData();
@@ -101,17 +98,19 @@ class InvoiceCreate extends Component {
                 >
                   SALVAR
                 </Button>
-                    <FilePond
-                      className={ classes.pond } 
-                      allowMultiple={true}
-                      onupdatefiles={(fileItems) => {
-                        this.setState({
-                          files: fileItems.map(fileItem => fileItem.file)
-                        });
-                      }}>
-                      {this.state.files.map(file => (
-                        <File key={file} src={file} origin="local" />
-                      ))}
+                  <FilePond
+                    className={ classes.pond }
+                    allowMultiple={ true }
+                    maxTotalFileSize={ '7MB' }
+                    labelMaxTotalFileSizeExceeded={ 'Máximo de 7MB excedido' }
+                    onupdatefiles={(fileItems) => {
+                      this.setState({
+                        files: fileItems.map(fileItem => fileItem.file)
+                      });
+                    }}>
+                    {this.state.files.map(file => (
+                      <File key={file} src={file} origin="local" />
+                    ))}
                     </FilePond>
               </form>
             </Paper>
