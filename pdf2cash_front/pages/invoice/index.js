@@ -10,8 +10,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
-import CustomatizedTable from '../../comps/table';
 import AddIcon from '@material-ui/icons/Add';
+import CustomatizedTable from '../../comps/table';
 import InvoiceCreate from '../../comps/createInvoice'
 import Authenticate from '../auth';
 
@@ -55,7 +55,6 @@ function getModalStyle() {
     top: `${ top }%`,
     left: `${ left }%`,
     transform: `translate(-${ top }%, -${ left }%)`,
-    //height:'-webkit-fill-available',
     overflow: 'auto',
     height: 300,
   };
@@ -85,32 +84,11 @@ class InvoiceIndex extends Component {
 
   async componentDidMount() {
     Authenticate.loginValidationdation();
-    const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
-    const resInvoice = await fetch(urlInvoice,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT ' + Authenticate.getToken()
-        },
-        credentials: 'omit',
-      });
-    const dataInvoice = await resInvoice.json();
-    this.setState({
-      invoices: dataInvoice,
-      openDelete: false,
-    });
-
-    const urlSeller = 'http://localhost:8008/api/invoice/seller/';
-    const resSeller = await fetch(urlSeller);
-    const dataSeller = await resSeller.json();
-    this.setState({ sellers: dataSeller });
-
-    this.joinInvoiceSeller();
+    this.setState({ openDelete: false });
+    this.getInvoices();
   }
 
   async getInvoices() {
-    Authenticate.loginValidationdation();
     const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
@@ -122,6 +100,8 @@ class InvoiceIndex extends Component {
     this.setState({ sellers: dataSeller });
 
     this.joinInvoiceSeller();
+    console.log(this.state.invoices);
+
   }
 
   async delete() {
@@ -180,7 +160,7 @@ class InvoiceIndex extends Component {
 
   async closeModalCreate() {
     this.setState({
-      openCreate: false
+      openCreate: false,
     });
   }
 
@@ -203,14 +183,14 @@ class InvoiceIndex extends Component {
               variant="fab"
               color="secondary"
               aria-label="Add"
-              className={classes.buttonCreate}
-              onClick={() => this.openModalCreate()}
+              className={ classes.buttonCreate }
+              onClick={ () => this.openModalCreate() }
             >
-              <AddIcon />
+                <AddIcon />
             </Button>
             <Modal
               aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
+              aria-describedby="simple-modal-deion"
               open={ openDelete }
               onClose={ this.closeModalDelete }
             >
@@ -219,7 +199,7 @@ class InvoiceIndex extends Component {
                       Deseja realmente deletar essa nota fiscal ?
                     </Typography>
                     <Button
-                      id='SIM'
+                      id="SIM"
                       variant="contained"
                       className={ classes.button }
                       color="primary"
@@ -228,7 +208,7 @@ class InvoiceIndex extends Component {
                       SIM
                     </Button>
                     <Button
-                      id='NAO'
+                      id="NAO"
                       variant="contained"
                       className={ classes.button }
                       color="secondary"
@@ -240,13 +220,16 @@ class InvoiceIndex extends Component {
             </Modal>
             <Modal
               aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
+              aria-describedby="simple-modal-deion"
               open={ openCreate }
               onClose={ this.closeModalCreate }
             >
-              <Grid style={ getModalStyle() } className={ classes.paperCreate }>
-                <InvoiceCreate close={this.closeModalCreate} />
-              </Grid>
+                <Grid style={ getModalStyle() } className={ classes.paperCreate }>
+                    <InvoiceCreate
+                      close={ this.closeModalCreate }
+                      update={ this.getInvoices }
+                    />
+                </Grid>
             </Modal>
             {
           invoices.length ? (

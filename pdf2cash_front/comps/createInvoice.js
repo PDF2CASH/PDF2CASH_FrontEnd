@@ -10,6 +10,7 @@ import { FilePond, File } from 'react-filepond';
 //import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import Authenticate  from '../pages/auth';
 import './dist/filepond.css'
+import SelectInput from '@material-ui/core/Select/SelectInput';
 
 const styles = theme => ({
   input: {
@@ -60,10 +61,15 @@ class InvoiceCreate extends Component {
       this.sendFile(data, files[i]);
       data = new FormData();
     }
+    if(files.length <= 10){
+      setTimeout(this.props.update, 1000);
+    } else if (files.length >= 10){
+      setTimeout(this.props.update, 1000);
+    }
     this.props.close();
   }
 
-  async sendFile(data, file){
+  async sendFile(data){
     Authenticate.loginValidationdation();
     const parser = await fetch(
       'http://localhost:10022/', 
