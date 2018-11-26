@@ -15,6 +15,11 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Authenticate from './../auth.js';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+
 
 const styles = ({
 
@@ -49,19 +54,20 @@ class Show extends React.Component {
   }
 
   async componentDidMount() {
+    Authenticate.loginValidationdation();
     const { router } = this.props;
     const invoiceId = router.query.id;
-    const invoiceUrl = `http://localhost:8008/api/invoice/invoice/${ invoiceId }`;
+    const invoiceUrl = publicRuntimeConfig.invoiceHostDomain+`/invoice/invoice/${ invoiceId }`;
     const invoiceRes = await fetch(invoiceUrl);
     const invoice = await invoiceRes.json();
 
     const receiverId = await invoice.receiver;
-    const receiverUrl = `http://localhost:8008/api/invoice/receiver/${ receiverId }`;
+    const receiverUrl = publicRuntimeConfig.invoiceHostDomain+`/api/invoice/receiver/${ receiverId }`;
     const receiverRes = await fetch(receiverUrl);
     const receiver = await receiverRes.json();
 
     const sellerId = await invoice.seller;
-    const sellerUrl = `http://localhost:8008/api/invoice/seller/${ sellerId }`;
+    const sellerUrl = publicRuntimeConfig.invoiceHostDomain+`/api/invoice/seller/${ sellerId }`;
     const sellerRes = await fetch(sellerUrl);
     const seller = await sellerRes.json();
 

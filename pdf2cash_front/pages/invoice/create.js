@@ -5,6 +5,10 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
+import Authenticate from './../auth.js';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = theme => ({
   input: {
@@ -53,8 +57,9 @@ class InvoiceCreate extends Component {
   }
 
   sendForm() {
+    Authenticate.loginValidationdation();
     const { file } = this.state;
-    const url = 'http://localhost:8000/api/invoice/invoice/';
+    const url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/';
     const data = new FormData();
     data.append('file', file);
     fetch(url, { method: 'POST', body: data });
