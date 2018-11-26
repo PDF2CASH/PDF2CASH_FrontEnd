@@ -10,6 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import Link from 'next/link'
 import Modal from '@material-ui/core/Modal';
 import Authenticate  from '../auth';
+import WorkerCreate from '../../comps/createWorker';
+import AddIcon from '@material-ui/icons/Add';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 
 const styles = theme => ({
@@ -31,6 +36,11 @@ const styles = theme => ({
   buttom: {
     marginTop: 30,
   },
+  buttonCreate: {
+    marginLeft: '88.5%',
+    position: 'fixed',
+    marginTop: '34.5%',
+  },
 });
 
 function getModalStyle() {
@@ -44,23 +54,31 @@ function getModalStyle() {
   };
 }
 
-class WorkerIndex extends Component{
+class WorkerIndex extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       workers: [],
-      open: false,
+      openDelete: false,
+      openCreate: false,
       id: 0,
     };
     this.delete = this.delete.bind(this);
     this.getWorkers = this.getWorkers.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openModalDelete = this.openModalDelete.bind(this);
+    this.closeModalDelete = this.closeModalDelete.bind(this);
+    this.openModalCreate = this.openModalCreate.bind(this);
+    this.closeModalCreate = this.closeModalCreate.bind(this);
   }
 
-  async componentDidMount() {
-    const url = 'http://localhost:8000/api/worker/worker/';
+  componentDidMount() {
+    Authenticate.loginValidationdation();
+    this.getWorkers();
+  }
+  
+  async getWorkers() {
+    const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/';
     const res = await fetch(url, {
     method: 'GET',
     headers: {
@@ -69,40 +87,52 @@ class WorkerIndex extends Component{
     },
     credentials: 'omit',
   });
-    const data_workers = await res.json();
+    const data = await res.json();
     this.setState({
-      workers: data_workers,
-      open: false,
+      workers: data,
     });
   }
 
-  async getWorkers() {
-    const url = 'http://localhost:8000/api/worker/worker/';
-    const res = await fetch(url)
-    const data_workers = await res.json();
-    this.setState({ workers: data_workers });
-  }
-
-  async delete(){
-    const id = await this.state.id;
-    const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
-    const res = await fetch(url, { method:'DELETE' });
-    this.closeModal();
+  async delete() {
+    const { id } = await this.state;
+    const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/'+ id + '/';
+    await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT ' + Authenticate.getToken()
+      },
+      credentials: 'omit',
+    });
     this.getWorkers();
+    this.closeModalDelete();
   }
 
-  openModal(id){
+  openModalDelete(id){
     this.setState ({
-      open: true,
+      openDelete: true,
       id: id,
     });
   }
 
-  closeModal(){
+  closeModalDelete(){
     this.setState({
-      open: false
+      openDelete: false
     });
   }
+
+  openModalCreate(){
+    this.setState ({
+      openCreate: true,
+    });
+  }
+
+  closeModalCreate(){
+    this.setState({
+      openCreate: false,
+    });
+  }
+
 
   render() {
     const { classes } = this.props;
@@ -111,15 +141,35 @@ class WorkerIndex extends Component{
         <Typography variant="display2">
           Listar Funcionarios
         </Typography>
+        <Button
+          variant="fab"
+          color="secondary"
+          aria-label="Add"
+          className={classes.buttonCreate}
+          onClick={this.openModalCreate}
+        >
+          <AddIcon />
+        </Button>
         <Modal
           aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={this.closeModal}
+          aria-describedby="simple-modal-deion"
+          open={this.state.openCreate}
+          onClose={this.closeModalCreate}
+        >
+          <WorkerCreate
+            close={this.closeModalCreate}
+            update={this.getWorkers}
+          />
+        </Modal>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-deion"
+          open={this.state.openDelete}
+          onClose={this.closeModalDelete}
         >
           <Grid style={getModalStyle()} className={classes.paper}>
             <Typography variant='h6' className={classes.cell} >
-              Deseja realmete deletar esse funcionário ?
+              Deseja realmente deletar esse funcionário ?
             </Typography>
             <Button
               id = 'SIM'
@@ -172,7 +222,7 @@ class WorkerIndex extends Component{
                   </Link>
                 </TableCell>
                 <TableCell className={classes.cell}>
-                  <Button onClick={() => this.openModal(worker.id)}>
+                  <Button onClick={() => this.openModalDelete(worker.id)}>
                     <DeleteIcon />
                   </Button>
                 </TableCell>

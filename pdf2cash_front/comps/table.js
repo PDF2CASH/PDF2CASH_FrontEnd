@@ -10,16 +10,25 @@ import {
   Paper,
 } from '@material-ui/core';
 
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    'background-color': '#3f51b5',
+    color: theme.palette.common.white,
+    fontSize: 15,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
 const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
+    overflow: 'auto',
   },
   table: {
-    maxWidth: '90%',
-    maxWeight: '90%',
-    overflowX: 'auto',
+    minWidth: 700,
   },
   cell: {
     textAlign: 'center',
@@ -34,13 +43,12 @@ function SimpleTable(props) {
           <Table className={ classes.table }>
               <TableHead>
                   <TableRow>
-                      <TableCell className={ classes.cell }>Data</TableCell>
-                      <TableCell className={ classes.cell }>Chave de acesso</TableCell>
-                      <TableCell className={ classes.cell }>Empresa</TableCell>
-                      <TableCell className={ classes.cell }>CNPJ</TableCell>
-                      <TableCell className={ classes.cell }>Valor</TableCell>
-                      <TableCell className={ classes.cell }>Vizualizar</TableCell>
-                      <TableCell className={ classes.cell }>Excluir</TableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Data</CustomTableCell>
+                      <CustomTableCell style={{ width: '30%', textAlign: 'center' }}>Chave de acesso</CustomTableCell>
+                      <CustomTableCell style={{ width: '20%', textAlign: 'center' }}>CNPJ</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Valor</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Vizualizar</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Excluir</CustomTableCell>
                   </TableRow>
               </TableHead>
               <TableBody>

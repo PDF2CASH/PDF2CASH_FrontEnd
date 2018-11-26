@@ -5,12 +5,16 @@
   "dependencies": {
     "@material-ui/core": "latest",
     "@material-ui/icons": "^3.0.1",
+    "chart.js": "^2.7.3",
+    "@zeit/next-css": "^1.0.1",
+    "axios": "^0.18.0",
     "babel-eslint": "latest",
     "babel-loader": "latest",
-    "chart.js": "^2.7.3",
     "classnames": "latest",
     "eslint-loader": "latest",
     "express": "^4.16.3",
+    "filepond": "^3.3.2",
+    "filepond-plugin-file-validate-size": "^2.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "jest": "^23.6.0",
     "jss": "latest",
@@ -20,6 +24,7 @@
     "react": "latest",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "latest",
+    "react-filepond": "^5.0.0",
     "react-form-validator-core": "^0.5.0",
     "react-jss": "latest",
     "react-material-ui-form-validator": "^2.0.2",
@@ -44,8 +49,8 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
     "faker": "^4.1.0",
-    "puppeteer": "^1.10.0",
-    "eslint-plugin-react": "^7.11.1"
+    "puppeteer": "^1.10.0"
   }
 }

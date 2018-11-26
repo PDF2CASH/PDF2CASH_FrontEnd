@@ -6,6 +6,10 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Authenticate from './auth.js';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 
 const styles = theme => ({
@@ -85,7 +89,7 @@ class AdminCreate extends Component {
     handleSubmit(event){
       event.preventDefault();
 
-      const url_worker = 'http://localhost:8000/api/worker/worker/';
+      const url_worker = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/';
       fetch(url_worker, {
           method: 'POST',
           headers: {
@@ -102,7 +106,7 @@ class AdminCreate extends Component {
       })
       .then((response) => {
           if (response.ok) {
-              window.location.href = "http://localhost:3000/worker";
+              window.location.href = "http://localhost:3000/login";
           }
           else
               return response.json()

@@ -8,6 +8,10 @@ import {
   TextField,
   CircularProgress,
 } from '@material-ui/core';
+import Authenticate from './../auth.js';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = ({
   cell: {
@@ -25,9 +29,10 @@ class WorkerShow extends React.Component {
   }
 
   async componentDidMount() {
+    Authenticate.loginValidationdation();
     const { router } = this.props;
     const { id } = router.query;
-    const url = `http://localhost:8000/api/worker/worker/${ id }/`;
+    const url = publicRuntimeConfig.workerHostDomain+`/api/worker/worker/${ id }/`;
     const res = await fetch(url);
     const worker = await res.json();
     this.setState({

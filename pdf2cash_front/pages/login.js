@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Authenticate  from './auth';
 import Snackbar from '@material-ui/core/SnackbarContent';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = theme => ({
     root: {
@@ -13,9 +16,9 @@ const styles = theme => ({
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
         textAlign: 'center',
-        maxWidth: '30%',
+        maxWidth: '25%',
         maxWeight: '100%',
-        marginLeft: '32%',
+        marginLeft: '35%',
         marginTop: '10%',
     },
     button: {
@@ -56,7 +59,7 @@ class Login extends Component {
             password:this.state.password
         }))
         event.preventDefault();
-        const url_worker = 'http://localhost:8000/api/authenticate/';
+        const url_worker = publicRuntimeConfig.workerHostDomain+'/api/authenticate/';
         fetch(url_worker, {
             method: 'POST',
             body: JSON.stringify({
@@ -133,7 +136,7 @@ class Login extends Component {
                             onChange={this.handleChangeUsername}
                         />
                         <TextField
-                            type='passsword-input'
+                            type='password'
                             id='password'
                             label='Password'
                             value={this.state.password}
