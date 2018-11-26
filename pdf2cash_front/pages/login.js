@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Authenticate  from './auth';
 import Snackbar from '@material-ui/core/SnackbarContent';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = theme => ({
     root: {
@@ -56,7 +59,7 @@ class Login extends Component {
             password:this.state.password
         }))
         event.preventDefault();
-        const url_worker = 'http://localhost:8000/api/authenticate/';
+        const url_worker = publicRuntimeConfig.workerHostDomain+'/api/authenticate/';
         fetch(url_worker, {
             method: 'POST',
             body: JSON.stringify({

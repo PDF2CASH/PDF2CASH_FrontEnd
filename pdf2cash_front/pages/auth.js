@@ -1,3 +1,8 @@
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+
+
 export default class Authenticate {
   static makeLogin(token) {
     localStorage.setItem('token_initial_time', Date.now());
@@ -32,12 +37,13 @@ export default class Authenticate {
       } else {
         Authenticate.refresh();
       }
+    } else {
+      window.location.href = 'http://localhost:3000/login';
     }
-    window.location.href = 'http://localhost:3000/login';
   }
 
   static authValidation() {
-    const urlVerify = 'http://localhost:8000/api/worker/api-token-verify/';
+    const urlVerify = publicRuntimeConfig.workerHostDomain+'/api/worker/api-token-verify/';
     fetch(urlVerify, {
       method: 'POST',
       body: JSON.stringify({ token: Authenticate.getToken() }),
@@ -54,7 +60,7 @@ export default class Authenticate {
   }
 
   static refresh() {
-    const urlRefresh = 'http://localhost:8000/api/refresh/';
+    const urlRefresh = publicRuntimeConfig.workerHostDomain+'/api/refresh/';
     fetch(urlRefresh, {
       method: 'POST',
       body: JSON.stringify({ token: Authenticate.getToken() }),
