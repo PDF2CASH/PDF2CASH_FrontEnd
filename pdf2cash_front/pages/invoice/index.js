@@ -14,6 +14,10 @@ import AddIcon from '@material-ui/icons/Add';
 import CustomatizedTable from '../../comps/table';
 import InvoiceCreate from '../../comps/createInvoice'
 import Authenticate from '../auth';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+
 
 const styles = theme => ({
   cell: {
@@ -89,24 +93,22 @@ class InvoiceIndex extends Component {
   }
 
   async getInvoices() {
-    const urlInvoice = 'http://localhost:8008/api/invoice/invoice/';
+    const urlInvoice = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
     this.setState({ invoices: dataInvoice });
 
-    const urlSeller = 'http://localhost:8008/api/invoice/seller/';
+    const urlSeller = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/seller/';
     const resSeller = await fetch(urlSeller);
     const dataSeller = await resSeller.json();
     this.setState({ sellers: dataSeller });
 
     this.joinInvoiceSeller();
-    console.log(this.state.invoices);
-
   }
 
   async delete() {
     const { id } = await this.state;
-    const url = `http://localhost:8008/api/invoice/invoice/${ id }/`;
+    const url = publicRuntimeConfig.invoiceHostDomain+`/api/invoice/invoice/${ id }/`;
     await fetch(url, { method: 'DELETE' });
     this.closeModalDelete();
     this.getInvoices();

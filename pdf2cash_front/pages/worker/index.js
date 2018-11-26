@@ -12,6 +12,10 @@ import Modal from '@material-ui/core/Modal';
 import Authenticate  from '../auth';
 import WorkerCreate from '../../comps/createWorker';
 import AddIcon from '@material-ui/icons/Add';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+
 
 const styles = theme => ({
   cell: {
@@ -74,7 +78,7 @@ class WorkerIndex extends Component {
   }
   
   async getWorkers() {
-    const url = 'http://localhost:8000/api/worker/worker/';
+    const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/';
     const res = await fetch(url, {
     method: 'GET',
     headers: {
@@ -91,7 +95,7 @@ class WorkerIndex extends Component {
 
   async delete() {
     const { id } = await this.state;
-    const url = 'http://localhost:8000/api/worker/worker/'+ id + '/';
+    const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/'+ id + '/';
     await fetch(url, {
       method: 'DELETE',
       headers: {
