@@ -266,7 +266,7 @@ class InvoiceIndex extends Component {
                         </TableCell>
                         <TableCell className={ classes.cell }>
                             <Typography>
-                                {invoice.seller.name}
+                                {invoice.seller.cnpj}
                             </Typography>
                         </TableCell>
                         <TableCell className={ classes.cell }>
