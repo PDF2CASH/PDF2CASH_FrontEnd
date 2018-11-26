@@ -117,10 +117,11 @@ class MiniDrawer extends React.Component {
     anchorEl: null,
   };
 
-  componentDidMount(){
+  componentDidMount = async () => {
     if(document.URL.split('/')[document.URL.split('/').length - 1] !== "login"){
       if(document.URL.split('/')[document.URL.split('/').length - 1] !== "admin"){
-        Authenticate.loginValidationdation()
+        await Authenticate.loginValidationdation()
+        this.setState({isLoggedIn: Authenticate.checkLogin()})
       }
     }
   }
@@ -149,9 +150,6 @@ class MiniDrawer extends React.Component {
     Authenticate.logout();
   }
 
-  componentDidMount() {
-    this.setState({isLoggedIn: Authenticate.checkLogin()})
-  }
 
   render() {
     const {

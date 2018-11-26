@@ -17,10 +17,11 @@ const styles = theme => ({
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
         textAlign: 'center',
-        maxWidth: '25%',
+        maxWidth: '30%',
         maxWeight: '100%',
         marginLeft: '35%',
         marginTop: '10%',
+        minWidth: '30%'
     },
     button: {
         align: 'center',
@@ -110,10 +111,12 @@ class Login extends Component {
         const { classes } = this.props;
 
         return (
-            <Grid container spacing={24} >
-                <Grid item xs={12}>
+            <Grid container spacing={24} justify="center" alignItems="lex-start">
+                <Grid item xs={10}>
                     <div>
-                        <Paper className={classes.root} elevation={1}>
+                        <Paper className={classes.root} elevation={1} classes= {{
+                            root: classes.root.minWidth
+                        }} >
                             <Typography variant='h5' component='h3'>
                                 Login
                     </Typography>
