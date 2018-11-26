@@ -3,7 +3,6 @@ import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 
 
-
 export default class Authenticate {
   static makeLogin(token) {
     localStorage.setItem('token_initial_time', Date.now());
@@ -38,9 +37,9 @@ export default class Authenticate {
       } else {
         Authenticate.refresh();
       }
-      return Authenticate.checkLogin();
+    } else {
+      window.location.href = 'http://localhost:3000/login';
     }
-    return false;
   }
 
   static authValidation() {
