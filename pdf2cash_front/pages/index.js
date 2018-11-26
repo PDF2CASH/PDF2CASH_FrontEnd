@@ -33,7 +33,12 @@ class Index extends Component {
             chart_dataMax: {},
             chart_dataM: {},
             chart_dataY: {},
-            chart_dataQtd: {},
+            chart_qtdByTime: {},
+            chart_totalByCategory: {},
+            chart_freightByDate: {},
+            chart_total_valueBySeller: {},
+            chart_total_current_year: {},
+            chart_total_current_month: {},
             selectedValue: '1s',
         };
     }
@@ -102,7 +107,7 @@ class Index extends Component {
                 }, 
             ]
         }
-
+        
         url = 'http://localhost:8008/api/invoice/chart_total_value_per_time/';
         res = await fetch(url, head);
         data = await res.json();
@@ -153,7 +158,7 @@ class Index extends Component {
         res = await fetch(url, head);
         data = await res.json();
 
-        const chart_dataQtd = await {
+        const chart_qtdByTime = await {
             labels: data.date,
             datasets: [{
                 label: 'Quantidade de notas/Tempo',
@@ -166,6 +171,87 @@ class Index extends Component {
             }, ]
         }
 
+        url = 'http://localhost:8008/api/invoice/chart_total_value_per_category/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_totalByCategory = await {
+            labels: data.category,
+            datasets: [{
+                label: 'Valor total/Categoria',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.total
+            }, ]
+        }
+
+        url = 'http://localhost:8008/api/invoice/chart_freight_value_per_date/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_freightByDate = await {
+            labels: data.date,
+            datasets: [{
+                label: 'Valor do Frete/Tempo',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.freight
+            }, ]
+        }
+
+        url = 'http://localhost:8008/api/invoice/chart_total_valueBySeller/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_total_valueBySeller = await {
+            labels: data.seller,
+            datasets: [{
+                label: 'Valor total/Vendedor',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.total
+            }, ]
+        }
+        
+        url = 'http://localhost:8008/api/invoice/chart_total_value_current/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_total_current_year = await {
+            labels: data.date,
+            datasets: [{
+                label: 'Valor total no ano atual',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.total
+            }, ]
+        }
+
+        const chart_total_current_month = await {
+            labels: data.dateM,
+            datasets: [{
+                label: 'Valor total no mês atual',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalM
+            }, ]
+        }
+
         await this.setState({
             chart_data: chart_data1S,
             chart_data1S,
@@ -175,7 +261,12 @@ class Index extends Component {
             chart_dataMax,
             chart_dataM,
             chart_dataY,
-            chart_dataQtd
+            chart_qtdByTime,
+            chart_totalByCategory,
+            chart_freightByDate,
+            chart_total_valueBySeller,
+            chart_total_current_year,
+            chart_total_current_month
         });
     }
 
@@ -221,12 +312,75 @@ class Index extends Component {
             chart_dataMax,
             chart_dataM,
             chart_dataY,
-            chart_dataQtd,
-            selectedValue
+            chart_qtdByTime,
+            chart_totalByCategory,
+            chart_freightByDate,
+            chart_total_valueBySeller,
+            chart_total_current_year,
+            chart_total_current_month,
+            selectedValue,
         } = this.state;
 
         return (
             <Grid className={classes.grid}>
+                <Grid>
+                    <Line
+                        data={chart_total_current_year}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
+                    />
+                </Grid>
+                <Grid>
+                    <Line
+                        data={chart_total_current_month}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
+                    />
+                </Grid>
+                { /*<Grid>
+                    <Bar
+                        data={chart_total_valueBySeller}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Grid>
+                <Grid>
+                    <Bar
+                        data={chart_freightByDate}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
+                    />
+                </Grid>
+                <Grid>
+                    <Bar
+                        data={chart_totalByCategory}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
+                    />
+                </Grid>
                 < Grid>
                     < Grid 
                         container
@@ -265,7 +419,7 @@ class Index extends Component {
                         }}
                     />
                 </Grid>
-                {/*<Grid>
+                <Grid>
                     <Line
                         data={chart_dataMax}
                         height={250}
@@ -297,7 +451,7 @@ class Index extends Component {
                 </Grid>
                 <Grid>
                     <Bar
-                        data={chart_dataQtd}
+                        data={chart_qtdByTime}
                         height={250}
                         classesName={classes.chart}
                         options={{
