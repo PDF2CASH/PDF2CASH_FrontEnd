@@ -8,8 +8,8 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import Authenticate  from '../auth';
 import getConfig from 'next/config';
+import Authenticate from '../pages/auth';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -101,7 +101,8 @@ class WorkerCreate extends Component {
     })
       .then((response) => {
         if (response.ok) {
-          window.location.href = 'http://localhost:3000/worker';
+          this.props.update();
+          this.props.close();
         } else {
           return response.json()
 
