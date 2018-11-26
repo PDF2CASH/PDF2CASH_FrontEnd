@@ -3,7 +3,7 @@ sudo: required
 language: python
 
 python:
-  - "3.6" 
+  - "3.6"
 
 branches:
   - master
@@ -18,12 +18,16 @@ before_script:
 
 script:
   - docker run pdf2front npm run build
- 
+
 deploy:
-  provider: script
-  script: bash scripts/deploy.sh
-  on:
-    branch: development
+  - provider: script
+    script: bash scripts/deploy.sh
+    on:
+      branch: development
+  - provider: script
+    script: bash scripts/sendZip.sh
+    on:
+      branch: master
 
 addons:
   apt:
