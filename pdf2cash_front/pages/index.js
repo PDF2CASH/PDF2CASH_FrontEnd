@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Authenticate  from './auth';
 import {
+    Paper,
     Grid,
     Radio,
     FormControlLabel,
@@ -9,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { Line, Bar } from 'react-chartjs-2';
 
-const styles = ({
+const styles = theme => ({
     chart: {
         width: '100%',
         maxWidth: '100%',
@@ -17,6 +18,11 @@ const styles = ({
     grid: {
         overflowX: 'auto',
         overflowY: 'auto'
+    },
+    chart_paper: {
+        padding: theme.spacing.unit * 2,
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
     },
 });
 
@@ -31,12 +37,8 @@ class Index extends Component {
             chart_data6M: {},
             chart_data1A: {},
             chart_dataMax: {},
-            chart_dataM: {},
-            chart_dataY: {},
-            chart_qtdByTime: {},
-            chart_totalByCategory: {},
-            chart_freightByDate: {},
-            chart_total_valueBySeller: {},
+            chart_qtdByMonth: {},
+            chart_qtdByYear: {},
             chart_total_current_year: {},
             chart_total_current_month: {},
             selectedValue: '1s',
@@ -44,7 +46,7 @@ class Index extends Component {
     }
 
     async componentDidMount() {
-        let url = 'http://localhost:8008/api/invoice/chart_total_value_per_chosen_date/';
+        let url = 'http://localhost:8000/api/invoice/chart_total_value_per_chosen_date/';
         const head = {
             method: 'GET',
             headers: {
@@ -57,111 +59,77 @@ class Index extends Component {
         let data = await res.json();
         const chart_data1S = await {
             labels: data.dateW,
-                datasets: [{
-                    label: 'Valor total/Tempo',
-                    backgroundColor: 'rgba(255,99,132,0.2)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: data.totalW
-                }, 
-            ]
+            datasets: [{
+                label: 'Valor total em 1 Semana',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalW
+            }, ]
         }
         const chart_data1M = await {
             labels: data.dateM,
-                datasets: [{
-                    label: 'Valor total/Tempo',
-                    backgroundColor: 'rgba(255,99,132,0.2)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: data.totalM
-                }, 
-            ]
+            datasets: [{
+                label: 'Valor total em 1 Mês',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalM
+            }, ]
         }
         const chart_data6M = await {
             labels: data.dateS,
-                datasets: [{
-                    label: 'Valor total/Tempo',
-                    backgroundColor: 'rgba(255,99,132,0.2)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: data.totalS
-                }, 
-            ]
+            datasets: [{
+                label: 'Valor total em 6 meses',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalS
+            }, ]
         }
         const chart_data1A = await {
             labels: data.dateY,
-                datasets: [{
-                    label: 'Valor total/Tempo',
-                    backgroundColor: 'rgba(255,99,132,0.2)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: data.totalY
-                }, 
-            ]
+            datasets: [{
+                label: 'Valor total em 1 Ano',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalY
+            }, ]
         }
-        
-        url = 'http://localhost:8008/api/invoice/chart_total_value_per_time/';
+
+        url = 'http://localhost:8000/api/invoice/chart_total_value_per_time/';
         res = await fetch(url, head);
         data = await res.json();
         const chart_dataMax = await {
             labels: data.date,
-            datasets: [
-                {
-                    label: 'Valor total/Tempo',
-                    backgroundColor: 'rgba(255,99,132,0.2)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: data.total
-                },
-            ]
+            datasets: [{
+                label: 'Valor total por Tempo máximo',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.total
+            }, ]
         }
-        const chart_dataM = await {
-            labels: data.dateM,
-            datasets: [
-                {
-                    label: 'Valor total/Tempo em mês',
-                    backgroundColor: 'rgba(255,99,132,0.2)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: data.totalM
-                },
-            ]
-        }
-        const chart_dataY = await {
-            labels: data.dateY,
-            datasets: [
-                {
-                    label: 'Valor total/Tempo em ano',
-                    backgroundColor: 'rgba(255,99,132,0.2)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: data.totalY
-                },
-            ]
-        }
-        
-        url = 'http://localhost:8008/api/invoice/chart_qtd_per_time/';
+
+        url = 'http://localhost:8000/api/invoice/chart_qtd_per_time/';
         res = await fetch(url, head);
         data = await res.json();
 
-        const chart_qtdByTime = await {
+        const chart_qtdByMonth = await {
             labels: data.date,
             datasets: [{
-                label: 'Quantidade de notas/Tempo',
+                label: 'Quantidade de notas por Mês',
                 backgroundColor: 'rgba(255,99,132,0.2)',
                 borderColor: 'rgba(255,99,132,1)',
                 borderWidth: 1,
@@ -171,58 +139,20 @@ class Index extends Component {
             }, ]
         }
 
-        url = 'http://localhost:8008/api/invoice/chart_total_value_per_category/';
-        res = await fetch(url, head);
-        data = await res.json();
-
-        const chart_totalByCategory = await {
-            labels: data.category,
+        const chart_qtdByYear = await {
+            labels: data.dateY,
             datasets: [{
-                label: 'Valor total/Categoria',
+                label: 'Quantidade de notas por Ano',
                 backgroundColor: 'rgba(255,99,132,0.2)',
                 borderColor: 'rgba(255,99,132,1)',
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                 hoverBorderColor: 'rgba(255,99,132,1)',
-                data: data.total
+                data: data.countY
             }, ]
         }
 
-        url = 'http://localhost:8008/api/invoice/chart_freight_value_per_date/';
-        res = await fetch(url, head);
-        data = await res.json();
-
-        const chart_freightByDate = await {
-            labels: data.date,
-            datasets: [{
-                label: 'Valor do Frete/Tempo',
-                backgroundColor: 'rgba(255,99,132,0.2)',
-                borderColor: 'rgba(255,99,132,1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                hoverBorderColor: 'rgba(255,99,132,1)',
-                data: data.freight
-            }, ]
-        }
-
-        url = 'http://localhost:8008/api/invoice/chart_total_valueBySeller/';
-        res = await fetch(url, head);
-        data = await res.json();
-
-        const chart_total_valueBySeller = await {
-            labels: data.seller,
-            datasets: [{
-                label: 'Valor total/Vendedor',
-                backgroundColor: 'rgba(255,99,132,0.2)',
-                borderColor: 'rgba(255,99,132,1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                hoverBorderColor: 'rgba(255,99,132,1)',
-                data: data.total
-            }, ]
-        }
-        
-        url = 'http://localhost:8008/api/invoice/chart_total_value_current/';
+        url = 'http://localhost:8000/api/invoice/chart_total_value_current/';
         res = await fetch(url, head);
         data = await res.json();
 
@@ -259,12 +189,8 @@ class Index extends Component {
             chart_data6M,
             chart_data1A,
             chart_dataMax,
-            chart_dataM,
-            chart_dataY,
-            chart_qtdByTime,
-            chart_totalByCategory,
-            chart_freightByDate,
-            chart_total_valueBySeller,
+            chart_qtdByMonth,
+            chart_qtdByYear,
             chart_total_current_year,
             chart_total_current_month
         });
@@ -309,46 +235,82 @@ class Index extends Component {
         const classes = this.props;
         const {
             chart_data,
-            chart_dataMax,
-            chart_dataM,
-            chart_dataY,
-            chart_qtdByTime,
-            chart_totalByCategory,
-            chart_freightByDate,
-            chart_total_valueBySeller,
+            chart_qtdByMonth,
+            chart_qtdByYear,
             chart_total_current_year,
             chart_total_current_month,
             selectedValue,
         } = this.state;
 
         return (
-            <Grid className={classes.grid}>
-                <Grid>
+            <Grid className={classes.grid} container spacing={24}>
+                <Grid item xs={12}> 
+                    <Paper className={classes.chart_paper}> 
+                        < Grid
+                            container
+                            direction="row"
+                            justify="center"
+                            alignItems="center"
+                        >
+                            <RadioGroup
+                                name="options"
+                                className={classes.group}
+                                value={selectedValue}
+                                onChange={this.handleChangeDate}
+                                row
+                            >
+                                <FormControlLabel value="1s" control={<Radio color="primary" />} label="1 Semana" />
+                                <FormControlLabel value="1m" control={<Radio color="primary" />} label="1 Mês" />
+                                <FormControlLabel value="6m" control={<Radio color="primary" />} label="6 Meses" />
+                                <FormControlLabel value="1a" control={<Radio color="primary" />} label="1 Ano" />
+                                <FormControlLabel value="max" control={<Radio color="primary" />} label="Máx" />
+                            </RadioGroup>
+                        </Grid>
+                        <Line
+                            data={chart_data}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                    <Paper classesName={classes.chart_paper}>
+                        <Line
+                            data={chart_total_current_month}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                    <Paper classesName={classes.chart_paper}>
                     <Line
                         data={chart_total_current_year}
                         height={250}
                         classesName={classes.chart}
                         options={{
-                            maintainAspectRatio: false
-                        }}
-                    />
-                </Grid>
-                <Grid>
-                    <Line
-                        data={chart_total_current_month}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
-                            maintainAspectRatio: false
-                        }}
-                    />
-                </Grid>
-                { /*<Grid>
-                    <Bar
-                        data={chart_total_valueBySeller}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
                             maintainAspectRatio: false,
                             scales: {
                                 yAxes: [{
@@ -360,114 +322,49 @@ class Index extends Component {
                             }
                         }}
                     />
+                    </Paper>
                 </Grid>
-                <Grid>
-                    <Bar
-                        data={chart_freightByDate}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
-                            maintainAspectRatio: false
-                        }}
-                    />
+                <Grid item xs={6}>
+                    <Paper classesName={classes.chart_paper}>
+                        <Bar
+                            data={chart_qtdByMonth}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
                 </Grid>
-                <Grid>
-                    <Bar
-                        data={chart_totalByCategory}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
-                            maintainAspectRatio: false
-                        }}
-                    />
+                <Grid item xs={6}>
+                    <Paper classesName={classes.chart_paper}>
+                        <Bar
+                            data={chart_qtdByYear}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
                 </Grid>
-                < Grid>
-                    < Grid 
-                        container
-                        direction = "row"
-                        justify = "center"
-                        alignItems = "center" 
-                    >
-                        <RadioGroup 
-                            name="options"
-                            className={classes.group}
-                            value={selectedValue}
-                            onChange={this.handleChangeDate}
-                            row
-                        >
-                            <FormControlLabel value="1s" control={<Radio color="primary"/>} label="1 Semana" />
-                            <FormControlLabel value="1m" control={<Radio color="primary"/>} label="1 Mês" />
-                            <FormControlLabel value="6m" control={<Radio color="primary"/>} label="6 Meses" />
-                            <FormControlLabel value="1a" control={<Radio color="primary"/>} label="1 Ano" />
-                            <FormControlLabel value="max" control={<Radio color="primary"/>} label="Máx" />
-                        </RadioGroup>
-                    </Grid>
-                    <Line
-                        data={chart_data}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
-                            maintainAspectRatio: false,
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        min: 0
-                                    }
-                                }]
-                            }
-                        }}
-                    />
-                </Grid>
-                <Grid>
-                    <Line
-                        data={chart_dataMax}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
-                            maintainAspectRatio: false
-                        }}
-                    />
-                </Grid>
-                 <Grid>
-                    <Line
-                        data={chart_dataM}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
-                            maintainAspectRatio: false
-                        }}
-                    />
-                </Grid>
-                <Grid>
-                    <Line
-                        data={chart_dataY}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
-                            maintainAspectRatio: false
-                        }}
-                    />
-                </Grid>
-                <Grid>
-                    <Bar
-                        data={chart_qtdByTime}
-                        height={250}
-                        classesName={classes.chart}
-                        options={{
-                            maintainAspectRatio: false,
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        min: 0
-                                    }
-                                }]
-                            }
-                        }}
-                    />
-                </Grid> */}
-            </Grid>
+            </Grid> 
         );
     }
 }
