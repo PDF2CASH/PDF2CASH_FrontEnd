@@ -96,15 +96,17 @@ const styles = theme => ({
 
 class MiniDrawer extends React.Component {
   state = {
+    isLoggedIn: false,
     open: false,
     auth: true,
     anchorEl: null,
   };
 
-  componentDidMount(){
+  componentDidMount = async () => {
     if(document.URL.split('/')[document.URL.split('/').length - 1] !== "login"){
       if(document.URL.split('/')[document.URL.split('/').length - 1] !== "admin"){
-        Authenticate.loginValidationdation()
+        await Authenticate.loginValidationdation()
+        this.setState({isLoggedIn: Authenticate.checkLogin()})
       }
     }
   }
@@ -133,13 +135,16 @@ class MiniDrawer extends React.Component {
     Authenticate.logout();
   }
 
+
   render() {
     const { classes, theme } = this.props;
     const { auth, anchorEl } = this.state;
     const openAnchorEl = Boolean(anchorEl);
+    const { isLoggedIn } = this.state ;
 
-    return (
-      <div className={classes.root}>
+    if(isLoggedIn) {
+      return (
+        <div className={classes.root}>
         <CssBaseline />
         <AppBar
           position="fixed"
@@ -246,7 +251,17 @@ class MiniDrawer extends React.Component {
             { this.props.children }
         </main>
       </div>
-    );
+      )
+    } else {
+      return (
+      <div className={classes.root}>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+            { this.props.children }
+        </main>
+      </div>
+      );
+    }
   }
 }
 
