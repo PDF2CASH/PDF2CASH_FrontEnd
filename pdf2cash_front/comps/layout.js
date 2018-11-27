@@ -2,50 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  Drawer,
-  AppBar,
-  Toolbar,
-  List,
-  Typography,
-  Divider,
-  MenuItem,
-  Menu,
-  ListItemIcon,
-  ListItemText,
-  MenuList,
-  IconButton,
-} from '@material-ui/core';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import SendIcon from '@material-ui/icons/Send';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Grid from '@material-ui/core/Grid';
 import DescriptionIcon from '@material-ui/icons/Description';
 import GroupIcon from '@material-ui/icons/Group';
-import CreateIcon from '@material-ui/icons/Create';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import Authenticate from '../pages/auth';
 
-const drawerWidth = 280;
-
-const style = {
-  color: 'white',
-}
+const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    fontFamily: 'Roboto',
-    flexGrow: 1,
-    height: 1000,
-    zIndex: 1,
-    overflow: 'hidden',
-    position: 'relative',
     display: 'flex',
   },
   appBar: {
     backgroundColor: '#3f51b5',
-    fontFamily: 'Roboto',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -60,23 +47,20 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  loginButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
   menuButton: {
     marginLeft: 12,
     marginRight: 36,
   },
-  grow: {
-    flexGrow: 1,
-  },
   hide: {
     display: 'none',
   },
-  drawerPaper: {
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
     backgroundColor: '#3D3D3D',
-    position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -84,15 +68,17 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  drawerPaperClose: {
-    overflowX: 'hidden',
+  drawerClose: {
+    backgroundColor: '#3D3D3D',
+    whiteSpace: 'nowrap',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing.unit * 7,
+    overflowX: 'hidden',
+    width: theme.spacing.unit * 7 + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9,
+      width: theme.spacing.unit * 9 + 1,
     },
   },
   toolbar: {
@@ -104,7 +90,6 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    backgroundColor: '#fffff',
     padding: theme.spacing.unit * 3,
   },
 });
@@ -146,170 +131,137 @@ class MiniDrawer extends React.Component {
     this.setState({ anchorEl: null });
   };
 
-  logout() {
+  logout = () => {
     Authenticate.logout();
   }
 
 
   render() {
-    const {
-      classes,
-      theme,
-      children,
-    } = this.props;
-    const {
-      auth,
-      anchorEl,
-      open,
-    } = this.state;
+    const { classes, theme } = this.props;
+    const { auth, anchorEl } = this.state;
     const openAnchorEl = Boolean(anchorEl);
     const { isLoggedIn } = this.state ;
 
-    if (isLoggedIn) {
+    if(isLoggedIn) {
       return (
         <div className={classes.root}>
-          <AppBar
-            position="absolute"
-            className={classNames(classes.appBar, open && classes.appBarShift)}
-          >
-            <Toolbar disableGutters={!open}>
-              <IconButton className={classes.menuButton} onClick={this.handleDrawerOpen} color="inherit" aria-label="Menu">
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h4" color="inherit" className={classes.grow}>
-                PDF2CA$H
-                    </Typography>
-              {auth && (
-                <div>
+        <CssBaseline />
+        <AppBar
+          position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: this.state.open,
+          })}
+        >
+          <Toolbar disableGutters={!this.state.open}>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawerOpen}
+              className={classNames(classes.menuButton, {
+                [classes.hide]: this.state.open,
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h4" color="inherit" noWrap>
+              PDFCA$H
+            </Typography>
+            {auth && (
+              <Grid style={ this.state.open ? { marginLeft: '80%' } : { marginLeft: '75%' } }>
                   <IconButton
-                    aria-owns={openAnchorEl ? 'menu-appbar' : null}
+                    aria-owns={ openAnchorEl ? 'menu-appbar' : null }
                     position="absolute"
                     aria-haspopup="true"
-                    onClick={this.handleMenu}
+                    onClick={ this.handleMenu }
                     color="inherit"
                   >
-                    <AccountCircle />
+                      <AccountCircle />
                   </IconButton>
                   <Menu
                     id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
+                    anchorEl={ anchorEl }
+                    anchorOrigin={ {
                       vertical: 'top',
                       horizontal: 'right',
-                    }}
-                    transformOrigin={{
+                    } }
+                    transformOrigin={ {
                       vertical: 'top',
                       horizontal: 'right',
-                    }}
-                    open={openAnchorEl}
-                    onClose={this.handleClose}
+                    } }
+                    open={ openAnchorEl }
+                    onClose={ this.handleClose }
                   >
-                    <MenuItem onClick={this.handleClose}>Minha conta</MenuItem>
-                    <MenuItem onClick={this.logout}>Logout</MenuItem>
+                      <MenuItem onClick={ this.handleClose }>Minha conta</MenuItem>
+                      <MenuItem onClick={ this.logout }>Logout</MenuItem>
                   </Menu>
-                </div>
+              </Grid>
               )}
-            </Toolbar>
-          </AppBar>
-          <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(classes.drawerPaper,
-                !open && classes.drawerPaperClose),
-            }}
-            open={open}
-          >
-            <div className={classes.toolbar}>
-              <IconButton style={style} onClick={this.handleDrawerClose}>
-                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-              </IconButton>
-            </div>
-            <List>
-              <div>
-                <MenuList>
-                  <MenuItem
-                    button
-                    component="a"
-                    href="/worker"
-                    className={classes.menuItem}
-                  >
-                    <ListItemIcon className={classes.icon}>
-                      <GroupIcon style={style} />
-                    </ListItemIcon>
-                    <ListItemText style={style} disableTypography inset primary="Listar Funcionarios" />
-                  </MenuItem>
-                  <MenuItem
-                    button
-                    component="a"
-                    href="/worker/create"
-                    className={classes.menuItem}
-                  >
-                    <ListItemIcon className={classes.icon}>
-                      <CreateIcon style={style} />
-                    </ListItemIcon>
-                    <ListItemText style={style} disableTypography inset primary="Criar Funcionarios" />
-                  </MenuItem>
-                </MenuList>
-              </div>
-            </List>
-            <Divider />
-            <List>
-              <div>
-                <MenuList>
-                  <MenuItem
-                    button
-                    component="a"
-                    href="/invoice"
-                    className={classes.menuItem}
-                  >
-                    <ListItemIcon className={classes.icon}>
-                      <DescriptionIcon style={style} />
-                    </ListItemIcon>
-                    <ListItemText style={style} disableTypography inset primary="Listar Notas Fiscais" />
-                  </MenuItem>
-                  <MenuItem
-                    button
-                    component="a"
-                    href="/invoice/create"
-                    className={classes.menuItem}
-                  >
-                    <ListItemIcon className={classes.icon}>
-                      <SendIcon style={style} />
-                    </ListItemIcon>
-                    <ListItemText style={style} disableTypography inset primary="Criar Nota Fiscal" />
-                  </MenuItem>
-                </MenuList>
-              </div>
-            </List>
-            <Divider />
-            <List>
-              <div>
-                <MenuList>
-                  <MenuItem button component="a" href="/graph/graphs" className={classes.menuItem}>
-                    <ListItemIcon className={classes.icon}>
-                      <TimelineIcon style={style} />
-                    </ListItemIcon>
-                    <ListItemText style={style} disableTypography inset primary="Visualizar Analise" />
-                  </MenuItem>
-                </MenuList>
-              </div>
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            {children}
-          </main>
-        </div>
-      );
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          className={classNames(classes.drawer, {
+            [classes.drawerOpen]: this.state.open,
+            [classes.drawerClose]: !this.state.open,
+          })}
+          classes={{
+            paper: classNames({
+              [classes.drawerOpen]: this.state.open,
+              [classes.drawerClose]: !this.state.open,
+            }),
+          }}
+          open={this.state.open}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={this.handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon style={{ color: 'white' }} /> : <ChevronLeftIcon style={{ color: 'white' }} />}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+              <ListItem button component="a" href="/worker" key='funcionarios'>
+                  <ListItemIcon>
+                    <GroupIcon style={{ color: 'white' }}/>
+                  </ListItemIcon>
+                  <ListItemText style={{ color: 'white' }} disableTypography inset primary='Funcionários' />
+                </ListItem>
+          </List>
+          <Divider />
+          <List>
+              <ListItem button component="a" href="/invoice" key='notas fiscais'>
+                <ListItemIcon>
+                  <DescriptionIcon style={{ color: 'white' }}/>
+                </ListItemIcon>
+                <ListItemText style={{ color: 'white' }} disableTypography inset primary='Notas Fiscais' />
+              </ListItem>
+          </List>
+          <Divider />
+          <List>
+              <ListItem button component="a" href="/graph/graphs" key={'graficos'}>
+                  <ListItemIcon>
+                    <TimelineIcon style={{ color: 'white' }}/>
+                  </ListItemIcon>
+                  <ListItemText style={{ color: 'white' }} disableTypography inset primary='Gráficos' />
+                </ListItem>
+          <Divider />
+          </List>
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+            { this.props.children }
+        </main>
+      </div>
+      )
     } else {
       return (
-        <div className={classes.root}>
-          {children}
-        </div>
-      )
+      <div className={classes.root}>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+            { this.props.children }
+        </main>
+      </div>
+      );
     }
-
-
   }
 }
 

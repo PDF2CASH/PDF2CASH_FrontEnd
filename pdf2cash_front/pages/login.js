@@ -30,7 +30,7 @@ const styles = theme => ({
     margin: {
         padding: theme.spacing.unit / 2,
         backgroundColor: theme.palette.error.dark,
-    }
+    },
 });
 
 class Login extends Component {
@@ -111,9 +111,9 @@ class Login extends Component {
         const { classes } = this.props;
 
         return (
-            <Grid container spacing={24} justify="center" alignItems="lex-start">
-                <Grid item xs={10}>
-                    <div>
+            <Grid container spacing={16} justify="center" alignItems="center">
+                <Grid item xs={6}>
+                    <div className={classes.mainDiv}>
                         <Paper className={classes.root} elevation={1} classes= {{
                             root: classes.root.minWidth
                         }} >

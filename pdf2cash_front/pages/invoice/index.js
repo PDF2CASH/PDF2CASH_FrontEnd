@@ -10,8 +10,10 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { withStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
 import CustomatizedTable from '../../comps/table';
-import Authenticate from './../auth.js';
+import InvoiceCreate from '../../comps/createInvoice'
+import Authenticate from '../auth';
 import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
@@ -25,7 +27,7 @@ const styles = theme => ({
     textAlign: 'center',
     marginTop: 100,
   },
-  paper: {
+  paperDelete: {
     position: 'absolute',
     width: theme.spacing.unit * 50,
     backgroundColor: theme.palette.background.paper,
@@ -33,8 +35,19 @@ const styles = theme => ({
     padding: theme.spacing.unit * 4,
     textAlign: 'center',
   },
-  buttom: {
+  button: {
     marginTop: 30,
+  },
+  buttonCreate: {
+    marginLeft: '88.5%',
+    position: 'fixed',
+    marginTop: '34.5%',
+  },
+  paperCreate: {
+    position: 'absolute',
+    textAlign: 'center',
+    'max-width': 1000,
+    'max-weight': 1000,
   },
 });
 
@@ -46,6 +59,8 @@ function getModalStyle() {
     top: `${ top }%`,
     left: `${ left }%`,
     transform: `translate(-${ top }%, -${ left }%)`,
+    overflow: 'auto',
+    height: 300,
   };
 }
 
@@ -56,7 +71,8 @@ class InvoiceIndex extends Component {
       invoices: [],
       sellers: [],
       join: [],
-      open: false,
+      openDelete: false,
+      openCreate: false,
       id: 0,
     };
 
@@ -64,30 +80,19 @@ class InvoiceIndex extends Component {
     this.dateFormatter = this.dateFormatter.bind(this);
     this.delete = this.delete.bind(this);
     this.getInvoices = this.getInvoices.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openModalDelete = this.openModalDelete.bind(this);
+    this.closeModalDelete = this.closeModalDelete.bind(this);
+    this.openModalCreate = this.openModalCreate.bind(this);
+    this.closeModalCreate = this.closeModalCreate.bind(this);
   }
 
   async componentDidMount() {
     Authenticate.loginValidationdation();
-    const urlInvoice = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/';
-    const resInvoice = await fetch(urlInvoice);
-    const dataInvoice = await resInvoice.json();
-    this.setState({
-      invoices: dataInvoice,
-      open: false,
-    });
-
-    const urlSeller = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/seller/';
-    const resSeller = await fetch(urlSeller);
-    const dataSeller = await resSeller.json();
-    this.setState({ sellers: dataSeller });
-
-    this.joinInvoiceSeller();
+    this.setState({ openDelete: false });
+    this.getInvoices();
   }
 
   async getInvoices() {
-    Authenticate.loginValidationdation();
     const urlInvoice = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/';
     const resInvoice = await fetch(urlInvoice);
     const dataInvoice = await resInvoice.json();
@@ -105,7 +110,7 @@ class InvoiceIndex extends Component {
     const { id } = await this.state;
     const url = publicRuntimeConfig.invoiceHostDomain+`/api/invoice/invoice/${ id }/`;
     await fetch(url, { method: 'DELETE' });
-    this.closeModal();
+    this.closeModalDelete();
     this.getInvoices();
   }
 
@@ -136,16 +141,28 @@ class InvoiceIndex extends Component {
     this.setState({ join });
   }
 
-  openModal(id) {
+  openModalDelete(id) {
     this.setState({
-      open: true,
+      openDelete: true,
       id,
     });
   }
 
-  async closeModal() {
+  async closeModalDelete() {
     this.setState({
-      open: false,
+      openDelete: false,
+    });
+  }
+
+  openModalCreate() {
+    this.setState({
+      openCreate: true,
+    });
+  }
+
+  async closeModalCreate() {
+    this.setState({
+      openCreate: false,
     });
   }
 
@@ -153,7 +170,8 @@ class InvoiceIndex extends Component {
     const { classes } = this.props;
     const {
       join,
-      open,
+      openDelete,
+      openCreate,
       id,
       invoices,
     } = this.state;
@@ -163,32 +181,56 @@ class InvoiceIndex extends Component {
             <Typography variant="display2">
               Listar Notas Fiscais
             </Typography>
+            <Button
+              variant="fab"
+              color="secondary"
+              aria-label="Add"
+              className={ classes.buttonCreate }
+              onClick={ () => this.openModalCreate() }
+            >
+                <AddIcon />
+            </Button>
             <Modal
               aria-labelledby="simple-modal-title"
-              aria-describedby="simple-modal-description"
-              open={ open }
-              onClose={ this.closeModal }
+              aria-describedby="simple-modal-deion"
+              open={ openDelete }
+              onClose={ this.closeModalDelete }
             >
-                <Grid style={ getModalStyle() } className={ classes.paper }>
+                <Grid style={ getModalStyle() } className={ classes.paperDelete }>
                     <Typography variant="h6" className={ classes.cell }>
-                      Deseja realmete deletar essa nota fiscal ?
+                      Deseja realmente deletar essa nota fiscal ?
                     </Typography>
                     <Button
+                      id="SIM"
                       variant="contained"
-                      className={ classes.buttom }
+                      className={ classes.button }
                       color="primary"
                       onClick={ () => this.delete(id) }
                     >
                       SIM
                     </Button>
                     <Button
+                      id="NAO"
                       variant="contained"
-                      className={ classes.buttom }
+                      className={ classes.button }
                       color="secondary"
-                      onClick={ this.closeModal }
+                      onClick={ this.closeModalDelete }
                     >
                       NÃO
                     </Button>
+                </Grid>
+            </Modal>
+            <Modal
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-deion"
+              open={ openCreate }
+              onClose={ this.closeModalCreate }
+            >
+                <Grid style={ getModalStyle() } className={ classes.paperCreate }>
+                    <InvoiceCreate
+                      close={ this.closeModalCreate }
+                      update={ this.getInvoices }
+                    />
                 </Grid>
             </Modal>
             {
@@ -209,11 +251,6 @@ class InvoiceIndex extends Component {
                         </TableCell>
                         <TableCell className={ classes.cell }>
                             <Typography>
-                                {invoice.seller.name}
-                            </Typography>
-                        </TableCell>
-                        <TableCell className={ classes.cell }>
-                            <Typography>
                                 {invoice.seller.cnpj}
                             </Typography>
                         </TableCell>
@@ -228,7 +265,7 @@ class InvoiceIndex extends Component {
                             </Button>
                         </TableCell>
                         <TableCell className={ classes.cell }>
-                            <Button onClick={ () => this.openModal(invoice.id) }>
+                            <Button onClick={ () => this.openModalDelete(invoice.id) }>
                                 <DeleteIcon />
                             </Button>
                         </TableCell>
