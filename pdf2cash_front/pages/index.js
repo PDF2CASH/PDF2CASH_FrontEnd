@@ -6,9 +6,16 @@ import {
     Grid,
     Radio,
     FormControlLabel,
-    RadioGroup
+    RadioGroup,
+    Typography,
 } from '@material-ui/core';
-import { Line, Bar } from 'react-chartjs-2';
+import {
+    Line,
+    Bar,
+    Pie,
+    Radar
+} from 'react-chartjs-2';
+
 
 const styles = theme => ({
     chart: {
@@ -23,6 +30,19 @@ const styles = theme => ({
         padding: theme.spacing.unit * 2,
         textAlign: 'center',
         color: theme.palette.text.secondary,
+    },
+    information_paper: {
+        padding: theme.spacing.unit * 2,
+        color: theme.palette.text.secondary,
+        height: '10%',
+        maxHeight: '10%',
+    },
+    media: {
+        height: 0,
+        paddingTop: '56.25%',
+    },
+    card: {
+        maxWidth: 400,
     },
 });
 
@@ -41,7 +61,10 @@ class Index extends Component {
             chart_qtdByYear: {},
             chart_total_current_year: {},
             chart_total_current_month: {},
+            chart_total_qtd: {},
+            chart_qtd_business: {},
             selectedValue: '1s',
+            totalM: '',
         };
     }
 
@@ -181,6 +204,39 @@ class Index extends Component {
                 data: data.totalM
             }, ]
         }
+        
+        url = 'http://localhost:8000/api/invoice/information_invoices/';
+        res = await fetch(url, head);
+        data = await res.json();
+        const totalM = data.totalM
+        const chart_total_qtd = {
+            labels: [
+                'Mensal',
+                'Anual'
+            ],
+            datasets: [{
+                label: 'Nº notas Mensal / Anual',
+                data: [data.total_qtd_month, data.total_qtd_year],
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                ],
+                hoverBackgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                ]
+            }]
+        }
+        const chart_qtd_business = {
+            labels: data.sellers,
+            datasets: [{
+                label: "Nº notas por empresa",
+                backgroundColor: "rgba(255,99,132,0.5)",
+                pointBackgroundColor: "rgba(54,162,235,1)",
+                data: data.count
+            }]
+        }
+
 
         await this.setState({
             chart_data: chart_data1S,
@@ -192,7 +248,10 @@ class Index extends Component {
             chart_qtdByMonth,
             chart_qtdByYear,
             chart_total_current_year,
-            chart_total_current_month
+            chart_total_current_month,
+            totalM,
+            chart_total_qtd,
+            chart_qtd_business,
         });
     }
 
@@ -240,10 +299,73 @@ class Index extends Component {
             chart_total_current_year,
             chart_total_current_month,
             selectedValue,
+            totalM,
+            chart_total_qtd,
+            chart_qtd_business
         } = this.state;
 
         return (
             <Grid className={classes.grid} container spacing={24}>
+                <Grid item xs={4}>
+                    <Paper className={classes.information_paper}> 
+                        <Radar 
+                            data={chart_qtd_business}
+                            height={270}
+                            classesName={classes.chart}
+                            options={{
+                                reverse: false,
+                                gridLines: {
+                                    color: [
+                                        'red',
+                                    ]
+                                },
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid container spacing={16} item xs={4}>
+                    <Grid item xs={12}>
+                        <Paper className={classes.information_paper}> 
+                            <Typography variant="subtitle2">
+                                Valor total mensal
+                            </Typography>
+                            <Typography variant="h4" component="p" style={{textAlign:'right'}}>
+                                {totalM}
+                            </Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Paper className={classes.information_paper}> 
+                            {/* <img src={logo} alt="Logo" /> */}
+                        </Paper>
+                    </Grid>
+                </Grid>
+                <Grid item xs={4}>
+                    <Paper className={classes.information_paper}>
+                        <Pie
+                            data={chart_total_qtd}
+                            height={355}
+                            classesName={classes.chart}
+                            options={{
+                                title: {
+                                    display: true,
+                                    text: 'Nº notas Mensal / Anual'
+                                },
+                                maintainAspectRatio: false,
+                                responsive: false,
+                                legend: {
+                                    position: 'left',
+                                    labels: {
+                                        boxWidth: 10
+                                    }
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
                 <Grid item xs={12}> 
                     <Paper className={classes.chart_paper}> 
                         < Grid

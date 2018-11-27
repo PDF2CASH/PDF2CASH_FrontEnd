@@ -62,7 +62,7 @@ const names = [
     'Quantidade de notas por Ano',
     'Valor total por Categoria',
     'Valor do Frete por Tempo',
-    'Valor total por Vendedor',
+    'Valor total por Empresa',
     'Valor total no ano atual',
     'Valor total no mês atual',
 ];
@@ -265,7 +265,7 @@ class Index extends React.Component {
         const chart_total_valueBySeller = await {
             labels: data.seller,
             datasets: [{
-                label: 'Valor total por Vendedor',
+                label: 'Valor total por Empresa',
                 backgroundColor: 'rgba(255,99,132,0.2)',
                 borderColor: 'rgba(255,99,132,1)',
                 borderWidth: 1,
