@@ -11,8 +11,15 @@ import {
     MenuItem,
     Input,
     InputLabel,
-    ListItemText
+    ListItemText,
+    Paper
 } from '@material-ui/core';
+import {
+    Line,
+    Bar
+} from 'react-chartjs-2';
+
+import Authenticate from '../auth';
 
 const styles = theme => ({
     grid: {
@@ -24,6 +31,11 @@ const styles = theme => ({
         margin: theme.spacing.unit,
         minWidth: '25%',
         maxWidth: '30%',
+    },
+    chart_paper: {
+        padding: theme.spacing.unit * 2,
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
     },
 });
 
@@ -39,13 +51,20 @@ const MenuProps = {
 };
 
 const names = [
-    'Valor total/Data',
-    'Valor total de vendedor/Mês',
-    'Valor total/Categoria',
-    'Quantidade de NFe/Vendedor',
-    'Impostos/Data',
-    'Frete/Data',
-    'Desconto/Vendedor'
+    'Valor total em 1 Semana',
+    'Valor total em 1 Mês',
+    'Valor total em 6 meses',
+    'Valor total em 1 Ano',
+    'Valor total por Tempo máximo',
+    'Valor total por Tempo máximo - Mês',
+    'Valor total por Tempo máximo - Ano',
+    'Quantidade de notas por Mês',
+    'Quantidade de notas por Ano',
+    'Valor total por Categoria',
+    'Valor do Frete por Tempo',
+    'Valor total por Vendedor',
+    'Valor total no ano atual',
+    'Valor total no mês atual',
 ];
 
 class Index extends React.Component {
@@ -57,91 +76,577 @@ class Index extends React.Component {
         super(props);
         this.state = {
             name: [],
+            chart_data1S: {},
+            chart_data1M: {},
+            chart_data6M: {},
+            chart_data1A: {},
+            chart_dataMax: {},
+            chart_dataM: {},
+            chart_dataY: {},
+            chart_qtdByMonth: {},
+            chart_qtdByYear: {},
+            chart_totalByCategory: {},
+            chart_freightByDate: {},
+            chart_total_valueBySeller: {},
+            chart_total_current_year: {},
+            chart_total_current_month: {},
         };
+    }
+    
+    async componentDidMount() {
+        let url = 'http://localhost:8000/api/invoice/chart_total_value_per_chosen_date/';
+        const head = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'JWT ' + Authenticate.getToken()
+            },
+            credentials: 'omit',
+        }
+        let res = await fetch(url, head);
+        let data = await res.json();
+        const chart_data1S = await {
+            labels: data.dateW,
+            datasets: [{
+                label: 'Valor total em 1 Semana',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalW
+            }, ]
+        }
+        const chart_data1M = await {
+            labels: data.dateM,
+            datasets: [{
+                label: 'Valor total em 1 Mês',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalM
+            }, ]
+        }
+        const chart_data6M = await {
+            labels: data.dateS,
+            datasets: [{
+                label: 'Valor total em 6 meses',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalS
+            }, ]
+        }
+        const chart_data1A = await {
+            labels: data.dateY,
+            datasets: [{
+                label: 'Valor total em 1 Ano',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalY
+            }, ]
+        }
+
+        url = 'http://localhost:8000/api/invoice/chart_total_value_per_time/';
+        res = await fetch(url, head);
+        data = await res.json();
+        const chart_dataMax = await {
+            labels: data.date,
+            datasets: [{
+                label: 'Valor total por Tempo máximo',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.total
+            }, ]
+        }
+        const chart_dataM = await {
+            labels: data.dateM,
+            datasets: [{
+                label: 'Valor total por Tempo máximo - Mês',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalM
+            }, ]
+        }
+        const chart_dataY = await {
+            labels: data.dateY,
+            datasets: [{
+                label: 'Valor total por Tempo máximo - Ano',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalY
+            }, ]
+        }
+
+        url = 'http://localhost:8000/api/invoice/chart_qtd_per_time/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_qtdByMonth = await {
+            labels: data.date,
+            datasets: [{
+                label: 'Quantidade de notas por Mês',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.count
+            }, ]
+        }
+
+        const chart_qtdByYear = await {
+            labels: data.dateY,
+            datasets: [{
+                label: 'Quantidade de notas por Ano',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.countY
+            }, ]
+        }
+
+        url = 'http://localhost:8000/api/invoice/chart_total_value_per_category/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_totalByCategory = await {
+            labels: data.category,
+            datasets: [{
+                label: 'Valor total por Categoria',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.total
+            }, ]
+        }
+
+        url = 'http://localhost:8000/api/invoice/chart_freight_value_per_date/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_freightByDate = await {
+            labels: data.date,
+            datasets: [{
+                label: 'Valor do Frete por Tempo',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.freight
+            }, ]
+        }
+
+        url = 'http://localhost:8000/api/invoice/chart_total_valueBySeller/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_total_valueBySeller = await {
+            labels: data.seller,
+            datasets: [{
+                label: 'Valor total por Vendedor',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.total
+            }, ]
+        }
+
+        url = 'http://localhost:8000/api/invoice/chart_total_value_current/';
+        res = await fetch(url, head);
+        data = await res.json();
+
+        const chart_total_current_year = await {
+            labels: data.date,
+            datasets: [{
+                label: 'Valor total no ano atual',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.total
+            }, ]
+        }
+
+        const chart_total_current_month = await {
+            labels: data.dateM,
+            datasets: [{
+                label: 'Valor total no mês atual',
+                backgroundColor: 'rgba(255,99,132,0.2)',
+                borderColor: 'rgba(255,99,132,1)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                hoverBorderColor: 'rgba(255,99,132,1)',
+                data: data.totalM
+            }, ]
+        }
+
+        await this.setState({
+            chart_data1S,
+            chart_data1M,
+            chart_data6M,
+            chart_data1A,
+            chart_dataMax,
+            chart_dataM,
+            chart_dataY,
+            chart_qtdByMonth,
+            chart_qtdByYear,
+            chart_totalByCategory,
+            chart_freightByDate,
+            chart_total_valueBySeller,
+            chart_total_current_year,
+            chart_total_current_month
+        });
     }
 
     render() {
         const { classes } = this.props;
+        const {
+            chart_data1S,
+            chart_data1M,
+            chart_data6M,
+            chart_data1A,
+            chart_dataMax,
+            chart_dataM,
+            chart_dataY,
+            chart_total_current_month,
+            chart_total_current_year,
+            chart_qtdByMonth,
+            chart_qtdByYear,
+            chart_totalByCategory,
+            chart_freightByDate,
+            chart_total_valueBySeller,
+        } = this.state;
         console.log(this.state.name)
         return (
-            <Grid className={classes.grid}>
-                < Typography variant = 'h3' >
-                    Gráficos
-                </Typography>
-                <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor='select-multiple-checkbox'>Filtro</InputLabel>
-                    <Select
-                        multiple
-                        value={this.state.name}
-                        onChange={this.handleChange}
-                        input={<Input id='select-multiple' />}
-                        renderValue={selected => selected.join(', ')}
-                        MenuProps={MenuProps}
-                    >
-                    {names.map(name => (
-                        <MenuItem key={name} value={name}>
-                            <Checkbox color = 'primary' checked={this.state.name.indexOf(name) > -1} />
-                            <ListItemText primary={name} />
-                        </MenuItem>
-                    ))}
-                    </Select>
-                </FormControl>
-                <iframe
-                    hidden={!(this.state.name.indexOf('Valor total/Data') > -1)}
-                    src='http://localhost:3030/public/question/0be92c1f-ab8a-4d14-9b71-0fbd5a160dd9'
-                    frameBorder='0'
-                    width='100%'
-                    height='60%'
-                    allowtransparency
-                />
-                < iframe 
-                    hidden={!(this.state.name.indexOf('Valor total de vendedor/Mês') > -1)}
-                    src='http://localhost:3030/public/question/72435521-fd23-49dd-b4a8-601ad34d75bf'
-                    frameBorder='0'
-                    width='100%'
-                    height='60%'
-                    allowtransparency
-                />
-                <iframe
-                    hidden={!(this.state.name.indexOf('Valor total/Categoria') > -1)}
-                    src='http://localhost:3030/public/question/1d57945f-d665-43a5-b862-989a1d90d5e3'
-                    frameBorder='0'
-                    width='100%'
-                    height='60%'
-                    allowtransparency
-                />
-                <iframe
-                    hidden={!(this.state.name.indexOf('Quantidade de NFe/Vendedor') > -1)}
-                    src='http://localhost:3030/public/question/ebbdd534-0017-4068-b5f3-c745c8be954f'
-                    frameBorder='0'
-                    width='100%'
-                    height='60%'
-                    allowtransparency
-                />
-                <iframe
-                    hidden={!(this.state.name.indexOf('Impostos/Data') > -1)}
-                    src='http://localhost:3030/public/question/b294d15b-b4b7-4438-86b6-d9a5740b46ca'
-                    frameBorder='0'
-                    width='100%'
-                    height='60%'
-                    allowtransparency
-                />
-                <iframe
-                    hidden={!(this.state.name.indexOf('Frete/Data') > -1)}
-                    src='http://localhost:3030/public/question/afcfb81f-71a7-4f72-91c2-1d39d677b136'
-                    frameBorder='0'
-                    width='100%'
-                    height='60%'
-                    allowtransparency
-                />
-                <iframe
-                    hidden={!(this.state.name.indexOf('Desconto/Vendedor') > -1)}
-                    src='http://localhost:3030/public/question/ab83a558-da8c-4647-9cc5-6f72c9de57ef'
-                    frameBorder='0'
-                    width='100%'
-                    height='60%'
-                    allowtransparency
-                />
+            <Grid className={classes.grid} container spacing={24}>
+                <Grid item xs={12}>
+                    < Typography variant = 'h3' >
+                        Gráficos
+                    </Typography>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor='select-multiple-checkbox'>Filtro</InputLabel>
+                        <Select
+                            multiple
+                            value={this.state.name}
+                            onChange={this.handleChange}
+                            input={<Input id='select-multiple' />}
+                            renderValue={selected => selected.join(', ')}
+                            MenuProps={MenuProps}
+                        >
+                        {names.map(name => (
+                            <MenuItem key={name} value={name}>
+                                <Checkbox color = 'primary' checked={this.state.name.indexOf(name) > -1} />
+                                <ListItemText primary={name} />
+                            </MenuItem>
+                        ))}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_data1S}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} >
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_data1M}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_data6M}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_data1A}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_dataMax}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_dataM}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_dataY}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_total_current_month}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Line
+                            data={chart_total_current_year}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Bar
+                            data={chart_qtdByMonth}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Bar
+                            data={chart_qtdByYear}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Bar
+                            data={chart_totalByCategory}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Bar
+                            data={chart_freightByDate}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper className={classes.chart_paper}>
+                        <Bar
+                            data={chart_total_valueBySeller}
+                            height={250}
+                            classesName={classes.chart}
+                            options={{
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            min: 0
+                                        }
+                                    }]
+                                }
+                            }}
+                        />
+                    </Paper>
+                </Grid>
             </Grid>
         );
 
