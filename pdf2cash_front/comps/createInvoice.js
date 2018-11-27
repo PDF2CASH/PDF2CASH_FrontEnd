@@ -72,7 +72,7 @@ class InvoiceCreate extends Component {
   async sendFile(data){
     Authenticate.loginValidationdation();
     const parser = await fetch(
-      'http://localhost:10022/', 
+      'http://localhost:8008/parser', 
       {
         method: 'POST',
         headers: {
@@ -83,7 +83,7 @@ class InvoiceCreate extends Component {
       })
       var json = await parser.json();
       fetch(
-        'http://localhost:8008/api/invoice/invoice/', 
+        'http://localhost:8000/api/invoice/invoice/', 
         {
           method: 'POST',
           headers: {
