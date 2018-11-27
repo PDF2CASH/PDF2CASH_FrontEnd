@@ -25,6 +25,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import Link from 'next/link';
 import Authenticate from '../pages/auth';
+import { Button } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -168,11 +169,13 @@ class MiniDrawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Grid>
+            <Button variant="outlined" color="inherit" noWrap>
             <Link href='/'>
               <Typography variant="h4" color="inherit" noWrap>
                 PDFCA$H
               </Typography>
             </Link>
+            </Button>
             </Grid>
             {auth && (
               <Grid style={ this.state.open ? { marginLeft: '80%' } : { marginLeft: '75%' } }>

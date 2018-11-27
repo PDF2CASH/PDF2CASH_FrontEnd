@@ -80,7 +80,7 @@ class WorkerShow extends React.Component {
     } else {
       content = <>
       <Paper className={ classes.root } elevation={ 5 }> 
-          <Typography variant="display2">
+          <Typography variant="h4" color="inherit">
                   Visualizar Funcionario
           </Typography>
           <Grid

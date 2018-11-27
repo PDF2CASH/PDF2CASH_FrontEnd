@@ -7,7 +7,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { withRouter } from 'next/router';
 import Typography from '@material-ui/core/Typography';
-import Authenticate from './../auth.js';
+import Authenticate from '../pages/auth.js';
 import getConfig from 'next/config';
 
 const { publicRuntimeConfig } = getConfig();
@@ -51,20 +51,27 @@ class WorkerEdit extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    async componentDidMount() {
+     async componentDidMount() {
         Authenticate.loginValidationdation();
-        const id = this.props.router.query.id;
+        const id = this.props.id;
         const url = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/' + id + '/';
-        const res = await fetch(url);
+        const res = await fetch(url, {
+            method: 'GET',
+            headers: {
+                 'Content-Type': 'application/json',
+                 'Authorization': 'JWT ' + Authenticate.getToken()
+            },
+            credentials: 'omit',
+          });
         const data = await res.json();
         this.setState({
             id: data['id'],
+            username: data['username'],
             cpf: data['cpf'],
             email: data['email'],
             password: data['password'],
             data_has_loaded: true,
         });
-
     }
 
     handleChangeCPF(event) {
@@ -100,22 +107,25 @@ class WorkerEdit extends Component {
         event.preventDefault();
         const id = this.state.id;
         const url_worker = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/' + id + '/';
-        fetch(url_worker, {
-            method: 'PATCH',
+        const res = await fetch(url_worker, {
+            method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'JWT ' + Authenticate.getToken()
             },
-            body: JSON.stringify({
+            credentials: 'omit',
+            body: await JSON.stringify({
                 cpf: this.state.cpf,
                 username:this.state.username,
                 email: this.state.email,
-                password: this.state.password
+                password: this.state.password,
+                permission:  '1'
             })
         })
             .then((response) => {
                 if (response.ok) {
-                    window.location.href = "http://localhost:3000/worker";
+                    this.props.update();
                 }
                 else
                     return response.json()
@@ -150,6 +160,7 @@ class WorkerEdit extends Component {
                             this.setState({ errors: errors, error_show: true });
                         })
             })
+        this.props.close();
     }
 
     render() {
