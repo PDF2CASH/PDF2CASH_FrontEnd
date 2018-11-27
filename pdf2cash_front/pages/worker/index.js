@@ -13,6 +13,8 @@ import Authenticate  from '../auth';
 import WorkerCreate from '../../comps/createWorker';
 import AddIcon from '@material-ui/icons/Add';
 import getConfig from 'next/config';
+import WorkerShow from '../../comps/showWorker';
+
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -62,6 +64,7 @@ class WorkerIndex extends Component {
       workers: [],
       openDelete: false,
       openCreate: false,
+      openWorker: false,
       id: 0,
     };
     this.delete = this.delete.bind(this);
@@ -70,6 +73,8 @@ class WorkerIndex extends Component {
     this.closeModalDelete = this.closeModalDelete.bind(this);
     this.openModalCreate = this.openModalCreate.bind(this);
     this.closeModalCreate = this.closeModalCreate.bind(this);
+    this.openModalWorker = this.openModalWorker.bind(this);
+    this.closeModalWorker = this.closeModalWorker.bind(this);
   }
 
   componentDidMount() {
@@ -112,6 +117,19 @@ class WorkerIndex extends Component {
     this.setState ({
       openDelete: true,
       id: id,
+    });
+  }
+
+  openModalWorker(id){
+    this.setState ({
+      openWorker: true,
+      id: id,
+    });
+  }
+
+  closeModalWorker(){
+    this.setState({
+      openWorker: false
     });
   }
 
@@ -164,6 +182,17 @@ class WorkerIndex extends Component {
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-deion"
+          open={this.state.openWorker}
+          onClose={this.closeModalWorker}
+        >
+          <WorkerShow
+            close={this.closeModalWorker}
+            id={this.state.id}
+          />
+        </Modal>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-deion"
           open={this.state.openDelete}
           onClose={this.closeModalDelete}
         >
@@ -206,11 +235,11 @@ class WorkerIndex extends Component {
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.cell}>
-                  <Link href={{ pathname: '/worker/show', query: { id: worker.id } }}>
-                    <Button>
+                  
+                    <Button onClick={() => this.openModalWorker(worker.id)}>
                       <VisibilityIcon />
                     </Button>
-                  </Link>
+                  
                 </TableCell>
                 <TableCell className={classes.cell}>
                   <Link href={{ pathname: '/worker/edit', query: { id: worker.id } }}>
