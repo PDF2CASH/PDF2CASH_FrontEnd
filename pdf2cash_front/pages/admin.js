@@ -107,7 +107,7 @@ class AdminCreate extends Component {
         })
             .then((response) => {
                 if (response.ok) {
-                    window.location.href = "http://localhost:3000/login";
+                    window.location.href = publicRuntimeConfig.frontHostDomain+"/login";
                 }
                 else
                     return response.json()

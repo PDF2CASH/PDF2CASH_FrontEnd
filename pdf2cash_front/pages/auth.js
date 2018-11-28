@@ -26,7 +26,7 @@ export default class Authenticate {
 
   static logout() {
     localStorage.removeItem('token');
-    window.location.href = 'http://localhost:3000/login';
+    window.location.href = publicRuntimeConfig.frontHostDomain+'/login';
   }
 
   static loginValidationdation() {
@@ -38,7 +38,7 @@ export default class Authenticate {
         Authenticate.refresh();
       }
     } else {
-      window.location.href = 'http://localhost:3000/login';
+      window.location.href = publicRuntimeConfig.frontHostDomain+'/login';
     }
   }
 
