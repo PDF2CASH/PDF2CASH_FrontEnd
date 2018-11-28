@@ -51,7 +51,7 @@ class Login extends Component {
 
     componentDidMount() {
         if (Authenticate.checkLogin()) {
-            window.location.href = "http://localhost:3000/index";
+            window.location.href = publicRuntimeConfig.frontHostDomain+"/index";
         }
     }
 
@@ -83,7 +83,7 @@ class Login extends Component {
 
             .then(function (data) {
                 Authenticate.makeLogin(data.token);
-                window.location.href = "http://localhost:3000/index";
+                window.location.href = publicRuntimeConfig.frontHostDomain+"/index";
             }.bind(this))
 
             .catch(error => {
