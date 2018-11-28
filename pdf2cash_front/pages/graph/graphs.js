@@ -304,7 +304,7 @@ class Index extends React.Component {
                 data: data.totalM
             }, ]
         }
-
+        
         await this.setState({
             chart_data1S,
             chart_data1M,
@@ -319,13 +319,14 @@ class Index extends React.Component {
             chart_freightByDate,
             chart_total_valueBySeller,
             chart_total_current_year,
-            chart_total_current_month
+            chart_total_current_month,            
         });
     }
 
     render() {
         const { classes } = this.props;
         const {
+            name,
             chart_data1S,
             chart_data1M,
             chart_data6M,
@@ -341,7 +342,344 @@ class Index extends React.Component {
             chart_freightByDate,
             chart_total_valueBySeller,
         } = this.state;
-        console.log(this.state.name)
+
+        var chart_data1S_print;
+        var chart_data1M_print;
+        var chart_data6M_print;
+        var chart_data1A_print;
+        var chart_dataMax_print;
+        var chart_dataM_print;
+        var chart_dataY_print;
+        var chart_total_current_month_print;
+        var chart_total_current_year_print;
+        var chart_qtdByMonth_print;
+        var chart_qtdByYear_print;
+        var chart_totalByCategory_print;
+        var chart_freightByDate_print;
+        var chart_total_valueBySeller_print;
+
+        if (this.state.name.indexOf('Valor total em 1 Semana') > -1) {
+            chart_data1S_print = <Grid item xs={12}>
+                        <Paper className={classes.chart_paper}>
+                            <Line
+                                data={chart_data1S}
+                                height={250}
+                                classesName={classes.chart}
+                                options={{
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true,
+                                                min: 0
+                                            }
+                                        }]
+                                    }
+                                }}
+                            />
+                        </Paper>
+                    </Grid>;
+        }
+
+        if (this.state.name.indexOf('Valor total em 1 Mês') > -1) {
+            chart_data1M_print = <Grid item xs={12} >
+                        <Paper className={classes.chart_paper}>
+                            <Line
+                                data={chart_data1M}
+                                height={250}
+                                classesName={classes.chart}
+                                options={{
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero: true,
+                                                min: 0
+                                            }
+                                        }]
+                                    }
+                                }}
+                            />
+                        </Paper>
+                    </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total em 6 meses') > -1) {
+            chart_data6M_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Line
+                        data={chart_data6M}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total em 1 Ano') > -1) {
+            chart_data1A_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Line
+                        data={chart_data1A}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total por Tempo máximo') > -1) {
+            chart_dataMax_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Line
+                        data={chart_dataMax}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total por Tempo máximo - Mês') > -1) {
+            chart_dataM_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Line
+                        data={chart_dataM}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total por Tempo máximo - Ano') > -1) {
+            chart_dataY_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Line
+                        data={chart_dataY}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Quantidade de notas por Mês') > -1) {
+            chart_total_current_month_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Line
+                        data={chart_total_current_month}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Quantidade de notas por Ano') > -1) {
+            chart_total_current_year_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Line
+                        data={chart_total_current_year}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total por Categoria') > -1) {
+            chart_qtdByMonth_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Bar
+                        data={chart_qtdByMonth}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor do Frete por Tempo') > -1) {
+            chart_qtdByYear_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Bar
+                        data={chart_qtdByYear}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total por Empresa') > -1) {
+            chart_totalByCategory_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Bar
+                        data={chart_totalByCategory}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total no ano atual') > -1) {
+            chart_freightByDate_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Bar
+                        data={chart_freightByDate}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+
+        if (this.state.name.indexOf('Valor total no mês atual') > -1) {
+            chart_total_valueBySeller_print = <Grid item xs={12}>
+                <Paper className={classes.chart_paper}>
+                    <Bar
+                        data={chart_total_valueBySeller}
+                        height={250}
+                        classesName={classes.chart}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        min: 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </Paper>
+            </Grid>
+        }
+        
         return (
             <Grid className={classes.grid} container spacing={24}>
                 <Grid item xs={12}>
@@ -367,286 +705,20 @@ class Index extends React.Component {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_data1S}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12} >
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_data1M}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_data6M}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_data1A}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_dataMax}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_dataM}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_dataY}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_total_current_month}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Line
-                            data={chart_total_current_year}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Bar
-                            data={chart_qtdByMonth}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Bar
-                            data={chart_qtdByYear}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Bar
-                            data={chart_totalByCategory}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Bar
-                            data={chart_freightByDate}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12}>
-                    <Paper className={classes.chart_paper}>
-                        <Bar
-                            data={chart_total_valueBySeller}
-                            height={250}
-                            classesName={classes.chart}
-                            options={{
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true,
-                                            min: 0
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
-                    </Paper>
-                </Grid>
+                {chart_data1S_print}
+                {chart_data1M_print}
+                {chart_data6M_print}
+                {chart_data1A_print}
+                {chart_dataMax_print}
+                {chart_dataM_print}
+                {chart_dataY_print}
+                {chart_total_current_month_print}
+                {chart_total_current_year_print}
+                {chart_qtdByMonth_print}
+                {chart_qtdByYear_print}
+                {chart_totalByCategory_print}
+                {chart_freightByDate_print}
+                {chart_total_valueBySeller_print}
             </Grid>
         );
 

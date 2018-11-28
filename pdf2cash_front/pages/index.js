@@ -16,7 +16,6 @@ import {
     Radar
 } from 'react-chartjs-2';
 
-
 const styles = theme => ({
     chart: {
         width: '100%',
@@ -339,7 +338,6 @@ class Index extends Component {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper className={classes.information_paper}> 
-                            {/* <img src={logo} alt="Logo" /> */}
                         </Paper>
                     </Grid>
                 </Grid>
