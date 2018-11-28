@@ -58,7 +58,7 @@ class InvoiceCreate extends Component {
     var data = new FormData();
     for(let i = 0; i<files.length; i+=1){
       data.append('file', files[i]);
-      this.sendFile(data, files[i]);
+      this.sendFile(data);
       data = new FormData();
     }
     if(files.length <= 10){
@@ -72,18 +72,18 @@ class InvoiceCreate extends Component {
   async sendFile(data){
     Authenticate.loginValidationdation();
     const parser = await fetch(
-      'http://localhost:10022/', 
+      'http://localhost:10022/parser', 
       {
         method: 'POST',
         headers: {
-          'Content-type' : 'multipart/form-data',
+          //'Content-type' : 'multipart/form-data',
         },
         credentials: 'omit',
         body: data
       })
       var json = await parser.json();
-      fetch(
-        'http://localhost:8008/api/invoice/invoice/', 
+      await fetch(
+        'http://localhost:8000/api/invoice/invoice/', 
         {
           method: 'POST',
           headers: {
@@ -117,6 +117,7 @@ class InvoiceCreate extends Component {
                   <FilePond
                     className={ classes.pond }
                     allowMultiple={ true }
+                    maxFiles={10}
                     //maxTotalFileSize={ '7MB' }
                     //labelMaxTotalFileSizeExceeded={ 'Máximo de 7MB excedido' }
                     onupdatefiles={(fileItems) => {

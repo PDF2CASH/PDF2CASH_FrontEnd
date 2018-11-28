@@ -13,6 +13,8 @@ import Authenticate  from '../auth';
 import WorkerCreate from '../../comps/createWorker';
 import AddIcon from '@material-ui/icons/Add';
 import getConfig from 'next/config';
+import WorkerShow from '../../comps/showWorker';
+import WorkerEdit from '../../comps/editWorker';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -62,6 +64,8 @@ class WorkerIndex extends Component {
       workers: [],
       openDelete: false,
       openCreate: false,
+      openWorker: false,
+      openEdit: false,
       id: 0,
     };
     this.delete = this.delete.bind(this);
@@ -70,6 +74,10 @@ class WorkerIndex extends Component {
     this.closeModalDelete = this.closeModalDelete.bind(this);
     this.openModalCreate = this.openModalCreate.bind(this);
     this.closeModalCreate = this.closeModalCreate.bind(this);
+    this.openModalWorker = this.openModalWorker.bind(this);
+    this.closeModalWorker = this.closeModalWorker.bind(this);
+    this.openModalEdit = this.openModalEdit.bind(this);
+    this.closeModalEdit = this.closeModalEdit.bind(this);
   }
 
   componentDidMount() {
@@ -115,6 +123,32 @@ class WorkerIndex extends Component {
     });
   }
 
+  openModalEdit(id){
+    this.setState ({
+      openEdit: true,
+      id: id,
+    });
+  }
+
+  closeModalEdit(){
+    this.setState({
+      openEdit: false
+    });
+  }
+
+  openModalWorker(id){
+    this.setState ({
+      openWorker: true,
+      id: id,
+    });
+  }
+
+  closeModalWorker(){
+    this.setState({
+      openWorker: false
+    });
+  }
+
   closeModalDelete(){
     this.setState({
       openDelete: false
@@ -138,7 +172,7 @@ class WorkerIndex extends Component {
     const { classes } = this.props;
     return (
       <Grid>
-        <Typography variant="display2">
+        <Typography variant="h3" color="inherit">
           Listar Funcionarios
         </Typography>
         <Button
@@ -158,6 +192,29 @@ class WorkerIndex extends Component {
         >
           <WorkerCreate
             close={this.closeModalCreate}
+            update={this.getWorkers}
+          />
+        </Modal>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-deion"
+          open={this.state.openWorker}
+          onClose={this.closeModalWorker}
+        >
+          <WorkerShow
+            close={this.closeModalWorker}
+            id={this.state.id}
+          />
+        </Modal>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-deion"
+          open={this.state.openEdit}
+          onClose={this.closeModalEdit}
+        >
+          <WorkerEdit
+            close={this.closeModalEdit}
+            id={this.state.id}
             update={this.getWorkers}
           />
         </Modal>
@@ -206,16 +263,17 @@ class WorkerIndex extends Component {
                   </Typography>
                 </TableCell>
                 <TableCell className={classes.cell}>
-                  <Link href={{ pathname: '/worker/show', query: { id: worker.id } }}>
-                    <Button>
+                  
+                    <Button onClick={() => this.openModalWorker(worker.id)}>
                       <VisibilityIcon />
                     </Button>
-                  </Link>
+                  
                 </TableCell>
                 <TableCell className={classes.cell}>
-                  <Link href={{ pathname: '/worker/edit', query: { id: worker.id } }}>
+                  <Link>
                     <Button
-                    id = 'EDIT'
+                      onClick={() => this.openModalEdit(worker.id)}
+                      id = 'EDIT'
                     >
                       <CreateIcon />
                     </Button>

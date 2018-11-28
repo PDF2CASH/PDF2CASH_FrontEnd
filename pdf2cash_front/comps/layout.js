@@ -23,7 +23,9 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import GroupIcon from '@material-ui/icons/Group';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import TimelineIcon from '@material-ui/icons/Timeline';
+import Link from 'next/link';
 import Authenticate from '../pages/auth';
+import { Button } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -91,6 +93,14 @@ const styles = theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
+  },
+  menuItem: {
+    '&:focus': {
+      backgroundColor: '#F50057',
+      '& $primary, & $icon': {
+        color: theme.palette.common.white,
+      },
+    },
   },
 });
 
@@ -163,9 +173,15 @@ class MiniDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h4" color="inherit" noWrap>
-              PDFCA$H
-            </Typography>
+            <Grid>
+            <Button variant="outlined" color="inherit" noWrap>
+            <Link href='/'>
+              <Typography variant="h4" color="inherit" noWrap>
+                PDFCA$H
+              </Typography>
+            </Link>
+            </Button>
+            </Grid>
             {auth && (
               <Grid style={ this.state.open ? { marginLeft: '80%' } : { marginLeft: '75%' } }>
                   <IconButton
@@ -219,30 +235,36 @@ class MiniDrawer extends React.Component {
           </div>
           <Divider />
           <List>
-              <ListItem button component="a" href="/worker" key='funcionarios'>
+              <Link href="/worker" passHref>
+              <ListItem button component="a" key='funcionarios' className={classes.menuItem}>
                   <ListItemIcon>
                     <GroupIcon style={{ color: 'white' }}/>
                   </ListItemIcon>
-                  <ListItemText style={{ color: 'white' }} disableTypography inset primary='Funcionários' />
+                  <ListItemText style={{ color: 'white' }} variant="h4" disableTypography inset primary='Funcionários' />
                 </ListItem>
+              </Link>
           </List>
           <Divider />
           <List>
-              <ListItem button component="a" href="/invoice" key='notas fiscais'>
+            <Link>
+              <ListItem button component="a" href="/invoice" key='notas fiscais' className={classes.menuItem}>
                 <ListItemIcon>
                   <DescriptionIcon style={{ color: 'white' }}/>
                 </ListItemIcon>
-                <ListItemText style={{ color: 'white' }} disableTypography inset primary='Notas Fiscais' />
+                <ListItemText style={{ color: 'white' }} variant="h4" disableTypography inset primary='Notas Fiscais' />
               </ListItem>
+            </Link>
           </List>
           <Divider />
           <List>
-              <ListItem button component="a" href="/graph/graphs" key={'graficos'}>
+            <Link href="/graph/graphs" passHref>
+              <ListItem button component="a" key={'graficos'} className={classes.menuItem}>
                   <ListItemIcon>
                     <TimelineIcon style={{ color: 'white' }}/>
                   </ListItemIcon>
-                  <ListItemText style={{ color: 'white' }} disableTypography inset primary='Gráficos' />
+                  <ListItemText style={{ color: 'white' }} variant="h4" disableTypography inset primary='Gráficos' />
                 </ListItem>
+              </Link>
           <Divider />
           </List>
         </Drawer>

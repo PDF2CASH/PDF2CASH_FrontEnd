@@ -45,7 +45,7 @@ function SimpleTable(props) {
                   <TableRow>
                       <CustomTableCell style={{ width: '35%', textAlign: 'center' }}>Username</CustomTableCell>
                       <CustomTableCell style={{ width: '35%', textAlign: 'center' }}>CPF</CustomTableCell>
-                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Vizualizar</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Visualizar</CustomTableCell>
                       <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Editar</CustomTableCell>
                       <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Excluir</CustomTableCell>
                   </TableRow>
