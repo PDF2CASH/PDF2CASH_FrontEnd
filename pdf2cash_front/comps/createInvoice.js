@@ -78,9 +78,6 @@ class InvoiceCreate extends Component {
       publicRuntimeConfig.parserHostDomain+'/parser', 
       {
         method: 'POST',
-        headers: {
-          //'Content-type' : 'multipart/form-data',
-        },
         credentials: 'omit',
         body: data
       })
