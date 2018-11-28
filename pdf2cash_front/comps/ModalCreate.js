@@ -6,6 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = theme => ({
   input: {
@@ -55,10 +58,16 @@ class InvoiceCreate extends Component {
 
   sendForm() {
     const { file } = this.state;
-    const url = 'http://localhost:8008/api/invoice/invoice/';
+    const url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/';
     const data = new FormData();
     data.append('file', file);
-    fetch(url, { method: 'POST', body: data });
+    fetch(url, { 
+      method: 'POST', 
+      body: data,
+      headers: {
+        'Authorization': 'JWT ' + Authenticate.getToken()
+      }
+    });
   }
 
   openModal() {

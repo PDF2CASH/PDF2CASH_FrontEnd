@@ -11,6 +11,9 @@ import { FilePond, File } from 'react-filepond';
 import Authenticate  from '../pages/auth';
 import './dist/filepond.css'
 import SelectInput from '@material-ui/core/Select/SelectInput';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = theme => ({
   input: {
@@ -72,22 +75,20 @@ class InvoiceCreate extends Component {
   async sendFile(data){
     Authenticate.loginValidationdation();
     const parser = await fetch(
-      'http://localhost:10022/parser', 
+      publicRuntimeConfig.parserHostDomain+'/parser', 
       {
         method: 'POST',
-        headers: {
-          //'Content-type' : 'multipart/form-data',
-        },
         credentials: 'omit',
         body: data
       })
       var json = await parser.json();
       await fetch(
-        'http://localhost:8000/api/invoice/invoice/', 
+        publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/', 
         {
           method: 'POST',
           headers: {
             'Content-type' : 'application/json',
+            'Authorization': 'JWT ' + Authenticate.getToken()
           },
           credentials: 'omit',
           body: JSON.stringify(json),

@@ -94,12 +94,20 @@ class InvoiceIndex extends Component {
 
   async getInvoices() {
     const urlInvoice = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/invoice/';
-    const resInvoice = await fetch(urlInvoice);
+    const resInvoice = await fetch(urlInvoice,{
+      headers: {
+        'Authorization': 'JWT ' + Authenticate.getToken()
+      }
+    });
     const dataInvoice = await resInvoice.json();
     this.setState({ invoices: dataInvoice });
 
     const urlSeller = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/seller/';
-    const resSeller = await fetch(urlSeller);
+    const resSeller = await fetch(urlSeller, {
+      headers: {
+        'Authorization': 'JWT ' + Authenticate.getToken()
+      }
+    });
     const dataSeller = await resSeller.json();
     this.setState({ sellers: dataSeller });
 
@@ -109,7 +117,12 @@ class InvoiceIndex extends Component {
   async delete() {
     const { id } = await this.state;
     const url = publicRuntimeConfig.invoiceHostDomain+`/api/invoice/invoice/${ id }/`;
-    await fetch(url, { method: 'DELETE' });
+    await fetch(url, { 
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'JWT ' + Authenticate.getToken()
+      }
+     });
     this.closeModalDelete();
     this.getInvoices();
   }

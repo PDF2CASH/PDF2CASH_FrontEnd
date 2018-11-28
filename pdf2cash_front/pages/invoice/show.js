@@ -58,17 +58,29 @@ class Show extends React.Component {
     const { router } = this.props;
     const invoiceId = router.query.id;
     const invoiceUrl = publicRuntimeConfig.invoiceHostDomain+`/invoice/invoice/${ invoiceId }`;
-    const invoiceRes = await fetch(invoiceUrl);
+    const invoiceRes = await fetch(invoiceUrl, {
+        headers: {
+            'Authorization': 'JWT ' + Authenticate.getToken()
+        }
+    });
     const invoice = await invoiceRes.json();
 
     const receiverId = await invoice.receiver;
     const receiverUrl = publicRuntimeConfig.invoiceHostDomain+`/api/invoice/receiver/${ receiverId }`;
-    const receiverRes = await fetch(receiverUrl);
+    const receiverRes = await fetch(receiverUrl, {
+        headers: {
+            'Authorization': 'JWT ' + Authenticate.getToken()
+        }
+    });
     const receiver = await receiverRes.json();
 
     const sellerId = await invoice.seller;
     const sellerUrl = publicRuntimeConfig.invoiceHostDomain+`/api/invoice/seller/${ sellerId }`;
-    const sellerRes = await fetch(sellerUrl);
+    const sellerRes = await fetch(sellerUrl, {
+        headers: {
+            'Authorization': 'JWT ' + Authenticate.getToken()
+        }
+    });
     const seller = await sellerRes.json();
 
     this.setState({
