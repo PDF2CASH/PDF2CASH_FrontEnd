@@ -20,6 +20,9 @@ import {
 } from 'react-chartjs-2';
 
 import Authenticate from '../auth';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const styles = theme => ({
     grid: {
@@ -94,7 +97,7 @@ class Index extends React.Component {
     }
     
     async componentDidMount() {
-        let url = 'http://localhost:8000/api/invoice/chart_total_value_per_chosen_date/';
+        let url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_total_value_per_chosen_date/';
         const head = {
             method: 'GET',
             headers: {
@@ -154,7 +157,7 @@ class Index extends React.Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_total_value_per_time/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_total_value_per_time/';
         res = await fetch(url, head);
         data = await res.json();
         const chart_dataMax = await {
@@ -194,7 +197,7 @@ class Index extends React.Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_qtd_per_time/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_qtd_per_time/';
         res = await fetch(url, head);
         data = await res.json();
 
@@ -224,7 +227,7 @@ class Index extends React.Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_total_value_per_category/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_total_value_per_category/';
         res = await fetch(url, head);
         data = await res.json();
 
@@ -241,7 +244,7 @@ class Index extends React.Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_freight_value_per_date/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_freight_value_per_date/';
         res = await fetch(url, head);
         data = await res.json();
 
@@ -258,7 +261,7 @@ class Index extends React.Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_total_valueBySeller/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_total_valueBySeller/';
         res = await fetch(url, head);
         data = await res.json();
 
@@ -275,7 +278,7 @@ class Index extends React.Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_total_value_current/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_total_value_current/';
         res = await fetch(url, head);
         data = await res.json();
 

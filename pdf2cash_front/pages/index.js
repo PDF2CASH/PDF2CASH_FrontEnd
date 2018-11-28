@@ -16,6 +16,10 @@ import {
     Radar
 } from 'react-chartjs-2';
 
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+
 const styles = theme => ({
     chart: {
         width: '100%',
@@ -68,7 +72,7 @@ class Index extends Component {
     }
 
     async componentDidMount() {
-        let url = 'http://localhost:8000/api/invoice/chart_total_value_per_chosen_date/';
+        let url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_total_value_per_chosen_date/';
         const head = {
             method: 'GET',
             headers: {
@@ -128,7 +132,7 @@ class Index extends Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_total_value_per_time/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_total_value_per_time/';
         res = await fetch(url, head);
         data = await res.json();
         const chart_dataMax = await {
@@ -144,7 +148,7 @@ class Index extends Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_qtd_per_time/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_qtd_per_time/';
         res = await fetch(url, head);
         data = await res.json();
 
@@ -174,7 +178,7 @@ class Index extends Component {
             }, ]
         }
 
-        url = 'http://localhost:8000/api/invoice/chart_total_value_current/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/chart_total_value_current/';
         res = await fetch(url, head);
         data = await res.json();
 
@@ -204,7 +208,7 @@ class Index extends Component {
             }, ]
         }
         
-        url = 'http://localhost:8000/api/invoice/information_invoices/';
+        url = publicRuntimeConfig.invoiceHostDomain+'/api/invoice/information_invoices/';
         res = await fetch(url, head);
         data = await res.json();
         const totalM = data.totalM
