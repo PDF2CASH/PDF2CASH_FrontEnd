@@ -62,7 +62,6 @@ class WorkerShow extends React.Component {
       credentials: 'omit',
     });
     const worker = await res.json();
-    console.log(worker);
     this.setState({
       worker,
       dataHasLoaded: true,

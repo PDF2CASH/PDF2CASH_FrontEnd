@@ -105,10 +105,11 @@ class WorkerEdit extends Component {
 
     async handleSubmit(event) {
         event.preventDefault();
+        Authenticate.loginValidationdation();
         const id = this.state.id;
         const url_worker = publicRuntimeConfig.workerHostDomain+'/api/worker/worker/' + id + '/';
         const res = await fetch(url_worker, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
