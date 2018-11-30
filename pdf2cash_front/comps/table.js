@@ -1,59 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
-import IconButton from '@material-ui/core/IconButton';
-import TableFooter from '@material-ui/core/TableFooter';
-import TablePagination from '@material-ui/core/TablePagination';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@material-ui/core';
 
+const CustomTableCell = withStyles(theme => ({
+  head: {
+    'background-color': '#3f51b5',
+    color: theme.palette.common.white,
+    fontSize: 15,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
 const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
+    overflow: 'auto',
   },
   table: {
-    maxWidth: '90%',
-    maxWeight: '90%',
-    overflowX: 'auto'
+    minWidth: 700,
   },
   cell: {
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 function SimpleTable(props) {
-  const { classes } = props;
+  const { classes, children } = props;
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.cell}>Data</TableCell>
-            <TableCell className={classes.cell}>Chave de acesso</TableCell>
-            <TableCell className={classes.cell}>Empresa</TableCell>
-            <TableCell className={classes.cell}>CNPJ</TableCell>
-            <TableCell className={classes.cell}>Valor</TableCell>
-            <TableCell className={classes.cell}>Vizualizar</TableCell>
-            <TableCell className={classes.cell}>Excluir</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.children}
-        </TableBody>
-      </Table>
-    </Paper>
+      <Paper className={ classes.root }>
+          <Table className={ classes.table }>
+              <TableHead>
+                  <TableRow>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Data</CustomTableCell>
+                      <CustomTableCell style={{ width: '30%', textAlign: 'center' }}>Chave de acesso</CustomTableCell>
+                      <CustomTableCell style={{ width: '20%', textAlign: 'center' }}>CNPJ</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Valor</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Visualizar</CustomTableCell>
+                      <CustomTableCell style={{ width: '10%', textAlign: 'center' }}>Excluir</CustomTableCell>
+                  </TableRow>
+              </TableHead>
+              <TableBody>
+                  { children }
+              </TableBody>
+          </Table>
+      </Paper>
   );
 }
 
